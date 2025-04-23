@@ -1,5 +1,5 @@
 package com.mazmorras.models;
 
-public class Heroe {
-    
+public class Heroe extends Personaje {
+   
 }
