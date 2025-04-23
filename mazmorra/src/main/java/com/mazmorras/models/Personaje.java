@@ -16,7 +16,7 @@ public abstract class Personaje {
     private int ataque; // Valor de ataque del personaje
     private int defensa; // Valor de defensa del personaje
     private int velocidad; // Velocidad del personaje
-    protected int percepcion; // Rango de detección de enemigos
+     // Rango de detección de enemigos este atributo solo para enemigos
     private int experiencia; // Experiencia acumulada
     private int nivel; // Nivel actual del personaje
 
@@ -30,7 +30,6 @@ public abstract class Personaje {
      * @param ataque     Valor de ataque del personaje.
      * @param defensa    Valor de defensa del personaje.
      * @param velocidad  Velocidad del personaje.
-     * @param percepcion Rango de detección de enemigos.
      */
     public Personaje(String nombre, int x, int y, int vidaMaxima, int ataque,
             int defensa, int velocidad, int percepcion) {
@@ -42,15 +41,15 @@ public abstract class Personaje {
         this.ataque = ataque;
         this.defensa = defensa;
         this.velocidad = velocidad;
-        this.percepcion = percepcion;
         this.experiencia = 0; // Experiencia inicial
         this.nivel = 1; // Nivel inicial
     }
 
     /**
-     * Método abstracto que deben implementar las subclases para definir cómo se mueve el personaje.
+     * Método abstracto que deben implementar las subclases para definir cómo se
+     * mueve el personaje.
      * 
-     * @param mapa    Mapa en el que se encuentra el personaje.
+     * @param mapa     Mapa en el que se encuentra el personaje.
      * @param objetivo Personaje objetivo hacia el que se mueve.
      */
     public abstract void mover(Mapa mapa, Personaje objetivo);
@@ -153,10 +152,6 @@ public abstract class Personaje {
 
     public int getVelocidad() {
         return velocidad;
-    }
-
-    public int getPercepcion() {
-        return percepcion;
     }
 
     public int getExperiencia() {
