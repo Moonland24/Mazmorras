@@ -23,7 +23,8 @@ public class Heroe extends Personaje {
      * @param velocidad  Velocidad del héroe.
      */
     public Heroe(String nombre, int x, int y, int vidaMaxima, int ataque, int defensa, int velocidad) {
-        // Llamada al constructor de la clase base (Personaje) para inicializar los atributos comunes
+        // Llamada al constructor de la clase base (Personaje) para inicializar los
+        // atributos comunes
         super(nombre, x, y, vidaMaxima, ataque, defensa, velocidad);
     }
 
@@ -31,8 +32,9 @@ public class Heroe extends Personaje {
      * Método para mover al héroe en el mapa. El movimiento se controla mediante
      * las teclas de flecha o WASD.
      * 
-     * @param mapa    Mapa en el que se encuentra el héroe.
-     * @param objetivo No se utiliza en el caso del héroe, pero se incluye para cumplir con la firma del método abstracto.
+     * @param mapa     Mapa en el que se encuentra el héroe.
+     * @param objetivo No se utiliza en el caso del héroe, pero se incluye para
+     *                 cumplir con la firma del método abstracto.
      */
     @Override
     public void mover(Mapa mapa, Personaje objetivo) {
@@ -65,10 +67,10 @@ public class Heroe extends Personaje {
     @Override
     public String toString() {
         return "Héroe: " + getNombre() +
-               " (Nivel " + getNivel() + ")" +
-               " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
-               " ATK: " + getAtaque() +
-               " DEF: " + getDefensa() +
-               " SPD: " + getVelocidad();
+                " (Nivel " + getNivel() + ")" +
+                " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
+                " ATK: " + getAtaque() +
+                " DEF: " + getDefensa() +
+                " SPD: " + getVelocidad();
     }
 }

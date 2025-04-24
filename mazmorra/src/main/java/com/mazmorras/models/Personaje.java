@@ -26,12 +26,15 @@ public abstract class Personaje {
      * @param x          Posición X en el mapa.
      * @param y          Posición Y en el mapa.
      * @param vidaMaxima Vida máxima del personaje.
+     * @param vidaActual Vida actual del personaje.
      * @param ataque     Valor de ataque del personaje.
      * @param defensa    Valor de defensa del personaje.
      * @param velocidad  Velocidad del personaje.
+     * @param experiencia Experiencia acumulada.
+     * @param nivel      Nivel actual del personaje.
      */
     public Personaje(String nombre, int x, int y, int vidaMaxima, int ataque,
-            int defensa, int velocidad, int percepcion) {
+            int defensa, int velocidad, int i) {
         this.nombre = nombre;
         this.x = x;
         this.y = y;
@@ -42,6 +45,10 @@ public abstract class Personaje {
         this.velocidad = velocidad;
         this.experiencia = 0; // Experiencia inicial
         this.nivel = 1; // Nivel inicial
+    }
+
+    public Personaje(String nombre2, int x2, int y2, int vidaMaxima2, int ataque2, int defensa2, int velocidad2) {
+        //TODO Auto-generated constructor stub
     }
 
     /**

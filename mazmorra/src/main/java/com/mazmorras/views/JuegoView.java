@@ -1,6 +1,7 @@
 package com.mazmorras.views;
 
 import com.mazmorras.controllers.JuegoController;
+import com.mazmorras.interfaces.JuegoObserver;
 import com.mazmorras.models.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
