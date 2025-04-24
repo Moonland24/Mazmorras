@@ -16,7 +16,6 @@ public abstract class Personaje {
     private int ataque; // Valor de ataque del personaje
     private int defensa; // Valor de defensa del personaje
     private int velocidad; // Velocidad del personaje
-     // Rango de detección de enemigos este atributo solo para enemigos
     private int experiencia; // Experiencia acumulada
     private int nivel; // Nivel actual del personaje
 
