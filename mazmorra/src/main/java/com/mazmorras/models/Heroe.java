@@ -7,7 +7,7 @@ import com.mazmorras.models.Mapa;
  * Extiende la clase abstracta Personaje.
  * 
  * @author Inma
- * @author Juan
+ * @author JuanFran
  */
 public class Heroe extends Personaje {
 
