@@ -22,10 +22,10 @@ public class Heroe extends Personaje {
      * @param defensa    Valor de defensa del héroe.
      * @param velocidad  Velocidad del héroe.
      */
-    public Heroe(String nombre, int x, int y, int vidaMaxima, int ataque, int defensa, int velocidad) {
+    public Heroe(String nombre, int x, int y, int vidaMaxima, int ataque, int defensa, int velocidad, int nivel) {
         // Llamada al constructor de la clase base (Personaje) para inicializar los
         // atributos comunes
-        super(nombre, x, y, vidaMaxima, ataque, defensa, velocidad);
+        super(nombre, x, y, vidaMaxima, ataque, defensa, velocidad, nivel);
     }
 
     /**
