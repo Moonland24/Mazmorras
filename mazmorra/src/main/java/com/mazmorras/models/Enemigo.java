@@ -2,16 +2,30 @@ package com.mazmorras.models;
 
 public class Enemigo extends Personaje {
     private TipoEnemigo tipo;
+
     private int percepcion;
 
-    public Enemigo(String nombre, int x, int y, TipoEnemigo tipo) {
-        super(nombre, x, y,
-                tipo.getVidaBase(),
-                tipo.getAtaqueBase(),
-                tipo.getDefensaBase(),
-                tipo.getVelocidadBase(),
-                tipo.getPercepcionBase());
+    public Enemigo(String nombre, int x, int y, int vidaMaxima, int ataque,
+            int defensa, int velocidad, TipoEnemigo tipo, int percepcion, int nivel) {
+        super(nombre, x, y, vidaMaxima, ataque, defensa, velocidad, nivel);
+        this.percepcion = percepcion; // Rango de percepción por defecto
         this.tipo = tipo;
+    }
+
+    public TipoEnemigo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoEnemigo tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getPercepcion() {
+        return percepcion;
+    }
+
+    public void setPercepcion(int percepcion) {
+        this.percepcion = percepcion;
     }
 
     @Override

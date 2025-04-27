@@ -34,7 +34,7 @@ public abstract class Personaje {
      * @param nivel      Nivel actual del personaje.
      */
     public Personaje(String nombre, int x, int y, int vidaMaxima, int ataque,
-            int defensa, int velocidad, int i) {
+            int defensa, int velocidad, int nivel) {
         this.nombre = nombre;
         this.x = x;
         this.y = y;
@@ -44,12 +44,9 @@ public abstract class Personaje {
         this.defensa = defensa;
         this.velocidad = velocidad;
         this.experiencia = 0; // Experiencia inicial
-        this.nivel = 1; // Nivel inicial
+        this.nivel = nivel; // Nivel inicial
     }
 
-    public Personaje(String nombre2, int x2, int y2, int vidaMaxima2, int ataque2, int defensa2, int velocidad2) {
-        //TODO Auto-generated constructor stub
-    }
 
     /**
      * Método abstracto que deben implementar las subclases para definir cómo se
