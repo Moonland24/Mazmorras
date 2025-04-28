@@ -21,5 +21,21 @@ public class JuegoView implements JuegoObserver {
 
     private JuegoController controller;
     private static final int TILE_SIZE = 40; // Tamaño de cada celda en píxeles
+    public void actualizarTablero(Mapa mapa, Heroe heroe) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actualizarTablero'");
+    }
+    public void actualizarStats(Heroe heroe) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actualizarStats'");
+    }
+    public void actualizarTurno(Object turnoActual) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actualizarTurno'");
+    }
+    public void mostrarGameOver() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mostrarGameOver'");
+    }
 
 }

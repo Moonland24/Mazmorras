@@ -73,4 +73,14 @@ public class Heroe extends Personaje {
                 " DEF: " + getDefensa() +
                 " SPD: " + getVelocidad();
     }
+
+    public void mover(Mapa mapa, Direccion direccion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mover'");
+    }
+
+    public void recibirDanio(int danioEnemigo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'recibirDanio'");
+    }
 }

@@ -15,12 +15,12 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException {
         Utils utils = new Utils();
         List<Enemigo> enemigosNivel1 = new ArrayList<>();
-        List<Enemigo> enemigos = utils.cargarDesdeJSON("C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
+        List<Enemigo> enemigos = utils.cargarDesdeJSON(
+                "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
         for (Enemigo enemigo : enemigos) {
-            if(enemigo.getNivel() == 1){
+            if (enemigo.getNivel() == 1) {
                 enemigosNivel1.add(enemigo);
 
-              
             }
         }
         for (Enemigo enemigo2 : enemigosNivel1) {
