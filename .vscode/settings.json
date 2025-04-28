@@ -5,9 +5,5 @@
         "markdown": false,
         "scminput": false
     },
-<<<<<<< HEAD
-    "java.configuration.updateBuildConfiguration": "interactive"
-=======
     "java.configuration.updateBuildConfiguration": "automatic"
->>>>>>> a89fa5d4e301c5efa3e9ef0ddc673b267ba6e148
 }
