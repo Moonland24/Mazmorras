@@ -22,4 +22,9 @@ public class Juego implements Observable {
         throw new UnsupportedOperationException("Unimplemented method 'removeListener'");
     }
 
+    public Object getTurnoActual() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTurnoActual'");
+    }
+
 }

@@ -46,5 +46,15 @@ public class Mapa {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'colocarEnemigo'");
     }
+
+    public Enemigo[] getEnemigos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getEnemigos'");
+    }
+
+    public void eliminarEnemigo(Enemigo enemigo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'eliminarEnemigo'");
+    }
   
 }

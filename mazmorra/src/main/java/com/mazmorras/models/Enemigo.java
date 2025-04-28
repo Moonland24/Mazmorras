@@ -52,4 +52,9 @@ public class Enemigo extends Personaje {
     public void gritar() {
         System.out.println(nombre + " gruñe amenazadoramente!");
     }
+
+    public void recibirDanio(int danioHeroe) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'recibirDanio'");
+    }
 }

@@ -14,7 +14,7 @@ import com.mazmorras.models.TipoEnemigo;
 
 
 public class Utils {
-    public List<Enemigo> cargarDesdeJSON(String path) throws IOException, ParseException {
+    public static List<Enemigo> cargarDesdeJSON(String path) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         FileReader reader = new FileReader(path);
         Object obj = parser.parse(reader);
