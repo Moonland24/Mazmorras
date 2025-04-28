@@ -1,55 +1,59 @@
-[{
-        "nombre": "Goblin",
-        "vidaBase": 15,
-        "ataqueBase": 8,
-        "defensaBase": 3,
-        "velocidadBase": 6,
-        "percepcionBase": 4,
-        "nivelBase": 1
-    },
-    {
-        "nombre": "Orco",
-        "vidaBase": 25,
-        "ataqueBase": 12,
-        "defensaBase": 5,
-        "velocidadBase": 4,
-        "percepcionBase": 3,
-        "nivelBase": 2
-    },
-    {
-        "nombre": "Esqueleto",
-        "vidaBase": 20,
-        "ataqueBase": 10,
-        "defensaBase": 4,
-        "velocidadBase": 5,
-        "percepcionBase": 5,
-        "nivelBase": 1
-    },
-    {
-        "nombre": "Araña",
-        "vidaBase": 12,
-        "ataqueBase": 6,
-        "defensaBase": 2,
-        "velocidadBase": 7,
-        "percepcionBase": 6,
-        "nivelBase": 1
-    },
-    {
-        "nombre": "Mago Oscuro",
-        "vidaBase": 18,
-        "ataqueBase": 15,
-        "defensaBase": 2,
-        "velocidadBase": 5,
-        "percepcionBase": 7,
-        "nivelBase": 3
-    },
-    {
-        "nombre": "Troll",
-        "vidaBase": 40,
-        "ataqueBase": 14,
-        "defensaBase": 6,
-        "velocidadBase": 3,
-        "percepcionBase": 2,
-        "nivelBase": 3
-    }
-]
+{
+    "enemigos": [
+        {
+            "nombre": "Goblin",
+            "vidaBase": 15,
+            "ataqueBase": 8,
+            "defensaBase": 3,
+            "velocidadBase": 6,
+            "percepcionBase": 4,
+            "nivelBase": 1
+        },
+        {
+            "nombre": "Orco",
+            "vidaBase": 25,
+            "ataqueBase": 12,
+            "defensaBase": 5,
+            "velocidadBase": 4,
+            "percepcionBase": 3,
+            "nivelBase": 2
+        },
+        {
+            "nombre": "Esqueleto",
+            "vidaBase": 20,
+            "ataqueBase": 10,
+            "defensaBase": 4,
+            "velocidadBase": 5,
+            "percepcionBase": 5,
+            "nivelBase": 1
+        },
+        {
+            "nombre": "Aranha",
+            "vidaBase": 12,
+            "ataqueBase": 6,
+            "defensaBase": 2,
+            "velocidadBase": 7,
+            "percepcionBase": 6,
+            "nivelBase": 1
+        },
+        {
+            "nombre": "Mago_Oscuro",
+            "vidaBase": 18,
+            "ataqueBase": 15,
+            "defensaBase": 2,
+            "velocidadBase": 5,
+            "percepcionBase": 7,
+            "nivelBase": 3
+        },
+        {
+            "nombre": "Troll",
+            "vidaBase": 40,
+            "ataqueBase": 14,
+            "defensaBase": 6,
+            "velocidadBase": 3,
+            "percepcionBase": 2,
+            "nivelBase": 3
+        }
+    ]
+
+}
