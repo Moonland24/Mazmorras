@@ -5,6 +5,6 @@ module com.mazmorras {
 
     
 
-    opens com.mazmorras to javafx.fxml;
+    opens com.mazmorras.controllers to javafx.fxml;
     exports com.mazmorras;
 }
