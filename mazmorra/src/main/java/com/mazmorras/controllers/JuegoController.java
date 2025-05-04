@@ -187,14 +187,23 @@ public class JuegoController implements JuegoObserver {
 
     @Override
     public void onCombateIniciado(Heroe heroe, Enemigo enemigo) {
+        
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'onCombateIniciado'");
     }
 
     @Override
     public void onGameOver(boolean victoria) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onGameOver'");
+    
+        if (victoria) {
+            // Mostrar el pane de victoria
+            gamePane.setVisible(false);
+            victoryPane.setVisible(true);
+        } else {
+            // Mostrar el pane de Game Over
+            gamePane.setVisible(false);
+            gameOverPane.setVisible(true);
+        }
     }
 
     @FXML
