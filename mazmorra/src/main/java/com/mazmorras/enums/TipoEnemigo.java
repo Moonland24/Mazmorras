@@ -1,4 +1,4 @@
-package com.mazmorras.models;
+package com.mazmorras.enums;
 
 public enum TipoEnemigo {
     // Tipos básicos de enemigos

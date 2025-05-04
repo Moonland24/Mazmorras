@@ -1,29 +1,19 @@
 package com.mazmorras.models;
 
-public class Obstaculo {
-    private int x;
-    private int y;
-    //Puedes poner el tipo de obstaculo sea pared, barril, etc
+import com.mazmorras.enums.TipoObstaculo;
 
-    public Obstaculo(int x, int y) {
-        this.x = x;
-        this.y = y;
+public class Obstaculo extends Celda {
+
+    private TipoObstaculo tipoObstaculo;
+    public Obstaculo (int x, int y, TipoObstaculo tipoObstaculo){
+        super(x, y);
+
+        this.tipoObstaculo = tipoObstaculo;
     }
-
-    
-    public int getX() {
-        return x;
+    public TipoObstaculo getTipoObstaculo() {
+        return tipoObstaculo;
     }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setTipoObstaculo(TipoObstaculo tipoObstaculo) {
+        this.tipoObstaculo = tipoObstaculo;
     }
 }

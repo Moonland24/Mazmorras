@@ -1,5 +1,7 @@
 package com.mazmorras.models;
 
+import com.mazmorras.enums.TipoEnemigo;
+
 public class Enemigo extends Personaje {
     private TipoEnemigo tipo;
 
@@ -53,8 +55,13 @@ public class Enemigo extends Personaje {
         System.out.println(nombre + " gruñe amenazadoramente!");
     }
 
-    public void recibirDanio(int danioHeroe) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recibirDanio'");
+    @Override
+    public String toString() {
+        return "Enemigo: " + getNombre() +
+                " (Nivel " + getNivel() + ")" +
+                " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
+                " ATK: " + getAtaque() +
+                " DEF: " + getDefensa() +
+                " SPD: " + getVelocidad();
     }
 }

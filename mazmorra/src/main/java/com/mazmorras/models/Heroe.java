@@ -1,6 +1,6 @@
 package com.mazmorras.models;
 
-import com.mazmorras.models.Mapa;
+import com.mazmorras.enums.Direccion;
 
 /**
  * Clase que representa al héroe protagonista controlado por el jugador.
@@ -74,13 +74,4 @@ public class Heroe extends Personaje {
                 " SPD: " + getVelocidad();
     }
 
-    public void mover(Mapa mapa, Direccion direccion) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mover'");
-    }
-
-    public void recibirDanio(int danioEnemigo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recibirDanio'");
-    }
 }

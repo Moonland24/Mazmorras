@@ -65,7 +65,7 @@ public abstract class Personaje {
     }
 
     // Método para calcular el daño infligido a un objetivo
-    protected int calcularDaño(Personaje objetivo) {
+    public int calcularDaño(Personaje objetivo) {
         // Fórmula básica de daño: ataque menos la mitad de la defensa del objetivo
         int dañoBase = Math.max(1, this.ataque - objetivo.getDefensa() / 2);
 
@@ -168,7 +168,11 @@ public abstract class Personaje {
     // Método para representar al personaje como una cadena de texto
     @Override
     public String toString() {
-        return String.format("%s (Nivel %d) - Vida: %d/%d ATK: %d DEF: %d SPD: %d",
-                nombre, nivel, vidaActual, vidaMaxima, ataque, defensa, velocidad);
+        return "Personaje: " + getNombre() +
+                " (Nivel " + getNivel() + ")" +
+                " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
+                " ATK: " + getAtaque() +
+                " DEF: " + getDefensa() +
+                " SPD: " + getVelocidad();
     }
 }
