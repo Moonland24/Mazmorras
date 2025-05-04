@@ -168,7 +168,11 @@ public abstract class Personaje {
     // Método para representar al personaje como una cadena de texto
     @Override
     public String toString() {
-        return String.format("%s (Nivel %d) - Vida: %d/%d ATK: %d DEF: %d SPD: %d",
-                nombre, nivel, vidaActual, vidaMaxima, ataque, defensa, velocidad);
+        return "Personaje: " + getNombre() +
+                " (Nivel " + getNivel() + ")" +
+                " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
+                " ATK: " + getAtaque() +
+                " DEF: " + getDefensa() +
+                " SPD: " + getVelocidad();
     }
 }
