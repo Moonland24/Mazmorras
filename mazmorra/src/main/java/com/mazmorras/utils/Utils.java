@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.mazmorras.enums.TipoEnemigo;
+import com.mazmorras.enums.TipoObstaculo;
 import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
 
@@ -54,24 +55,25 @@ public class Utils {
                 // Aquí puedes procesar cada carácter y construir el mapa
                 // Por ejemplo, si 'X' es un obstáculo, puedes marcarlo en el mapa
                 if (caracteres[i] == '#') {
-                    mapa.colocarParedes(alto -1, i);// Marcar como pared
-
+                    mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.PARED); // Marcar como pared
+                } else if(caracteres[i] == 'B') {
+                    mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.BARRIL); // Marcar como obstáculo
                 } else if (caracteres[i] == '.') {
-                    mapa.colocarCamino(alto -1, i);// Marcar como camino
+                    mapa.colocarCamino(alto - 1, i);// Marcar como camino
 
                 } else if (caracteres[i] == 'E') {
-                    mapa.colocarEntrada(alto -1, i);
+                    mapa.colocarEntrada(alto - 1, i);
 
                 } else if (caracteres[i] == 'S') {
-                    mapa.colocarSalida(alto -1, i);
+                    mapa.colocarSalida(alto - 1, i);
                 }
 
             }
         }
         mapa.setAlto(alto); // Establece la altura del mapa
         mapa.setAncho(ancho); // Establece el ancho del mapa
-        return mapa;                                                                                    // dimensiones del
-                                                                                                   // mapa
+        return mapa; // dimensiones del
+        // mapa
         // Implementar la lógca para cargar el mapa desde un archivo de texto
         // y devolver una instancia de Mapa.
         // return null; // Placeholder, implementar correctamente

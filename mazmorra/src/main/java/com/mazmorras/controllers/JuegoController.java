@@ -74,6 +74,7 @@ public class JuegoController implements JuegoObserver {
             enemigos = Utils.cargarDesdeJSON("enemigos.json");
             for (Enemigo enemigo : enemigos) {
                 if (enemigo.getNivel() == nivel) {
+                    // Colocar enemigos en el mapa según su nivel
                     // Aquí puedes agregar lógica para colocar enemigos en el mapa
                     // Por ejemplo, puedes usar un método en la clase Mapa para colocarlos
                     enemigos.add(enemigo);

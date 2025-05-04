@@ -65,7 +65,7 @@ public abstract class Personaje {
     }
 
     // Método para calcular el daño infligido a un objetivo
-    protected int calcularDaño(Personaje objetivo) {
+    public int calcularDaño(Personaje objetivo) {
         // Fórmula básica de daño: ataque menos la mitad de la defensa del objetivo
         int dañoBase = Math.max(1, this.ataque - objetivo.getDefensa() / 2);
 
