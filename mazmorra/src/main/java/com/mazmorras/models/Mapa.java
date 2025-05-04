@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mazmorras.enums.TipoObstaculo;
+
 public class Mapa {
     private int ancho;
     private int alto;
@@ -90,10 +92,12 @@ public class Mapa {
         throw new UnsupportedOperationException("Unimplemented method 'eliminarEnemigo'");
     }
 
-    public void colocarParedes(int x, int y) {
+    public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
         System.out.println("pared colocada en: " + x + ", " + y);
-        obstaculos.add(new Obstaculo(x, y));
+        obstaculos.add(new Obstaculo(x, y, tipoObstaculo));
     }
+
+
 
     public void colocarCamino(int x, int y) {
         System.out.println("camino colocado en: " + x + ", " + y);

@@ -10,9 +10,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.mazmorras.enums.TipoEnemigo;
 import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
-import com.mazmorras.models.TipoEnemigo;
 
 public class Utils {
     public static List<Enemigo> cargarDesdeJSON(String path) throws IOException, ParseException {

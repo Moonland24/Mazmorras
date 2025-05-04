@@ -1,6 +1,7 @@
 
 package com.mazmorras.controllers;
 
+import com.mazmorras.enums.Direccion;
 import com.mazmorras.interfaces.JuegoObserver;
 import com.mazmorras.models.*;
 import com.mazmorras.utils.Utils;

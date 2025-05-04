@@ -1,28 +1,7 @@
 package com.mazmorras.models;
 
-public class Camino {
-    private int x;
-    private int y;
-
-    public Camino(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+public class Camino extends Celda {
+    public Camino (int x, int y){
+        super(x, y);
     }
 }
