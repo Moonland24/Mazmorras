@@ -1,9 +1,15 @@
 package com.mazmorras.controllers;
 
+import java.io.IOException;
+
 import com.mazmorras.models.Heroe;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class CreacionPersonajeController {
 
@@ -18,75 +24,123 @@ public class CreacionPersonajeController {
     @FXML
     private Label velocidadLabel;
     @FXML
-    private Label nivelLabel;
-    @FXML
     private Label errorLabel;
+    @FXML
+    private Label puntosRestantesLabel;
 
     private int vidaMaxima = 100;
     private int ataque = 10;
     private int defensa = 10;
     private int velocidad = 10;
     private int nivel = 1;
+    private int maxPuntos = 20; // Puntos máximos para distribuir entre atributos
+
+    private int puntosRestantes = maxPuntos; // Puntos restantes para distribuir
 
     @FXML
     private void incrementarVidaMaxima() {
-        vidaMaxima++;
+        if (puntosRestantes > 0) {
+            vidaMaxima++;
+            puntosRestantes--;
+        } else {
+            errorLabel.setText("No puedes incrementar más atributos.");
+        }
         actualizarLabels();
     }
 
     @FXML
     private void decrementarVidaMaxima() {
-        if (vidaMaxima > 1) {
+        if (vidaMaxima > 1 && puntosRestantes < maxPuntos) {
             vidaMaxima--;
-            actualizarLabels();
+            puntosRestantes++;
+        } else if (vidaMaxima <= 1) {
+            errorLabel.setText("La vida máxima no puede ser menor a 1.");
+        } else {
+            errorLabel.setText("No puedes decrementar más atributos.");
         }
+        actualizarLabels();
     }
 
     @FXML
     private void incrementarAtaque() {
-        ataque++;
+        if (puntosRestantes > 0) {
+            ataque++;
+            puntosRestantes--;
+        } else {
+            errorLabel.setText("No puedes incrementar más atributos.");
+        }
         actualizarLabels();
     }
 
     @FXML
     private void decrementarAtaque() {
-        if (ataque > 1) {
+        if (ataque > 1 && puntosRestantes < maxPuntos) {
             ataque--;
-            actualizarLabels();
+            puntosRestantes++;
+        } else if (ataque <= 1) {
+            errorLabel.setText("El ataque no puede ser menor a 1.");
+        } else {
+            errorLabel.setText("No puedes decrementar más atributos.");
         }
+        actualizarLabels();
     }
 
     @FXML
     private void incrementarDefensa() {
-        defensa++;
+        if (puntosRestantes > 0) {
+            defensa++;
+            puntosRestantes--;
+        } else {
+            errorLabel.setText("No puedes incrementar más atributos.");
+        }
         actualizarLabels();
     }
 
     @FXML
     private void decrementarDefensa() {
-        if (defensa > 1) {
+        if (defensa > 1 && puntosRestantes < maxPuntos) {
             defensa--;
-            actualizarLabels();
+            puntosRestantes++;
+        } else if (defensa <= 1) {
+            errorLabel.setText("La defensa no puede ser menor a 1.");
+        } else {
+            errorLabel.setText("No puedes decrementar más atributos.");
         }
+        actualizarLabels();
     }
 
     @FXML
     private void incrementarVelocidad() {
-        velocidad++;
+        if (puntosRestantes > 0) {
+            velocidad++;
+            puntosRestantes--;
+        } else {
+            errorLabel.setText("No puedes incrementar más atributos.");
+        }
         actualizarLabels();
     }
 
     @FXML
     private void decrementarVelocidad() {
-        if (velocidad > 1) {
+        if (velocidad > 1 && puntosRestantes < maxPuntos) {
             velocidad--;
-            actualizarLabels();
+            puntosRestantes++;
+        } else if (velocidad <= 1) {
+            errorLabel.setText("La velocidad no puede ser menor a 1.");
+        } else {
+            errorLabel.setText("No puedes decrementar más atributos.");
         }
+        actualizarLabels();
     }
 
     @FXML
     private void incrementarNivel() {
-        nivel++;
+        if (nivel < 100) { // Suponiendo que el nivel máximo es 100
+            nivel++;
+            actualizarLabels();
+        } else {
+            errorLabel.setText("El nivel no puede ser mayor a 100.");
+        }
         actualizarLabels();
     }
 
@@ -95,7 +149,10 @@ public class CreacionPersonajeController {
         if (nivel > 1) {
             nivel--;
             actualizarLabels();
+        } else {
+            errorLabel.setText("El nivel no puede ser menor a 1.");
         }
+        actualizarLabels();
     }
 
     private void actualizarLabels() {
@@ -103,7 +160,8 @@ public class CreacionPersonajeController {
         ataqueLabel.setText("Ataque: " + ataque);
         defensaLabel.setText("Defensa: " + defensa);
         velocidadLabel.setText("Velocidad: " + velocidad);
-        nivelLabel.setText("Nivel: " + nivel);
+        puntosRestantesLabel.setText("Puntos Restantes: " + puntosRestantes);
+        errorLabel.setText(""); // Limpiar el mensaje de error al actualizar
     }
 
     @FXML
@@ -116,6 +174,21 @@ public class CreacionPersonajeController {
             }
 
             Heroe heroe = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
+            if (heroe != null) {
+                // Logica para pasar el heroe a la siguiente pantalla (mapaTest)
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/mapaTest.fxml"));
+                try {
+                    Parent root = loader.load();
+                    JuegoController juegoController = loader.getController(); // Obtén el controlador del FXML
+                    juegoController.recibirHeroe(heroe); // Pasa el héroe al controlador
+                    Stage stage = (Stage) nombreField.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (IOException e) {
+                    errorLabel.setText("Error al cargar la siguiente escena: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             errorLabel.setText("Héroe creado: " + heroe.toString());
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
@@ -137,5 +210,12 @@ public class CreacionPersonajeController {
     @FXML
     private void salirAplicacion() {
         System.exit(0);
+    }
+
+    @FXML
+    private void initialize() {
+        // Inicializar los labels al cargar la vista
+        actualizarLabels();
+        errorLabel.setText(""); // Limpiar el mensaje de error al iniciar
     }
 }

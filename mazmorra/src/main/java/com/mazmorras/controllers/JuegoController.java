@@ -1,4 +1,3 @@
-
 package com.mazmorras.controllers;
 
 import com.mazmorras.enums.Direccion;
@@ -40,29 +39,54 @@ public class JuegoController implements JuegoObserver {
     @FXML
     private GridPane mapaGrid;
 
+    private Mapa mapa = new Mapa();// Referencia al mapa
+
     /**
      * Inicializa los componentes principales del juego
      * 
      * @throws IOException
      */
     @FXML
-    private void inicialize() throws IOException {
-        // 1. Cargar mapa desde archivo (ejemplo básico)
-        Mapa mapa = new Mapa();
+    private void initialize() throws IOException {
         mapa = Utils.cargarMapaDesdeTxt(
                 "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\mapas\\nivel1.txt");
-        // 2. Crear héroe con stats iniciales
-        Heroe heroe = new Heroe("Heroe", mapa.getEntrada().getX(), mapa.getEntrada().getY(), 100, 10, 5, 3, 1);
-        // 3. Colocar héroe en el mapa
-        mapa.colocarHeroe(heroe);
-        // 4. Cargar enemigos según el nivel del juego
-        mapa.setEnemigos(cargarEnemigos(1)); // Cargar enemigos de nivel 1
-        // 5. Colocar enemigos en el mapa
-        for (Enemigo enemigo : mapa.getEnemigos()) {
-            mapa.colocarEnemigo(enemigo);
+        if (mapa == null) {
+            System.out.println("El mapa no se pudo cargar.");
+            return;
         }
-        // 6. Mostrar una vista para testeo
-        // Crear una vista del mapa y agregarla al gamePane
+        generarMapaDesdeFXML(mapa);
+        System.out.println("Inicialización completada. Esperando al héroe...");
+    }
+    // 3. Colocar héroe en el mapa
+    public void colocarHeroeEnEntrada(Heroe heroe, Mapa mapa) {
+        if (mapa == null) {
+            System.out.println("El mapa no está inicializado.");
+            return;
+        }
+
+        if (mapa.getEntrada() == null) {
+            System.out.println("La entrada del mapa no está definida.");
+            return;
+        }
+
+        if (heroe == null) {
+            System.out.println("El héroe no está inicializado.");
+            return;
+        }
+
+        if (mapaGrid == null) {
+            System.out.println("El GridPane (mapaGrid) no está inicializado.");
+            return;
+        }
+
+        // Colocar el héroe en la entrada del mapa
+        heroe.setX(mapa.getEntrada().getX());
+        heroe.setY(mapa.getEntrada().getY());
+        Label celda = new Label("H"); // Representación del héroe
+        celda.setMinSize(30, 30);
+        celda.setAlignment(Pos.CENTER);
+        celda.setStyle("-fx-border-color: black; -fx-font-size: 12; -fx-background-color: blue;");
+        mapaGrid.add(celda, mapa.getEntrada().getY(), mapa.getEntrada().getX());
     }
 
     /**
@@ -71,7 +95,8 @@ public class JuegoController implements JuegoObserver {
     private List<Enemigo> cargarEnemigos(int nivel) {
         List<Enemigo> enemigos = null;
         try {
-            enemigos = Utils.cargarDesdeJSON("enemigos.json");
+            enemigos = Utils.cargarDesdeJSON(
+                    "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
             for (Enemigo enemigo : enemigos) {
                 if (enemigo.getNivel() == nivel) {
                     // Colocar enemigos en el mapa según su nivel
@@ -129,6 +154,19 @@ public class JuegoController implements JuegoObserver {
         // }
     }
 
+    public void recibirHeroe(Heroe heroe) {
+        if (heroe == null) {
+            System.out.println("El héroe recibido es null.");
+            return;
+        }
+        System.out.println("Héroe recibido: " + heroe.getNombre());
+        if (mapa != null) {
+            colocarHeroeEnEntrada(heroe, mapa);
+        } else {
+            System.out.println("El mapa no está inicializado.");
+        }
+    }
+
     @Override
     public void onJuegoActualizado(Juego juego) {
         // TODO Auto-generated method stub
@@ -160,46 +198,36 @@ public class JuegoController implements JuegoObserver {
     }
 
     @FXML
-    private void generarMapaDesdeFXML() {
-        try {
-            // Cargar el mapa desde un archivo
-            Mapa mapa = Utils.cargarMapaDesdeTxt(
-                    "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\mapas\\nivel1.txt");
+    private void generarMapaDesdeFXML(Mapa mapa) {
 
-            // Limpiar el GridPane antes de generar el mapa
-            mapaGrid.getChildren().clear();
+        // Generar el mapa en el GridPane
+        for (int i = 0; i < mapa.getAlto(); i++) {
+            for (int j = 0; j < mapa.getAncho(); j++) {
+                Label celda = new Label();
+                celda.setMinSize(30, 30);
+                celda.setAlignment(Pos.CENTER);
+                celda.setStyle("-fx-border-color: black; -fx-font-size: 12;");
 
-            // Generar el mapa en el GridPane
-            for (int i = 0; i < mapa.getAlto(); i++) {
-                for (int j = 0; j < mapa.getAncho(); j++) {
-                    Label celda = new Label();
-                    celda.setMinSize(30, 30);
-                    celda.setAlignment(Pos.CENTER);
-                    celda.setStyle("-fx-border-color: black; -fx-font-size: 12;");
-
-                    // Determinar el contenido de la celda
-                    if (mapa.esObstaculo(i, j)) {
-                        celda.setText("X"); // Obstáculo
-                        celda.setStyle("-fx-background-color: gray; -fx-border-color: black;");
-                    } else if (mapa.getEntrada() != null && mapa.getEntrada().getX() == i
-                            && mapa.getEntrada().getY() == j) {
-                        celda.setText("E"); // Entrada
-                        celda.setStyle("-fx-background-color: green; -fx-border-color: black;");
-                    } else if (mapa.getSalida() != null && mapa.getSalida().getX() == i
-                            && mapa.getSalida().getY() == j) {
-                        celda.setText("S"); // Salida
-                        celda.setStyle("-fx-background-color: red; -fx-border-color: black;");
-                    } else {
-                        celda.setText("."); // Camino
-                        celda.setStyle("-fx-background-color: white; -fx-border-color: black;");
-                    }
-
-                    // Agregar la celda al GridPane
-                    mapaGrid.add(celda, j, i);
+                // Determinar el contenido de la celda
+                if (mapa.esObstaculo(i, j)) {
+                    celda.setText("X"); // Obstáculo
+                    celda.setStyle("-fx-background-color: gray; -fx-border-color: black;");
+                } else if (mapa.getEntrada() != null && mapa.getEntrada().getX() == i
+                        && mapa.getEntrada().getY() == j) {
+                    celda.setText("E"); // Entrada
+                    celda.setStyle("-fx-background-color: green; -fx-border-color: black;");
+                } else if (mapa.getSalida() != null && mapa.getSalida().getX() == i
+                        && mapa.getSalida().getY() == j) {
+                    celda.setText("S"); // Salida
+                    celda.setStyle("-fx-background-color: red; -fx-border-color: black;");
+                } else {
+                    celda.setText("."); // Camino
+                    celda.setStyle("-fx-background-color: white; -fx-border-color: black;");
                 }
+
+                // Agregar la celda al GridPane
+                mapaGrid.add(celda, j, i);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

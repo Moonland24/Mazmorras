@@ -10,12 +10,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Cargar el archivo FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/mapaTest.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/creacionpersonaje.fxml"));
         Parent root = loader.load();
 
         // Configurar la escena y el stage
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Prueba de Generación de Mapa");
+        primaryStage.setTitle("Prueba de Creacion de Personaje"); // Título de la ventana
         primaryStage.setScene(scene);
         primaryStage.show();
     }
