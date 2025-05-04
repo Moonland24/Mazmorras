@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mazmorras.controllers.CreacionPersonajeController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
    <children>
       <HBox layoutX="1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
          <children>
             <ImageView fitHeight="401.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
-      <VBox layoutX="50.0" layoutY="50.0" spacing="10.0">
+      <VBox layoutX="50.0" layoutY="50.0" spacing="10.0" prefWidth="500.0">
          <children>
             <Text text="Crear Personaje" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
             <TextField fx:id="nombreField" promptText="Nombre del personaje" />
             <HBox spacing="10.0">
-               <Button text="Confirmar" fx:id="confirmarButton" />
-               <Button text="Cancelar" fx:id="cancelarButton" />
+               <Label fx:id="vidaMaximaLabel" text="Vida Máxima: 100" />
+               <Button text="+" onAction="#incrementarVidaMaxima" />
+               <Button text="-" onAction="#decrementarVidaMaxima" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label fx:id="ataqueLabel" text="Ataque: 10" />
+               <Button text="+" onAction="#incrementarAtaque" />
+               <Button text="-" onAction="#decrementarAtaque" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label fx:id="defensaLabel" text="Defensa: 10" />
+               <Button text="+" onAction="#incrementarDefensa" />
+               <Button text="-" onAction="#decrementarDefensa" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label fx:id="velocidadLabel" text="Velocidad: 10" />
+               <Button text="+" onAction="#incrementarVelocidad" />
+               <Button text="-" onAction="#decrementarVelocidad" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label fx:id="nivelLabel" text="Nivel: 1" />
+               <Button text="+" onAction="#incrementarNivel" />
+               <Button text="-" onAction="#decrementarNivel" />
+            </HBox>
+            <Label fx:id="errorLabel" textFill="red" />
+            <HBox spacing="10.0">
+               <Button text="Crear" fx:id="crearButton" onAction="#crearHeroe" />
+               <Button text="Cancelar" fx:id="cancelarButton" onAction="#cancelarCreacion" />
+               <Button text="Salir" fx:id="salirButton" onAction="#salirAplicacion" />
             </HBox>
          </children>
       </VBox>

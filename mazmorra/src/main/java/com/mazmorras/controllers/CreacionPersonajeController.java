@@ -1,90 +1,141 @@
 package com.mazmorras.controllers;
 
 import com.mazmorras.models.Heroe;
-import com.mazmorras.views.CreacionPersonajeView;
-
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class CreacionPersonajeController {
-    @FXML
-    TextField nombreField; // Campo de texto para el nombre del héroe
-    @FXML
-    TextField xField; // Campo de texto para la posición X inicial
-    @FXML
-    TextField yField; // Campo de texto para la posición Y inicial
-    @FXML
-    TextField vidaMaximaField; // Campo de texto para la vida máxima
-    @FXML
-    TextField ataqueField; // Campo de texto para el ataque
-    @FXML
-    TextField defensaField; // Campo de texto para la defensa
-    @FXML
-    TextField velocidadField; // Campo de texto para la velocidad
-    @FXML
-    TextField nivelField; // Campo de texto para el nivel inicial
-    @FXML
-    Button crearButton; // Botón para crear el héroe
-    @FXML
-    Button cancelarButton; // Botón para cancelar la creación del héroe
-    @FXML
-    Button salirButton; // Botón para salir de la aplicación
-    @FXML
-    Label errorLabel; // Etiqueta para mostrar errores
-    @FXML
-    Label heroeCreadoLabel; // Etiqueta para mostrar el héroe creado
-    @FXML
-    Label detallesLabel; // Etiqueta para mostrar los detalles del héroe creado
 
-    private CreacionPersonajeView view;
+    @FXML
+    private TextField nombreField;
+    @FXML
+    private Label vidaMaximaLabel;
+    @FXML
+    private Label ataqueLabel;
+    @FXML
+    private Label defensaLabel;
+    @FXML
+    private Label velocidadLabel;
+    @FXML
+    private Label nivelLabel;
+    @FXML
+    private Label errorLabel;
 
-    public CreacionPersonajeController(CreacionPersonajeView view) {
-        this.view = view;
+    private int vidaMaxima = 100;
+    private int ataque = 10;
+    private int defensa = 10;
+    private int velocidad = 10;
+    private int nivel = 1;
+
+    @FXML
+    private void incrementarVidaMaxima() {
+        vidaMaxima++;
+        actualizarLabels();
     }
 
-    /**
-     * Método para crear un nuevo héroe con los datos proporcionados.
-     * 
-     * @param nombre     Nombre del héroe.
-     * @param x          Posición X inicial.
-     * @param y          Posición Y inicial.
-     * @param vidaMaxima Vida máxima del héroe.
-     * @param ataque     Valor de ataque.
-     * @param defensa    Valor de defensa.
-     * @param velocidad  Velocidad del héroe.
-     * @param nivel      Nivel inicial del héroe.
-     * @return Heroe creado.
-     */
-    public Heroe crearHeroe(String nombre, int x, int y, int vidaMaxima, int ataque, int defensa, int velocidad,
-            int nivel) {
+    @FXML
+    private void decrementarVidaMaxima() {
+        if (vidaMaxima > 1) {
+            vidaMaxima--;
+            actualizarLabels();
+        }
+    }
+
+    @FXML
+    private void incrementarAtaque() {
+        ataque++;
+        actualizarLabels();
+    }
+
+    @FXML
+    private void decrementarAtaque() {
+        if (ataque > 1) {
+            ataque--;
+            actualizarLabels();
+        }
+    }
+
+    @FXML
+    private void incrementarDefensa() {
+        defensa++;
+        actualizarLabels();
+    }
+
+    @FXML
+    private void decrementarDefensa() {
+        if (defensa > 1) {
+            defensa--;
+            actualizarLabels();
+        }
+    }
+
+    @FXML
+    private void incrementarVelocidad() {
+        velocidad++;
+        actualizarLabels();
+    }
+
+    @FXML
+    private void decrementarVelocidad() {
+        if (velocidad > 1) {
+            velocidad--;
+            actualizarLabels();
+        }
+    }
+
+    @FXML
+    private void incrementarNivel() {
+        nivel++;
+        actualizarLabels();
+    }
+
+    @FXML
+    private void decrementarNivel() {
+        if (nivel > 1) {
+            nivel--;
+            actualizarLabels();
+        }
+    }
+
+    private void actualizarLabels() {
+        vidaMaximaLabel.setText("Vida Máxima: " + vidaMaxima);
+        ataqueLabel.setText("Ataque: " + ataque);
+        defensaLabel.setText("Defensa: " + defensa);
+        velocidadLabel.setText("Velocidad: " + velocidad);
+        nivelLabel.setText("Nivel: " + nivel);
+    }
+
+    @FXML
+    private void crearHeroe() {
         try {
-            if (nombre == null || nombre.isEmpty()) {
-                throw new IllegalArgumentException("Nombre no válido.");
+            String nombre = nombreField.getText();
+
+            if (nombre.isEmpty() || vidaMaxima <= 0 || ataque <= 0 || defensa <= 0 || velocidad <= 0 || nivel <= 0) {
+                throw new IllegalArgumentException("Todos los campos deben ser válidos y mayores a 0.");
             }
-            if (vidaMaxima <= 0 || ataque <= 0 || defensa <= 0 || velocidad <= 0 || nivel <= 0) {
-                throw new IllegalArgumentException("Stats deben ser > 0.");
-            }
-            Heroe heroe = new Heroe(nombre, x, y, vidaMaxima, ataque, defensa, velocidad, nivel);
-            mostrarHeroeCreado(heroe);
-            return heroe;
+
+            Heroe heroe = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
+            errorLabel.setText("Héroe creado: " + heroe.toString());
         } catch (IllegalArgumentException e) {
-            if (view != null) {
-                view.mostrarError(e.getMessage()); // Notifica a la vista
-            }
-            return null;
+            errorLabel.setText(e.getMessage());
         }
     }
 
-    /**
-     * Método para mostrar los detalles del héroe creado en la vista.
-     * 
-     * @param heroe Héroe creado.
-     */
-    private void mostrarHeroeCreado(Heroe heroe) {
-        if (view != null) {
-            view.mostrarDetallesHeroe(heroe);
-        }
+    @FXML
+    private void cancelarCreacion() {
+        nombreField.clear();
+        vidaMaxima = 100;
+        ataque = 10;
+        defensa = 10;
+        velocidad = 10;
+        nivel = 1;
+        actualizarLabels();
+        errorLabel.setText("");
+    }
+
+    @FXML
+    private void salirAplicacion() {
+        System.exit(0);
     }
 }

@@ -106,11 +106,11 @@ public class JuegoController implements JuegoObserver {
         }
 
         // if (direccion != null) {
-        //     heroe.mover(mapa, direccion);
-        //     onCombateCercano(null, null); // Verifica si hay combate cercano
-        //     onEnemigoActualizado(null, false);
-        //     moverEnemigos();
-        //     onJuegoActualizado(null); // Actualiza el juego
+        // heroe.mover(mapa, direccion);
+        // onCombateCercano(null, null); // Verifica si hay combate cercano
+        // onEnemigoActualizado(null, false);
+        // moverEnemigos();
+        // onJuegoActualizado(null); // Actualiza el juego
         // }
     }
 
