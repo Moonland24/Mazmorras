@@ -128,7 +128,6 @@ public class Mapa {
             return false; 
         }
     }
-    
 
     public boolean esObstaculo(int x, int y) {
         for (Obstaculo obstaculo : obstaculos) {
