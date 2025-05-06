@@ -78,18 +78,25 @@ public class Mapa {
     }
 
     public void colocarEnemigo(Enemigo enemigo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'colocarEnemigo'");
+        if (enemigo != null) {
+            enemigos.add(enemigo);
+            System.out.println("El enemigo ha sido colocado en: " + enemigo.getX() + ", " + enemigo.getY());
+        } else {
+            System.out.println("El enemigo no se pudo colocar");
+        }
     }
 
     public Enemigo[] getEnemigos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEnemigos'");
+        return enemigos.toArray(new Enemigo[0]);
     }
 
     public void eliminarEnemigo(Enemigo enemigo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarEnemigo'");
+        if (enemigo != null && enemigos.contains(enemigo)) {
+            enemigos.remove(enemigo);
+            System.out.println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
+        } else {
+            System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
+        }
     }
 
     public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
