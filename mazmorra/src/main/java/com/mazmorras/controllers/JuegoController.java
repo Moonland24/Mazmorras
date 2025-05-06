@@ -231,7 +231,7 @@ public class JuegoController implements JuegoObserver {
             for (int j = 0; j < mapa.getAncho(); j++) {
                 char contenido = mapa.getContenido(i, j); // Obtén el contenido de la celda
                 ImageView celdaImagen = new ImageView();
-
+                
                 // Asigna la imagen correspondiente según el contenido
                 switch (contenido) {
                     case '#': // Pared
