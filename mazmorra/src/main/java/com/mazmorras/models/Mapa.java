@@ -50,15 +50,6 @@ public class Mapa {
     public Salida getSalida() {
         return salida;
     }
-    public int[] encontrarCamino(int x, int y, int x2, int y2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'encontrarCamino'");
-    }
-
-    public boolean isValidMove(int i, int j) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isValidMove'");
-    }
 
     public int getAncho() {
         return ancho; 
@@ -68,43 +59,18 @@ public class Mapa {
         return alto; 
     }
 
-    public boolean esObstaculo(int x, int y) {
-        for (Obstaculo obstaculo : obstaculos) {
-            if (obstaculo.getX() == x && obstaculo.getY() == y) {
-                return true; // Es un obstáculo
-            }
-        }
-        return false; // No es un obstáculo
-    }
-
-    public void colocarEnemigo(Enemigo enemigo) {
-        if (enemigo != null) {
-            enemigos.add(enemigo);
-            System.out.println("El enemigo ha sido colocado en: " + enemigo.getX() + ", " + enemigo.getY());
-        } else {
-            System.out.println("El enemigo no se pudo colocar");
-        }
+    public Heroe getHeroe() {
+        return heroe;
     }
 
     public Enemigo[] getEnemigos() {
         return enemigos.toArray(new Enemigo[0]);
     }
 
-    public void eliminarEnemigo(Enemigo enemigo) {
-        if (enemigo != null && enemigos.contains(enemigo)) {
-            enemigos.remove(enemigo);
-            System.out.println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
-        } else {
-            System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
-        }
-    }
-
     public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
         System.out.println("pared colocada en: " + x + ", " + y);
         obstaculos.add(new Obstaculo(x, y, tipoObstaculo));
     }
-
-
 
     public void colocarCamino(int x, int y) {
         System.out.println("camino colocado en: " + x + ", " + y);
@@ -125,9 +91,68 @@ public class Mapa {
         this.heroe = heroe;
     }
 
-    public Heroe getHeroe() {
-        return heroe;
+    public int[] encontrarCamino(int x, int y, int x2, int y2) {
+        boolean[][] visited = new boolean[alto][ancho];
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        List<int[]> queue = new ArrayList<>();
+        queue.add(new int[]{x, y});
+        visited[y][x] = true;
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.remove(0);
+            int cx = current[0], cy = current[1];
+
+            if (cx == x2 && cy == y2) {
+                return new int[]{cx, cy}; 
+            }
+
+            for (int[] dir : directions) {
+                int nx = cx + dir[0], ny = cy + dir[1];
+                if (nx >= 0 && ny >= 0 && nx < ancho && ny < alto && !visited[ny][nx] && !esObstaculo(nx, ny)) {
+                    queue.add(new int[]{nx, ny});
+                    visited[ny][nx] = true;
+                }
+            }
+        }
+
+        return null;
     }
 
+    public boolean isValidMove(int i, int j) {
 
+        if (getObstaculos().stream().anyMatch(obstaculo -> obstaculo.getX() == i && obstaculo.getY() == j)) {
+            return false; 
+        } else if (getCaminos().stream().anyMatch(camino -> camino.getX() == i && camino.getY() == j)) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+
+    public boolean esObstaculo(int x, int y) {
+        for (Obstaculo obstaculo : obstaculos) {
+            if (obstaculo.getX() == x && obstaculo.getY() == y) {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
+    public void colocarEnemigo(Enemigo enemigo) {
+        if (enemigo != null) {
+            enemigos.add(enemigo);
+            System.out.println("El enemigo ha sido colocado en: " + enemigo.getX() + ", " + enemigo.getY());
+        } else {
+            System.out.println("El enemigo no se pudo colocar");
+        }
+    }
+
+    public void eliminarEnemigo(Enemigo enemigo) {
+        if (enemigo != null && enemigos.contains(enemigo)) {
+            enemigos.remove(enemigo);
+            System.out.println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
+        } else {
+            System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.mazmorras.models;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import com.mazmorras.interfaces.JuegoObserver;
 
@@ -10,21 +11,25 @@ import javafx.scene.control.skin.TextInputControlSkin.Direction;
 
 public class Juego implements Observable {
 
-    @Override
-    public void addListener(InvalidationListener arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addListener'");
+    private List<InvalidationListener> listeners;
+
+    public Juego() {
+        this.listeners = new ArrayList<>();
     }
 
     @Override
-    public void removeListener(InvalidationListener arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeListener'");
+    public void addListener(InvalidationListener listener) {
+        if (listener != null && !listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    @Override
+    public void removeListener(InvalidationListener listener) {
+        listeners.remove(listener);
     }
 
     public Object getTurnoActual() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTurnoActual'");
+        return this.getTurnoActual();
     }
-
 }
