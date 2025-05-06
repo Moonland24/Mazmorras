@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.util.List;
@@ -208,34 +210,59 @@ public class JuegoController implements JuegoObserver {
 
     @FXML
     private void generarMapaDesdeFXML(Mapa mapa) {
+        if (mapa == null) {
+            System.out.println("El mapa no está inicializado.");
+            return;
+        }
 
-        // Generar el mapa en el GridPane
+        // Limpia el GridPane antes de generar el mapa
+        mapaGrid.getChildren().clear();
+
+        // Carga las imágenes necesarias
+        Image imagenPared = new Image(getClass().getResourceAsStream("/imagenes/pared.png"));
+        Image imagenPuerta = new Image(getClass().getResourceAsStream("/imagenes/puerta.png"));
+        Image imagenCharco = new Image(getClass().getResourceAsStream("/imagenes/charco.png"));
+        Image imagenBarril = new Image(getClass().getResourceAsStream("/imagenes/barril.png"));
+        Image imagenSuelo = new Image(getClass().getResourceAsStream("/imagenes/suelo.png"));
+        Image imagenPuertaAbierta = new Image(getClass().getResourceAsStream("/imagenes/puertaAbierta.png"));
+
+        // Itera sobre las celdas del mapa
         for (int i = 0; i < mapa.getAlto(); i++) {
             for (int j = 0; j < mapa.getAncho(); j++) {
-                Label celda = new Label();
-                celda.setMinSize(30, 30);
-                celda.setAlignment(Pos.CENTER);
-                celda.setStyle("-fx-border-color: black; -fx-font-size: 12;");
+                char contenido = mapa.getContenido(i, j); // Obtén el contenido de la celda
+                ImageView celdaImagen = new ImageView();
 
-                // Determinar el contenido de la celda
-                if (mapa.esObstaculo(i, j)) {
-                    celda.setText("X"); // Obstáculo
-                    celda.setStyle("-fx-background-color: gray; -fx-border-color: black;");
-                } else if (mapa.getEntrada() != null && mapa.getEntrada().getX() == i
-                        && mapa.getEntrada().getY() == j) {
-                    celda.setText("E"); // Entrada
-                    celda.setStyle("-fx-background-color: green; -fx-border-color: black;");
-                } else if (mapa.getSalida() != null && mapa.getSalida().getX() == i
-                        && mapa.getSalida().getY() == j) {
-                    celda.setText("S"); // Salida
-                    celda.setStyle("-fx-background-color: red; -fx-border-color: black;");
-                } else {
-                    celda.setText("."); // Camino
-                    celda.setStyle("-fx-background-color: white; -fx-border-color: black;");
+                // Asigna la imagen correspondiente según el contenido
+                switch (contenido) {
+                    case '#': // Pared
+                        celdaImagen.setImage(imagenPared);
+                        break;
+                    case 'P': // Puerta
+                        celdaImagen.setImage(imagenPuerta);
+                        break;
+                    case 'C': // Charco
+                        celdaImagen.setImage(imagenCharco);
+                        break;
+                    case 'B': // Barril
+                        celdaImagen.setImage(imagenBarril);
+                        break;
+                    case '.': // Suelo
+                        celdaImagen.setImage(imagenSuelo);
+                        break;
+                    case 'S': // Puerta abierta
+                        celdaImagen.setImage(imagenPuertaAbierta);
+                        break;
+                    default:
+                        System.out.println("Contenido desconocido: " + contenido);
+                        continue;
                 }
 
-                // Agregar la celda al GridPane
-                mapaGrid.add(celda, j, i);
+                // Ajusta el tamaño de la imagen
+                celdaImagen.setFitWidth(30);
+                celdaImagen.setFitHeight(30);
+
+                // Agrega la imagen al GridPane
+                mapaGrid.add(celdaImagen, j, i);
             }
         }
     }
