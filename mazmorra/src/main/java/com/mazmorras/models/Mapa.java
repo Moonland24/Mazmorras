@@ -155,4 +155,32 @@ public class Mapa {
             System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
         }
     }
+    public char getContenido(int i, int j) {
+        // Verifica si la celda es un obstáculo
+        for (Obstaculo obstaculo : obstaculos) {
+            if (obstaculo.getX() == i && obstaculo.getY() == j) {
+                return '#'; // Representa un obstáculo como '#'
+            }
+        }
+
+        // Verifica si la celda es la entrada
+        if (entrada != null && entrada.getX() == i && entrada.getY() == j) {
+            return 'P'; // Representa la entrada como 'P'
+        }
+
+        // Verifica si la celda es la salida
+        if (salida != null && salida.getX() == i && salida.getY() == j) {
+            return 'S'; // Representa la salida como 'S'
+        }
+
+        // Verifica si la celda es un camino
+        for (Camino camino : caminos) {
+            if (camino.getX() == i && camino.getY() == j) {
+                return '.'; // Representa un camino como '.'
+            }
+        }
+
+        // Si no coincide con nada, devuelve un carácter vacío
+        return ' ';
+    }
 }
