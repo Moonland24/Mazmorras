@@ -1,37 +1,26 @@
 package com.mazmorras;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import org.json.simple.parser.ParseException;
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Cargar el archivo FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/creacionpersonaje.fxml"));
+        Parent root = loader.load();
 
-import com.mazmorras.models.Enemigo;
-import com.mazmorras.models.Mapa;
-import com.mazmorras.utils.Utils;
+        // Configurar la escena y el stage
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Prueba de Creacion de Personaje"); // Título de la ventana
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-public class Main {
-    public static void main(String[] args) throws IOException, ParseException {
-        Utils utils = new Utils();
-        List<Enemigo> enemigosNivel1 = new ArrayList<>();
-        List<Enemigo> enemigos = utils.cargarDesdeJSON("C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
-        for (Enemigo enemigo : enemigos) {
-            if(enemigo.getNivel() == 1){
-                enemigosNivel1.add(enemigo);
-
-              
-            }
-        }
-        for (Enemigo enemigo2 : enemigosNivel1) {
-            System.out.println("Enemigo Nivel 1: " + enemigo2.toString());
-        }
-        Random random = new Random();
-        int randomIndex = random.nextInt(enemigosNivel1.size());
-        Enemigo enemigoSeleccionado = enemigosNivel1.get(randomIndex);
-        // enemigoSeleccionado.mover(null, enemigoSeleccionado);
-        Mapa mapa = new Mapa(10, 10);
-        mapa.colocarEnemigo(enemigoSeleccionado);
-        System.out.println("Enemigo seleccionado: " + enemigoSeleccionado.toString());
+    public static void main(String[] args) {
+        launch(args); // Inicia la aplicación JavaFX
     }
 }

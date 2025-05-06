@@ -1,5 +1,7 @@
 package com.mazmorras.models;
 
+import com.mazmorras.enums.TipoEnemigo;
+
 public class Enemigo extends Personaje {
     private TipoEnemigo tipo;
 
@@ -51,5 +53,15 @@ public class Enemigo extends Personaje {
     // Puedes añadir métodos específicos para enemigos
     public void gritar() {
         System.out.println(nombre + " gruñe amenazadoramente!");
+    }
+
+    @Override
+    public String toString() {
+        return "Enemigo: " + getNombre() +
+                " (Nivel " + getNivel() + ")" +
+                " - Vida: " + getVidaActual() + "/" + getVidaMaxima() +
+                " ATK: " + getAtaque() +
+                " DEF: " + getDefensa() +
+                " SPD: " + getVelocidad();
     }
 }

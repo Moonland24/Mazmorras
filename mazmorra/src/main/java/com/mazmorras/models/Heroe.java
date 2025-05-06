@@ -1,6 +1,6 @@
 package com.mazmorras.models;
 
-import com.mazmorras.models.Mapa;
+import com.mazmorras.enums.Direccion;
 
 /**
  * Clase que representa al héroe protagonista controlado por el jugador.
@@ -73,4 +73,5 @@ public class Heroe extends Personaje {
                 " DEF: " + getDefensa() +
                 " SPD: " + getVelocidad();
     }
+
 }

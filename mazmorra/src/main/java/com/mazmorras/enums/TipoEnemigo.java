@@ -1,6 +1,4 @@
-package com.mazmorras.models;
-
-import java.util.Arrays;
+package com.mazmorras.enums;
 
 public enum TipoEnemigo {
     // Tipos básicos de enemigos
