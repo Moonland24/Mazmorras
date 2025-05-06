@@ -1,0 +1,68 @@
+.root {
+    -fx-padding: 30;
+    -fx-background-color: linear-gradient(to bottom, #3b2f2f, #1e1b1b); 
+}
+
+.label, .text {
+    -fx-text-fill: #d4af37; 
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-background-color: #2e2a2a; 
+    -fx-border-color: #8b5a2b;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+    -fx-text-fill: #e0d6b5; 
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #5a4c42, #3e342b); 
+    -fx-text-fill: #e0d6b5; 
+    -fx-border-color: #8b5a2b; 
+    -fx-border-width: 2;
+    -fx-border-radius: 15; 
+    -fx-background-radius: 15;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 10 20;
+} 
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #3e342b, #5a4c42); 
+    -fx-text-fill: #d4af37; 
+}
+
+.button:pressed {
+    -fx-background-color: #2e2a2a; 
+}
+
+#puntosRestantesLabel {
+    -fx-text-fill: #d4af37; 
+    -fx-font-weight: bold;
+}
+
+#errorLabel {
+    -fx-text-fill: #b22222; 
+}
+
+.text {
+    -fx-text-fill: #e0d6b5; 
+}
+
+VBox {
+    -fx-background-color: rgba(46, 42, 42, 0.9);
+    -fx-border-color: #8b5a2b;
+    -fx-border-width: 2;
+    -fx-border-radius: 15;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+}
+
+HBox {
+    -fx-spacing: 15; 
+}
+
+ImageView {
+    -fx-effect: innershadow(gaussian, #000000, 10, 0.5, 0, 0); 
+}
