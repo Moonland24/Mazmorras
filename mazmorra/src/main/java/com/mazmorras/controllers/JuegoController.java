@@ -225,7 +225,7 @@ public class JuegoController implements JuegoObserver {
         Image imagenBarril = new Image(getClass().getResourceAsStream("/imagenes/barril.png"));
         Image imagenSuelo = new Image(getClass().getResourceAsStream("/imagenes/suelo.png"));
         Image imagenPuertaAbierta = new Image(getClass().getResourceAsStream("/imagenes/puertaAbierta.png"));
-
+        
         // Itera sobre las celdas del mapa
         for (int i = 0; i < mapa.getAlto(); i++) {
             for (int j = 0; j < mapa.getAncho(); j++) {
