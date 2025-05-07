@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -18,7 +19,7 @@
             <ImageView fitHeight="401.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
-      <VBox layoutX="6.0" layoutY="6.0" prefHeight="386.0" prefWidth="589.0" spacing="10.0">
+      <VBox scaleX="1.0" scaleY="1.0" spacing="10.0" styleClass="padre" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="500.0">
                <children>
@@ -28,53 +29,62 @@
                      </font>
                      <effect>
                         <Glow />
-                     </effect></Text>
+                     </effect>
+                  </Text>
                   <Label prefWidth="150.0" />
                   <Label fx:id="puntosRestantesLabel" layoutX="10.0" layoutY="29.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
                </children>
             </HBox>
-            <TextField fx:id="nombreField" alignment="CENTER" prefHeight="62.0" prefWidth="497.0" promptText="Nombre del personaje" />
+            <TextField fx:id="nombreField" alignment="CENTER" blendMode="LIGHTEN" prefHeight="62.0" prefWidth="497.0" promptText="Nombre del personaje">
+               <effect>
+                  <Glow />
+               </effect>
+            </TextField>
             <HBox alignment="CENTER" spacing="10.0">
                <Label fx:id="vidaMaximaLabel" text="Vida Máxima: 100" textFill="#c4c243">
                   <font>
-                     <Font name="Agency FB" size="18.0" />
+                     <Font name="Agency FB" size="20.0" />
                   </font>
                   <effect>
                      <Glow />
-                  </effect></Label>
+                  </effect>
+               </Label>
                <Button onAction="#incrementarVidaMaxima" text="+" />
                <Button onAction="#decrementarVidaMaxima" text="-" />
             </HBox>
             <HBox alignment="CENTER" spacing="10.0">
                <Label fx:id="ataqueLabel" text="Ataque: 10" textFill="#c4c243">
                   <font>
-                     <Font name="Agency FB" size="18.0" />
+                     <Font name="Agency FB" size="20.0" />
                   </font>
                   <effect>
                      <Glow />
-                  </effect></Label>
+                  </effect>
+               </Label>
                <Button onAction="#incrementarAtaque" text="+" />
                <Button onAction="#decrementarAtaque" text="-" />
             </HBox>
             <HBox alignment="CENTER" spacing="10.0">
                <Label fx:id="defensaLabel" text="Defensa: 10" textFill="#c4c243">
                   <font>
-                     <Font name="Agency FB" size="18.0" />
+                     <Font name="Agency FB" size="20.0" />
                   </font>
                   <effect>
                      <Glow />
-                  </effect></Label>
+                  </effect>
+               </Label>
                <Button onAction="#incrementarDefensa" text="+" />
                <Button onAction="#decrementarDefensa" text="-" />
             </HBox>
             <HBox alignment="CENTER" spacing="10.0">
                <Label fx:id="velocidadLabel" text="Velocidad: 10" textFill="#c4c243">
                   <font>
-                     <Font name="Agency FB" size="18.0" />
+                     <Font name="Agency FB" size="20.0" />
                   </font>
                   <effect>
                      <Glow />
-                  </effect></Label>
+                  </effect>
+               </Label>
                <Button onAction="#incrementarVelocidad" text="+" />
                <Button onAction="#decrementarVelocidad" text="-" />
             </HBox>
@@ -83,15 +93,35 @@
                <Button fx:id="crearButton" alignment="CENTER" contentDisplay="CENTER" onAction="#crearHeroe" text="Crear">
                   <font>
                      <Font name="Algerian" size="12.0" />
-                  </font></Button>
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+               </Button>
                <Button fx:id="cancelarButton" alignment="BOTTOM_CENTER" onAction="#cancelarCreacion" text="Cancelar">
                   <font>
                      <Font name="Algerian" size="12.0" />
-                  </font></Button>
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+               </Button>
+               <Button fx:id="comenzarBurrom" alignment="BOTTOM_CENTER" onAction="#initialize" text="Empezar">
+                  <font>
+                     <Font name="Algerian" size="12.0" />
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+               </Button>
                <Button fx:id="salirButton" alignment="BOTTOM_CENTER" onAction="#salirAplicacion" text="Salir">
                   <font>
                      <Font name="Algerian" size="12.0" />
-                  </font></Button>
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+               </Button>
             </HBox>
          </children>
       </VBox>
