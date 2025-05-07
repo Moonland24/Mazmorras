@@ -3,6 +3,8 @@ package com.mazmorras.utils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -41,9 +43,10 @@ public class Utils {
         return auxiliar;
     }
 
-    public static Mapa cargarMapaDesdeTxt(String path) throws IOException {
-        Mapa mapa = new Mapa(); // Inicializa el mapa con dimensiones por defecto
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    public static Mapa cargarMapaDesdeTxt(InputStream inputStream) throws IOException {
+        Mapa mapa = new Mapa(); // Inicializa el mapa con dimensiones por defecto // ese es el problema que te estoy diciendo, ¿ tu has mirado el wasap lo que te pase?
+        // el problema es que él ha hecho de nuevo un merge y el merge que ha hecho ya no aparece nada
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String linea;
         int alto = 0; // Inicializa la altura del mapa
         int ancho = 0; // Inicializa el ancho del mapa
@@ -54,18 +57,28 @@ public class Utils {
             for (int i = 0; i < caracteres.length; i++) {
                 // Aquí puedes procesar cada carácter y construir el mapa
                 // Por ejemplo, si 'X' es un obstáculo, puedes marcarlo en el mapa
-                if (caracteres[i] == '#') {
-                    mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.PARED); // Marcar como pared
-                } else if(caracteres[i] == 'B') {
-                    mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.BARRIL); // Marcar como obstáculo
-                } else if (caracteres[i] == '.') {
-                    mapa.colocarCamino(alto - 1, i);// Marcar como camino
-
-                } else if (caracteres[i] == 'E') {
-                    mapa.colocarEntrada(alto - 1, i);
-
-                } else if (caracteres[i] == 'S') {
-                    mapa.colocarSalida(alto - 1, i);
+                switch (caracteres[i]) {
+                    case '#':
+                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.PARED); // Marcar como pared
+                        break;
+                    case '.':
+                        mapa.colocarCamino(alto - 1, i); // Marcar como camino
+                        break;
+                    case 'B':
+                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.BARRIL); // Marcar como barril
+                        break;
+                    case 'E':
+                        mapa.colocarEntrada(alto - 1, i);
+                        break;
+                    case 'S':
+                        mapa.colocarSalida(alto - 1, i);
+                        break;
+                    case 'C':
+                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.CHARCO); // Marcar como charco
+                        break;
+                    default:
+                        System.out.println("Contenido desconocido");
+                        break;
                 }
 
             }

@@ -1,6 +1,7 @@
 package com.mazmorras.controllers;
 
 import com.mazmorras.enums.Direccion;
+import com.mazmorras.enums.TipoObstaculo;
 import com.mazmorras.interfaces.JuegoObserver;
 import com.mazmorras.models.*;
 import com.mazmorras.utils.Utils;
@@ -15,8 +16,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.simple.parser.ParseException;
 
@@ -47,18 +61,40 @@ public class JuegoController implements JuegoObserver {
      * Inicializa los componentes principales del juego
      * 
      * @throws IOException
+     * @throws URISyntaxException
      */
     @FXML
-    private void initialize() throws IOException {
-        mapa = Utils.cargarMapaDesdeTxt(
-                "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\mapas\\nivel1.txt");
-        if (mapa == null) {
-            System.out.println("El mapa no se pudo cargar.");
+    private void initialize() throws IOException, URISyntaxException {
+        // Obtener la URL del recurso
+        URL resourceUrl = getClass().getResource("/mapas/nivel1.txt");
+        if (resourceUrl == null) {
+            System.err.println("No se pudo encontrar el archivo nivel1.txt");
             return;
         }
-        generarMapaDesdeFXML(mapa);
-        System.out.println("Inicialización completada. Esperando al héroe...");
+
+        // Crear el Path y cargar el mapa
+        Path path = Paths.get(resourceUrl.toURI());
+
+        // Primero leemos el contenido para mostrarlo
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                System.out.println(linea);
+            }
+        }
+
+        // Luego cargamos el mapa con un nuevo InputStream
+        try (InputStream inputStream = Files.newInputStream(path)) {
+            mapa = Utils.cargarMapaDesdeTxt(inputStream);
+            if (mapa == null) {
+                System.out.println("El mapa no se pudo cargar.");
+                return;
+            }
+            generarMapaDesdeFXML(mapa);
+            System.out.println("Inicialización completada. Esperando al héroe...");
+        }
     }
+
     // 3. Colocar héroe en el mapa
     public void colocarHeroeEnEntrada(Heroe heroe, Mapa mapa) {
         if (mapa == null) {
@@ -93,26 +129,37 @@ public class JuegoController implements JuegoObserver {
 
     /**
      * Carga enemigos según el nivel del juego
+     * 
+     * @throws ParseException
+     * @throws IOException
      */
-    private List<Enemigo> cargarEnemigos(int nivel) {
-        List<Enemigo> enemigos = null;
-        try {
-            enemigos = Utils.cargarDesdeJSON(
-                    "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
-            for (Enemigo enemigo : enemigos) {
-                if (enemigo.getNivel() == nivel) {
-                    // Colocar enemigos en el mapa según su nivel
-                    // Aquí puedes agregar lógica para colocar enemigos en el mapa
-                    // Por ejemplo, puedes usar un método en la clase Mapa para colocarlos
-                    enemigos.add(enemigo);
-                }
-            }
-        } catch (IOException | ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    private List<Enemigo> cargarEnemigos(int nivel) throws IOException, ParseException {
+        List<Enemigo> enemigos = new ArrayList<>();
+
+        // Obtener la URL del recurso
+        URL resourceUrl = getClass().getResource("/json/enemigos.json");
+        if (resourceUrl == null) {
+            System.err.println("No se pudo encontrar el archivo enemigos.json");
+            return enemigos;
         }
 
-        return enemigos;
+        // Crear el Path y cargar los enemigos
+        try (InputStream inputStream = resourceUrl.openStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+            // Debug: Mostrar contenido del archivo
+            String contenido = reader.lines().collect(Collectors.joining("\n"));
+            System.out.println("Contenido del archivo:");
+            System.out.println(contenido);
+
+            // Cargar enemigos desde el JSON
+            enemigos = Utils.cargarDesdeJSON(resourceUrl.getPath());
+
+            // Filtrar enemigos por nivel
+            return enemigos.stream()
+                    .filter(e -> e.getNivel() == nivel)
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -189,14 +236,14 @@ public class JuegoController implements JuegoObserver {
 
     @Override
     public void onCombateIniciado(Heroe heroe, Enemigo enemigo) {
-        
+
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'onCombateIniciado'");
     }
 
     @Override
     public void onGameOver(boolean victoria) {
-    
+
         if (victoria) {
             // Mostrar el pane de victoria
             gamePane.setVisible(false);
@@ -208,6 +255,26 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
+    private Map<String, Image> imageCache;
+
+    private void inicializarImagenes() {
+        imageCache = new HashMap<>();
+        imageCache.put("pared", new Image(getClass().getResourceAsStream("/imagenes/pared.png")));
+        imageCache.put("puerta", new Image(getClass().getResourceAsStream("/imagenes/puerta.png")));
+        imageCache.put("charco", new Image(getClass().getResourceAsStream("/imagenes/charco.png")));
+        imageCache.put("barril", new Image(getClass().getResourceAsStream("/imagenes/barril.png")));
+        imageCache.put("suelo", new Image(getClass().getResourceAsStream("/imagenes/suelo.png")));
+        imageCache.put("puertaAbierta", new Image(getClass().getResourceAsStream("/imagenes/puertaAbierta.png")));
+        imageCache.put("enemigoTest", new Image(getClass().getResourceAsStream("/imagenes/enemigoTest.png")));
+    }
+
+    private ImageView crearCelda(Image imagen) {
+        ImageView celda = new ImageView(imagen);
+        celda.setFitWidth(30);
+        celda.setFitHeight(30);
+        return celda;
+    }
+
     @FXML
     private void generarMapaDesdeFXML(Mapa mapa) {
         if (mapa == null) {
@@ -215,55 +282,59 @@ public class JuegoController implements JuegoObserver {
             return;
         }
 
-        // Limpia el GridPane antes de generar el mapa
         mapaGrid.getChildren().clear();
 
-        // Carga las imágenes necesarias
-        Image imagenPared = new Image(getClass().getResourceAsStream("/imagenes/pared.png"));
-        Image imagenPuerta = new Image(getClass().getResourceAsStream("/imagenes/puerta.png"));
-        Image imagenCharco = new Image(getClass().getResourceAsStream("/imagenes/charco.png"));
-        Image imagenBarril = new Image(getClass().getResourceAsStream("/imagenes/barril.png"));
-        Image imagenSuelo = new Image(getClass().getResourceAsStream("/imagenes/suelo.png"));
-        Image imagenPuertaAbierta = new Image(getClass().getResourceAsStream("/imagenes/puertaAbierta.png"));
-        
-        // Itera sobre las celdas del mapa
-        for (int i = 0; i < mapa.getAlto(); i++) {
-            for (int j = 0; j < mapa.getAncho(); j++) {
-                char contenido = mapa.getContenido(i, j); // Obtén el contenido de la celda
-                ImageView celdaImagen = new ImageView();
-                
-                // Asigna la imagen correspondiente según el contenido
-                switch (contenido) {
-                    case '#': // Pared
-                        celdaImagen.setImage(imagenPared);
-                        break;
-                    case 'P': // Puerta
-                        celdaImagen.setImage(imagenPuerta);
-                        break;
-                    case 'C': // Charco
-                        celdaImagen.setImage(imagenCharco);
-                        break;
-                    case 'B': // Barril
-                        celdaImagen.setImage(imagenBarril);
-                        break;
-                    case '.': // Suelo
-                        celdaImagen.setImage(imagenSuelo);
-                        break;
-                    case 'S': // Puerta abierta
-                        celdaImagen.setImage(imagenPuertaAbierta);
-                        break;
-                    default:
-                        System.out.println("Contenido desconocido: " + contenido);
-                        continue;
-                }
+        // Inicializar cache de imágenes si no existe
+        if (imageCache == null) {
+            inicializarImagenes();
+        }
 
-                // Ajusta el tamaño de la imagen
-                celdaImagen.setFitWidth(30);
-                celdaImagen.setFitHeight(30);
+        // Generar caminos
+        for (Camino camino : mapa.getCaminos()) {
+            ImageView celda = crearCelda(imageCache.get("suelo"));
+            mapaGrid.add(celda, camino.getY(), camino.getX());
+        }
 
-                // Agrega la imagen al GridPane
-                mapaGrid.add(celdaImagen, j, i);
+        //Generar Enemigos
+        for (Enemigo enemigo: mapa.getEnemigos()){
+            ImageView celda = crearCelda(imageCache.get("enemigoTest"));
+            mapaGrid.add(celda, enemigo.getY(), enemigo.getX());
+        }
+
+        // Generar obstáculos
+        for (Obstaculo obstaculo : mapa.getObstaculos()) {
+            String tipoImagen = null;
+            switch (obstaculo.getTipoObstaculo()) {
+                case BARRIL:
+                    tipoImagen = "barril";
+                    break;
+                case PARED:
+                    tipoImagen = "pared";
+                    break;
+                case CHARCO:
+                    tipoImagen = "charco";
+                    break;
+                default:
+                    System.out.println("No existe ese tipo de obstáculo");
+                    continue;
             }
+
+            ImageView celda = crearCelda(imageCache.get(tipoImagen));
+            mapaGrid.add(celda, obstaculo.getY(), obstaculo.getX());
+        }
+
+        // Generar entrada y salida
+        Entrada entrada = mapa.getEntrada();
+        Salida salida = mapa.getSalida();
+
+        if (entrada != null) {
+            ImageView celdaEntrada = crearCelda(imageCache.get("puerta"));
+            mapaGrid.add(celdaEntrada, entrada.getY(), entrada.getX());
+        }
+
+        if (salida != null) {
+            ImageView celdaSalida = crearCelda(imageCache.get("puertaAbierta"));
+            mapaGrid.add(celdaSalida, salida.getY(), salida.getX());
         }
     }
 }

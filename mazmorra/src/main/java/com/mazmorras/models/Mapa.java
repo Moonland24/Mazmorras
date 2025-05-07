@@ -138,6 +138,7 @@ public class Mapa {
         return false; 
     }
 
+    // Hay que darle una vuelta a esto
     public void colocarEnemigo(Enemigo enemigo) {
         if (enemigo != null) {
             enemigos.add(enemigo);
@@ -155,6 +156,7 @@ public class Mapa {
             System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
         }
     }
+    // Esto es una redundancia muy gorda -- Hay que refactorizar porque esto es bastante grave
     public char getContenido(int i, int j) {
         // Verifica si la celda es un obstáculo
         for (Obstaculo obstaculo : obstaculos) {
