@@ -51,7 +51,8 @@ public class JuegoController implements JuegoObserver {
     @FXML
     private void initialize() throws IOException {
         mapa = Utils.cargarMapaDesdeTxt(
-                "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\mapas\\nivel1.txt");
+                "C:\\clases\\JavaProyects\\tercertrimestre\\Mazmorras-main\\Mazmorras\\mazmorra\\src\\main\\resources\\mapas\\n" + //
+                                        "ivel1.txt"); //Hay que cambiar esto, porque si no cuando lo vaya a ejecutar pablo le va a dar error
         if (mapa == null) {
             System.out.println("El mapa no se pudo cargar.");
             return;
@@ -98,7 +99,7 @@ public class JuegoController implements JuegoObserver {
         List<Enemigo> enemigos = null;
         try {
             enemigos = Utils.cargarDesdeJSON(
-                    "C:\\Users\\jfco1\\Desktop\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
+                    "C:\\clases\\JavaProyects\\tercertrimestre\\Mazmorras-main\\Mazmorras\\mazmorra\\src\\main\\resources\\enemigos\\enemigos.json");
             for (Enemigo enemigo : enemigos) {
                 if (enemigo.getNivel() == nivel) {
                     // Colocar enemigos en el mapa según su nivel
