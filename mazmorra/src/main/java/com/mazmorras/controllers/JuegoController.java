@@ -162,6 +162,24 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
+    // 4.colocar enemigos cargados del json en el mapa
+    public void colocarEnemigosEnMapa(List<Enemigo> enemigos) {
+        if (mapaGrid == null) {
+            System.out.println("El GridPane (mapaGrid) no está inicializado.");
+            return;
+        }
+
+        for (Enemigo enemigo : enemigos) {
+            System.out.println("Colocando enemigo: " + enemigo.getNombre() + " en (" + enemigo.getX() + ", "
+                    + enemigo.getY() + ")");
+            Label celda = new Label("O"); // Representación del enemigo
+            celda.setMinSize(30, 30);
+            celda.setAlignment(Pos.CENTER);
+            celda.setStyle("-fx-border-color: black; -fx-font-size: 12; -fx-background-color: red;");
+            mapaGrid.add(celda, enemigo.getY(), enemigo.getX());
+        }
+    }
+
     /**
      * Maneja el input del teclado para mover al héroe
      */
@@ -214,6 +232,15 @@ public class JuegoController implements JuegoObserver {
         } else {
             System.out.println("El mapa no está inicializado.");
         }
+    }
+
+    public void recibirEnemigos(List<Enemigo> enemigos) {
+        if (enemigos == null || enemigos.isEmpty()) {
+            System.out.println("No se han recibido enemigos o la lista está vacía.");
+            return;
+        }
+        System.out.println("Enemigos recibidos: " + enemigos.size());
+        colocarEnemigosEnMapa(enemigos);
     }
 
     @Override
@@ -295,8 +322,8 @@ public class JuegoController implements JuegoObserver {
             mapaGrid.add(celda, camino.getY(), camino.getX());
         }
 
-        //Generar Enemigos
-        for (Enemigo enemigo: mapa.getEnemigos()){
+        // Generar Enemigos
+        for (Enemigo enemigo : mapa.getEnemigos()) {
             ImageView celda = crearCelda(imageCache.get("enemigoTest"));
             mapaGrid.add(celda, enemigo.getY(), enemigo.getX());
         }
