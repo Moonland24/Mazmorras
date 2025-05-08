@@ -20,13 +20,14 @@ public class Mapa {
 
     public Mapa() {
         this.obstaculos = new ArrayList<>(); // Inicializar la lista de obstáculos
-        this.caminos = new ArrayList<>();    // Inicializar la lista de caminos
+        this.caminos = new ArrayList<>(); // Inicializar la lista de caminos
         this.enemigos = new ArrayList<>(); // Inicializar la lista de enemigos
     }
-    
+
     public void setAncho(int ancho) {
         this.ancho = ancho;
     }
+
     public void setAlto(int alto) {
         this.alto = alto;
     }
@@ -44,7 +45,7 @@ public class Mapa {
     }
 
     public void setEnemigos(List<Enemigo> enemigos) {
-        this.enemigos = enemigos;   
+        this.enemigos = enemigos;
     }
 
     public Salida getSalida() {
@@ -52,11 +53,11 @@ public class Mapa {
     }
 
     public int getAncho() {
-        return ancho; 
+        return ancho;
     }
 
     public int getAlto() {
-        return alto; 
+        return alto;
     }
 
     public Heroe getHeroe() {
@@ -83,7 +84,7 @@ public class Mapa {
     }
 
     public void colocarSalida(int x, int y) {
-       System.out.println("salida colocada en: " + x + ", " + y);
+        System.out.println("salida colocada en: " + x + ", " + y);
         salida = new Salida(x, y);
     }
 
@@ -93,9 +94,9 @@ public class Mapa {
 
     public int[] encontrarCamino(int x, int y, int x2, int y2) {
         boolean[][] visited = new boolean[alto][ancho];
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int[][] directions = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
         List<int[]> queue = new ArrayList<>();
-        queue.add(new int[]{x, y});
+        queue.add(new int[] { x, y });
         visited[y][x] = true;
 
         while (!queue.isEmpty()) {
@@ -103,13 +104,13 @@ public class Mapa {
             int cx = current[0], cy = current[1];
 
             if (cx == x2 && cy == y2) {
-                return new int[]{cx, cy}; 
+                return new int[] { cx, cy };
             }
 
             for (int[] dir : directions) {
                 int nx = cx + dir[0], ny = cy + dir[1];
                 if (nx >= 0 && ny >= 0 && nx < ancho && ny < alto && !visited[ny][nx] && !esObstaculo(nx, ny)) {
-                    queue.add(new int[]{nx, ny});
+                    queue.add(new int[] { nx, ny });
                     visited[ny][nx] = true;
                 }
             }
@@ -121,21 +122,21 @@ public class Mapa {
     public boolean isValidMove(int i, int j) {
 
         if (getObstaculos().stream().anyMatch(obstaculo -> obstaculo.getX() == i && obstaculo.getY() == j)) {
-            return false; 
+            return false;
         } else if (getCaminos().stream().anyMatch(camino -> camino.getX() == i && camino.getY() == j)) {
-            return true; 
+            return true;
         } else {
-            return false; 
+            return false;
         }
     }
 
     public boolean esObstaculo(int x, int y) {
         for (Obstaculo obstaculo : obstaculos) {
             if (obstaculo.getX() == x && obstaculo.getY() == y) {
-                return true; 
+                return true;
             }
         }
-        return false; 
+        return false;
     }
 
     // Hay que darle una vuelta a esto
@@ -151,12 +152,15 @@ public class Mapa {
     public void eliminarEnemigo(Enemigo enemigo) {
         if (enemigo != null && enemigos.contains(enemigo)) {
             enemigos.remove(enemigo);
-            System.out.println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
+            System.out
+                    .println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
         } else {
             System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
         }
     }
-    // Esto es una redundancia muy gorda -- Hay que refactorizar porque esto es bastante grave
+
+    // Esto es una redundancia muy gorda -- Hay que refactorizar porque esto es
+    // bastante grave
     public char getContenido(int i, int j) {
         // Verifica si la celda es un obstáculo
         for (Obstaculo obstaculo : obstaculos) {
