@@ -175,14 +175,29 @@ public class CreacionPersonajeController {
 
             Heroe heroe = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
             if (heroe != null) {
-                // Logica para pasar el heroe a la siguiente pantalla (mapaTest)
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/mapaTest.fxml"));
                 try {
                     Parent root = loader.load();
-                    JuegoController juegoController = loader.getController(); // Obtén el controlador del FXML
-                    juegoController.recibirHeroe(heroe); // Pasa el héroe al controlador
+                    JuegoController juegoController = loader.getController();
+                    juegoController.recibirHeroe(heroe);
+                    
+                    // Obtener la ventana y sus dimensiones actuales
                     Stage stage = (Stage) nombreField.getScene().getWindow();
-                    stage.setScene(new Scene(root));
+                    double width = stage.getWidth();
+                    double height = stage.getHeight();
+                    boolean isMaximized = stage.isMaximized();
+                    
+                    // Cambiar la escena manteniendo las dimensiones
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    
+                    if (isMaximized) {
+                        stage.setMaximized(true);
+                    } else {
+                        stage.setWidth(width);
+                        stage.setHeight(height);
+                    }
+                    
                     stage.show();
                 } catch (IOException e) {
                     errorLabel.setText("Error al cargar la siguiente escena: " + e.getMessage());
