@@ -120,10 +120,13 @@ public class JuegoController implements JuegoObserver {
         // Colocar el héroe en la entrada del mapa
         heroe.setX(mapa.getEntrada().getX());
         heroe.setY(mapa.getEntrada().getY());
-        Label celda = new Label("H"); // Representación del héroe
-        celda.setMinSize(30, 30);
-        celda.setAlignment(Pos.CENTER);
-        celda.setStyle("-fx-border-color: black; -fx-font-size: 12; -fx-background-color: blue;");
+
+        // Crear una celda con la imagen del héroe
+        ImageView celda = new ImageView(new Image(getClass().getResourceAsStream("/imagenes/heroe.png")));
+        celda.setFitWidth(30); // Ajustar el ancho de la imagen
+        celda.setFitHeight(30); // Ajustar la altura de la imagen
+
+        // Agregar la celda al GridPane
         mapaGrid.add(celda, mapa.getEntrada().getY(), mapa.getEntrada().getX());
     }
 
