@@ -7,7 +7,9 @@
             "defensaBase": 3,
             "velocidadBase": 6,
             "percepcionBase": 4,
-            "nivelBase": 1
+            "nivelBase": 1,
+            "x": 0,
+            "y": 0
         },
         {
             "nombre": "Orco",
@@ -16,7 +18,9 @@
             "defensaBase": 5,
             "velocidadBase": 4,
             "percepcionBase": 3,
-            "nivelBase": 2
+            "nivelBase": 2,
+            "x": 0,
+            "y": 0
         },
         {
             "nombre": "Esqueleto",
@@ -25,7 +29,9 @@
             "defensaBase": 4,
             "velocidadBase": 5,
             "percepcionBase": 5,
-            "nivelBase": 1
+            "nivelBase": 1,
+            "x": 0,
+            "y": 0
         },
         {
             "nombre": "Aranha",
@@ -34,7 +40,9 @@
             "defensaBase": 2,
             "velocidadBase": 7,
             "percepcionBase": 6,
-            "nivelBase": 1
+            "nivelBase": 1,
+            "x": 0,
+            "y": 0
         },
         {
             "nombre": "Mago_Oscuro",
@@ -43,7 +51,9 @@
             "defensaBase": 2,
             "velocidadBase": 5,
             "percepcionBase": 7,
-            "nivelBase": 3
+            "nivelBase": 3,
+            "x": 0,
+            "y": 0
         },
         {
             "nombre": "Troll",
@@ -52,7 +62,9 @@
             "defensaBase": 6,
             "velocidadBase": 3,
             "percepcionBase": 2,
-            "nivelBase": 3
+            "nivelBase": 3,
+            "x": 0,
+            "y": 0
         }
     ]
 

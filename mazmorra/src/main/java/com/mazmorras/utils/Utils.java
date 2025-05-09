@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -44,19 +45,19 @@ public class Utils {
     }
 
     public static Mapa cargarMapaDesdeTxt(InputStream inputStream) throws IOException {
-        Mapa mapa = new Mapa(); // Inicializa el mapa con dimensiones por defecto // ese es el problema que te estoy diciendo, ¿ tu has mirado el wasap lo que te pase?
-        // el problema es que él ha hecho de nuevo un merge y el merge que ha hecho ya no aparece nada
+        Mapa mapa = new Mapa(); // Inicializa el mapa
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String linea;
         int alto = 0; // Inicializa la altura del mapa
         int ancho = 0; // Inicializa el ancho del mapa
+        List<Enemigo> enemigos = new ArrayList<>(); // Lista para almacenar enemigos
+
         while ((linea = reader.readLine()) != null) {
             alto++; // Cuenta las líneas para establecer la altura
             char[] caracteres = linea.toCharArray();
             ancho = caracteres.length; // Establece el ancho del mapa
             for (int i = 0; i < caracteres.length; i++) {
-                // Aquí puedes procesar cada carácter y construir el mapa
-                // Por ejemplo, si 'X' es un obstáculo, puedes marcarlo en el mapa
+                // Procesar cada carácter y construir el mapa
                 switch (caracteres[i]) {
                     case '#':
                         mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.PARED); // Marcar como pared
@@ -68,27 +69,29 @@ public class Utils {
                         mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.BARRIL); // Marcar como barril
                         break;
                     case 'E':
-                        mapa.colocarEntrada(alto - 1, i);
+                        mapa.colocarEntrada(alto - 1, i); // Marcar como entrada
                         break;
                     case 'S':
-                        mapa.colocarSalida(alto - 1, i);
+                        mapa.colocarSalida(alto - 1, i); // Marcar como salida
                         break;
                     case 'C':
                         mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.CHARCO); // Marcar como charco
                         break;
+                    case 'O':
+                        // Crear un enemigo genérico y agregarlo a la lista
+                        Enemigo enemigo = new Enemigo("Enemigo", alto - 1, i, 20, 5, 3, 2, TipoEnemigo.ESQUELETO, 3, 1);
+                        enemigos.add(enemigo);
+                        break;
                     default:
-                        System.out.println("Contenido desconocido");
+                        System.out.println("Contenido desconocido en (" + (alto - 1) + ", " + i + "): " + caracteres[i]);
                         break;
                 }
-
             }
         }
+
         mapa.setAlto(alto); // Establece la altura del mapa
         mapa.setAncho(ancho); // Establece el ancho del mapa
-        return mapa; // dimensiones del
-        // mapa
-        // Implementar la lógca para cargar el mapa desde un archivo de texto
-        // y devolver una instancia de Mapa.
-        // return null; // Placeholder, implementar correctamente
+        mapa.setEnemigos(enemigos); // Asigna la lista de enemigos al mapa
+        return mapa;
     }
 }
