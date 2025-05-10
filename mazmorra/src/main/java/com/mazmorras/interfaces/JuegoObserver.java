@@ -1,6 +1,6 @@
 package com.mazmorras.interfaces;
 
-import com.mazmorras.models.Juego;
+import com.mazmorras.models.Mapa;
 import com.mazmorras.models.Heroe;
 import com.mazmorras.models.Enemigo;
 
@@ -9,7 +9,7 @@ public interface JuegoObserver {
      * Notifica cambios en el estado del juego.
      * @param juego Instancia actual del juego.
      */
-    void onJuegoActualizado(Juego juego);
+    void onJuegoActualizado(Mapa mapa);
 
     /**
      * Notifica cuando el héroe ha sido movido.
