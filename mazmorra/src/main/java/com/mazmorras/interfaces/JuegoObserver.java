@@ -1,5 +1,6 @@
 package com.mazmorras.interfaces;
 
+//Interface de todo lo que ocurre dentro del juego
 import com.mazmorras.models.Mapa;
 import com.mazmorras.models.Heroe;
 import com.mazmorras.models.Enemigo;
