@@ -33,31 +33,49 @@ public class Heroe extends Personaje {
      * las teclas de flecha o WASD.
      * 
      * @param mapa     Mapa en el que se encuentra el héroe.
-     * @param objetivo No se utiliza en el caso del héroe, pero se incluye para
+     * @param direccion No se utiliza en el caso del héroe, pero se incluye para
      *                 cumplir con la firma del método abstracto.
      */
     @Override
-    public void mover(Mapa mapa, Personaje objetivo) {
-        // Este método será implementado en el controlador del juego para manejar
-        // las entradas del usuario (teclas de flecha o WASD).
-        // Validar movimientos del héroe en el mapa
-        if (mapa == null) {
-            throw new IllegalArgumentException("El mapa no puede ser nulo.");
+    public void mover(Mapa mapa, Direccion direccion) {
+        if (mapa == null || direccion == null) {
+            throw new IllegalArgumentException("El mapa y la dirección no pueden ser nulos.");
         }
 
-        // Obtener las dimensiones del mapa
-        int anchoMapa = mapa.getAncho();
-        int altoMapa = mapa.getAlto();
+        // Calcular nueva posición basada en la dirección
+        int nuevaX = getX();
+        int nuevaY = getY();
 
-        // Validar que el héroe no salga de los límites del mapa
-        if (getX() < 0 || getX() >= anchoMapa || getY() < 0 || getY() >= altoMapa) {
-            throw new IllegalStateException("El héroe está fuera de los límites del mapa.");
+        switch (direccion) {
+            case ARRIBA:
+                nuevaY--;
+                break;
+            case ABAJO:
+                nuevaY++;
+                break;
+            case IZQUIERDA:
+                nuevaX--;
+                break;
+            case DERECHA:
+                nuevaX++;
+                break;
+            default:
+                throw new IllegalArgumentException("Dirección no válida.");
         }
 
-        // Validar que la posición no esté ocupada por un obstáculo
-        if (mapa.esObstaculo(getX(), getY())) {
+        // Validar que la nueva posición esté dentro de los límites del mapa
+        if (nuevaX < 0 || nuevaX >= mapa.getAncho() || nuevaY < 0 || nuevaY >= mapa.getAlto()) {
+            throw new IllegalStateException("El héroe no puede moverse fuera de los límites del mapa.");
+        }
+
+        // Validar que la nueva posición no esté ocupada por un obstáculo
+        if (mapa.esObstaculo(nuevaX, nuevaY)) {
             throw new IllegalStateException("El héroe no puede moverse a una posición ocupada por un obstáculo.");
         }
+
+        // Actualizar la posición del héroe
+        setX(nuevaX);
+        setY(nuevaY);
     }
 
     /**
