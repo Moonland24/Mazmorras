@@ -3,14 +3,25 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label text="Label" />
-         </children>
+      <HBox prefHeight="400.0" prefWidth="600.0">
+         <AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f4e1d2; -fx-border-color: #8b4513; -fx-border-width: 5; -fx-font-family: 'Georgia';">
+            <children>
+               <Label layoutX="10.0" layoutY="10.0" text="Mapa" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #5a3d2b;" />
+            </children>
+         </AnchorPane>
+         
+         <VBox prefHeight="400.0" prefWidth="200.0" spacing="10.0" alignment="CENTER" style="-fx-background-color: #e6ccb2; -fx-border-color: #8b4513; -fx-border-width: 5; -fx-font-family: 'Georgia';">
+            <children>
+               <Label text="Estadísticas" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #5a3d2b;" />
+               <Label text="Vida del héroe: 100" style="-fx-font-size: 16px; -fx-text-fill: #5a3d2b;" />
+               <Label text="Vida del enemigo: 80" style="-fx-font-size: 16px; -fx-text-fill: #5a3d2b;" />
+               <Label text="Turno: 1" style="-fx-font-size: 16px; -fx-text-fill: #5a3d2b;" />
+            </children>
+         </VBox>
       </HBox>
    </children>
 </AnchorPane>
