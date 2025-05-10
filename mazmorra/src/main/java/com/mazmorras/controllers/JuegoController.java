@@ -1,36 +1,29 @@
 package com.mazmorras.controllers;
 
 import com.mazmorras.enums.Direccion;
-import com.mazmorras.enums.TipoObstaculo;
 import com.mazmorras.interfaces.JuegoObserver;
 import com.mazmorras.models.*;
 import com.mazmorras.utils.Utils;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.json.simple.parser.ParseException;
 
@@ -62,133 +55,55 @@ public class JuegoController implements JuegoObserver {
      * 
      * @throws IOException
      * @throws URISyntaxException
+     * @throws ParseException
      */
     @FXML
-    private void initialize() throws IOException, URISyntaxException {
+    private void initialize() throws IOException, URISyntaxException, ParseException {
+        System.out.println("Inicializando JuegoController...");
         // Obtener la URL del recurso
-        URL resourceUrl = getClass().getResource("/mapas/nivel1.txt");
-        if (resourceUrl == null) {
-            System.err.println("No se pudo encontrar el archivo nivel1.txt");
+        URL mapaUrl = getClass().getResource("/mapas/nivel1.txt");
+        URL enemigosUrl = getClass().getResource("/enemigos/enemigos.json");
+
+        if (mapaUrl == null || enemigosUrl == null) {
+            System.err.println("No se pudo encontrar el archivo");
             return;
         }
 
         // Crear el Path y cargar el mapa
-        Path path = Paths.get(resourceUrl.toURI());
+        Path mapaPath = Paths.get(mapaUrl.toURI());
+        Path enemigosPath = Paths.get(enemigosUrl.toURI());
+        List<Enemigo> enemigos = Utils.cargarDesdeJSON(enemigosPath.toString());
 
-        // Primero leemos el contenido para mostrarlo
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                System.out.println(linea);
-            }
-        }
-
-        // Luego cargamos el mapa con un nuevo InputStream
-        try (InputStream inputStream = Files.newInputStream(path)) {
-            mapa = Utils.cargarMapaDesdeTxt(inputStream);
+        try (InputStream inputStream = Files.newInputStream(mapaPath)) {
+            mapa = Utils.cargarMapaDesdeTxt(inputStream, enemigos, 1);
             if (mapa == null) {
                 System.out.println("El mapa no se pudo cargar.");
                 return;
             }
-            generarMapaDesdeFXML(mapa);
             System.out.println("Inicialización completada. Esperando al héroe...");
         }
-    }
 
-    // 3. Colocar héroe en el mapa
-    public void colocarHeroeEnEntrada(Heroe heroe, Mapa mapa) {
         if (mapa == null) {
-            System.out.println("El mapa no está inicializado.");
-            return;
+            System.out.println("El mapa no se pudo inicializar.");
+        } else {
+            System.out.println("Mapa inicializado correctamente.");
         }
 
-        if (mapa.getEntrada() == null) {
-            System.out.println("La entrada del mapa no está definida.");
-            return;
-        }
-
-        if (heroe == null) {
-            System.out.println("El héroe no está inicializado.");
-            return;
-        }
-
-        if (mapaGrid == null) {
-            System.out.println("El GridPane (mapaGrid) no está inicializado.");
-            return;
-        }
-
-        // Colocar el héroe en la entrada del mapa
-        heroe.setX(mapa.getEntrada().getX());
-        heroe.setY(mapa.getEntrada().getY());
-        Label celda = new Label("H"); // Representación del héroe
-        celda.setMinSize(30, 30);
-        celda.setAlignment(Pos.CENTER);
-        celda.setStyle("-fx-border-color: black; -fx-font-size: 12; -fx-background-color: blue;");
-        mapaGrid.add(celda, mapa.getEntrada().getY(), mapa.getEntrada().getX());
-    }
-
-    /**
-     * Carga enemigos según el nivel del juego
-     * 
-     * @throws ParseException
-     * @throws IOException
-     */
-    private List<Enemigo> cargarEnemigos(int nivel) throws IOException, ParseException {
-        List<Enemigo> enemigos = new ArrayList<>();
-
-        // Obtener la URL del recurso
-        URL resourceUrl = getClass().getResource("/json/enemigos.json");
-        if (resourceUrl == null) {
-            System.err.println("No se pudo encontrar el archivo enemigos.json");
-            return enemigos;
-        }
-
-        // Crear el Path y cargar los enemigos
-        try (InputStream inputStream = resourceUrl.openStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-            // Debug: Mostrar contenido del archivo
-            String contenido = reader.lines().collect(Collectors.joining("\n"));
-            System.out.println("Contenido del archivo:");
-            System.out.println(contenido);
-
-            // Cargar enemigos desde el JSON
-            enemigos = Utils.cargarDesdeJSON(resourceUrl.getPath());
-
-            // Filtrar enemigos por nivel
-            return enemigos.stream()
-                    .filter(e -> e.getNivel() == nivel)
-                    .collect(Collectors.toList());
-        }
-    }
-
-    // 4.colocar enemigos cargados del json en el mapa
-    public void colocarEnemigosEnMapa(List<Enemigo> enemigos) {
-        if (mapaGrid == null) {
-            System.out.println("El GridPane (mapaGrid) no está inicializado.");
-            return;
-        }
-
-        for (Enemigo enemigo : enemigos) {
-            System.out.println("Colocando enemigo: " + enemigo.getNombre() + " en (" + enemigo.getX() + ", "
-                    + enemigo.getY() + ")");
-            Label celda = new Label("O"); // Representación del enemigo
-            celda.setMinSize(30, 30);
-            celda.setAlignment(Pos.CENTER);
-            celda.setStyle("-fx-border-color: black; -fx-font-size: 12; -fx-background-color: red;");
-            mapaGrid.add(celda, enemigo.getY(), enemigo.getX());
-        }
+        // Esperar a que la escena esté disponible
+        rootPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyPressed(this::onKeyPressed);
+            }
+        });
     }
 
     /**
      * Maneja el input del teclado para mover al héroe
      */
     public void manejarInputTeclado(KeyEvent event, Heroe heroe) {
-        // Verifica si el evento es de teclado
         KeyCode tecla = event.getCode();
         Direccion direccion = null;
 
-        // Mapear teclas a direcciones
         if (tecla == KeyCode.W || tecla == KeyCode.UP) {
             direccion = Direccion.ARRIBA;
         } else if (tecla == KeyCode.S || tecla == KeyCode.DOWN) {
@@ -199,13 +114,15 @@ public class JuegoController implements JuegoObserver {
             direccion = Direccion.DERECHA;
         }
 
-        // if (direccion != null) {
-        // heroe.mover(mapa, direccion);
-        // onCombateCercano(null, null); // Verifica si hay combate cercano
-        // onEnemigoActualizado(null, false);
-        // moverEnemigos();
-        // onJuegoActualizado(null); // Actualiza el juego
-        // }
+        if (direccion != null) {
+            try {
+                heroe.mover(mapa, direccion); // Mueve al héroe
+                moverEnemigos(); // Mueve a los enemigos después de que el héroe se mueve
+                generarMapaDesdeFXML(mapa); // Actualiza el mapa visualmente
+            } catch (Exception e) {
+                System.out.println("Movimiento inválido: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -213,59 +130,100 @@ public class JuegoController implements JuegoObserver {
      */
     @Override
     public void onCombateCercano(Heroe heroe, Enemigo enemigo) {
-        // for (Enemigo enemigo : mapa.getEnemigos()) {
-        // if (heroe.getX() == enemigo.getX() && heroe.getY() == enemigo.getY()) {
-        // iniciarCombate(enemigo);
-        // break;
-        // }
-        // }
+        System.out.println("¡El héroe " + heroe.getNombre() + " está cerca del enemigo " + enemigo.getNombre() + "!");
+        if (heroe.getX() == enemigo.getX() && heroe.getY() == enemigo.getY()) {
+            System.out.println("¡El héroe y el enemigo están en la misma posición! Iniciando combate...");
+            onCombateIniciado(heroe, enemigo);
+        } else {
+            System.out.println("El héroe y el enemigo están cerca, pero no en la misma posición.");
+        }
     }
 
     public void recibirHeroe(Heroe heroe) {
+        System.out.println("Recibiendo héroe...");
         if (heroe == null) {
             System.out.println("El héroe recibido es null.");
             return;
         }
-        System.out.println("Héroe recibido: " + heroe.getNombre());
-        if (mapa != null) {
-            colocarHeroeEnEntrada(heroe, mapa);
-        } else {
-            System.out.println("El mapa no está inicializado.");
-        }
-    }
 
-    public void recibirEnemigos(List<Enemigo> enemigos) {
-        if (enemigos == null || enemigos.isEmpty()) {
-            System.out.println("No se han recibido enemigos o la lista está vacía.");
-            return;
+        if (mapa == null) {
+            System.out.println("El mapa no está inicializado.");
+            return; // Evita el NullPointerException
         }
-        System.out.println("Enemigos recibidos: " + enemigos.size());
-        colocarEnemigosEnMapa(enemigos);
+        Entrada entrada = mapa.getEntrada();
+        if (entrada != null) {
+            heroe.setX(entrada.getX());
+            heroe.setY(entrada.getY());
+        }
+        mapa.setHeroe(heroe);
+        generarMapaDesdeFXML(mapa);
+        // Asegurar que el AnchorPane capture los eventos de teclado
+        rootPane.setFocusTraversable(true); // <-- Asegura que puede recibir foco
+        rootPane.requestFocus();
+        System.out.println("Héroe recibido: " + heroe.getNombre());
     }
 
     @Override
-    public void onJuegoActualizado(Juego juego) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onJuegoActualizado'");
+    public void onJuegoActualizado(Mapa mapa) {
+        System.out.println("El juego ha sido actualizado.");
+        generarMapaDesdeFXML(mapa);
     }
 
     @Override
     public void onHeroeMovido(Heroe heroe) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onHeroeMovido'");
+        System.out.println("El héroe se ha movido a la posición: (" + heroe.getX() + ", " + heroe.getY() + ")");
+        generarMapaDesdeFXML(mapa);
     }
 
     @Override
     public void onEnemigoActualizado(Enemigo enemigo, boolean eliminado) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onEnemigoActualizado'");
+        if (eliminado) {
+            System.out.println("El enemigo " + enemigo.getNombre() + " ha sido eliminado.");
+        } else {
+            System.out.println("El enemigo " + enemigo.getNombre() + " ha sido actualizado.");
+        }
+        generarMapaDesdeFXML(mapa);
     }
 
     @Override
     public void onCombateIniciado(Heroe heroe, Enemigo enemigo) {
+        System.out.println(
+                "¡Combate iniciado entre el héroe " + heroe.getNombre() + " y el enemigo " + enemigo.getNombre() + "!");
 
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onCombateIniciado'");
+        // Simulación básica de combate
+        while (heroe.getVidaActual() > 0 && enemigo.getVidaActual() > 0) {
+            // Héroe ataca primero
+            if (enemigo.getVelocidad() > heroe.getVelocidad()) {
+                System.out.println("El enemigo " + enemigo.getNombre() + " ataca primero.");
+                enemigo.atacar(heroe);
+                if (heroe.estaDerrotado()) {
+                    System.out.println("¡El héroe ha sido derrotado!");
+                    onGameOver(false);
+                    break;
+                }
+                System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
+            } else {
+                System.out.println("El héroe " + heroe.getNombre() + " ataca primero.");
+                heroe.atacar(enemigo);
+                if (enemigo.estaDerrotado()) {
+                    System.out.println("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
+                    mapa.eliminarEnemigo(enemigo);
+                    if (mapa.getEnemigos().isEmpty()) {
+                        System.out.println("¡El héroe ha ganado el combate!");
+                        onGameOver(true);
+                    }
+                }
+                System.out.println("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
+            }
+
+            // Verificar si el enemigo ha sido derrotado
+            if (enemigo.getVidaActual() <= 0) {
+                System.out.println("¡El enemigo " + enemigo.getNombre() + " ha sido derrotado!");
+                mapa.eliminarEnemigo(enemigo);
+                onEnemigoActualizado(enemigo, true);
+                break;
+            }
+        }
     }
 
     @Override
@@ -292,7 +250,10 @@ public class JuegoController implements JuegoObserver {
         imageCache.put("barril", new Image(getClass().getResourceAsStream("/imagenes/barril.png")));
         imageCache.put("suelo", new Image(getClass().getResourceAsStream("/imagenes/suelo.png")));
         imageCache.put("puertaAbierta", new Image(getClass().getResourceAsStream("/imagenes/puertaAbierta.png")));
-        imageCache.put("enemigoTest", new Image(getClass().getResourceAsStream("/imagenes/enemigoTest.png")));
+        imageCache.put("aranha", new Image(getClass().getResourceAsStream("/imagenes/aranha.png")));
+        imageCache.put("goblin", new Image(getClass().getResourceAsStream("/imagenes/goblin.png")));
+        imageCache.put("esqueleto", new Image(getClass().getResourceAsStream("/imagenes/esqueleto.png")));
+        imageCache.put("heroe", new Image(getClass().getResourceAsStream("/imagenes/heroe.png")));
     }
 
     private ImageView crearCelda(Image imagen) {
@@ -300,6 +261,17 @@ public class JuegoController implements JuegoObserver {
         celda.setFitWidth(30);
         celda.setFitHeight(30);
         return celda;
+    }
+
+    // Sistema de turnos
+    private void moverEnemigos() {
+        for (Enemigo enemigo : mapa.getEnemigos()) {
+            enemigo.moverEnemigo(mapa, mapa.getHeroe());
+            if (enemigo.getX() == mapa.getHeroe().getX() && enemigo.getY() == mapa.getHeroe().getY()) {
+                onCombateIniciado(mapa.getHeroe(), enemigo);
+            }
+        }
+        generarMapaDesdeFXML(mapa); // Solo una vez al final
     }
 
     @FXML
@@ -319,13 +291,15 @@ public class JuegoController implements JuegoObserver {
         // Generar caminos
         for (Camino camino : mapa.getCaminos()) {
             ImageView celda = crearCelda(imageCache.get("suelo"));
-            mapaGrid.add(celda, camino.getY(), camino.getX());
+            mapaGrid.add(celda, camino.getX(), camino.getY());
         }
 
         // Generar Enemigos
         for (Enemigo enemigo : mapa.getEnemigos()) {
-            ImageView celda = crearCelda(imageCache.get("enemigoTest"));
-            mapaGrid.add(celda, enemigo.getY(), enemigo.getX());
+            ImageView celdaEnemigo = crearCelda(imageCache.get(enemigo.getNombre().toLowerCase()));
+            ImageView celdaCamino = crearCelda(imageCache.get("suelo"));
+            mapaGrid.add(celdaCamino, enemigo.getX(), enemigo.getY());
+            mapaGrid.add(celdaEnemigo, enemigo.getX(), enemigo.getY());
         }
 
         // Generar obstáculos
@@ -345,25 +319,45 @@ public class JuegoController implements JuegoObserver {
                     System.out.println("No existe ese tipo de obstáculo");
                     continue;
             }
-
             ImageView celda = crearCelda(imageCache.get(tipoImagen));
-            mapaGrid.add(celda, obstaculo.getY(), obstaculo.getX());
+            mapaGrid.add(celda, obstaculo.getX(), obstaculo.getY());
         }
 
-        // Generar entrada y salida
+        // Entrada, héroe y salida
         Entrada entrada = mapa.getEntrada();
         Salida salida = mapa.getSalida();
+        Heroe heroe = mapa.getHeroe();
 
         if (entrada != null) {
             ImageView celdaEntrada = crearCelda(imageCache.get("puerta"));
-            mapaGrid.add(celdaEntrada, entrada.getY(), entrada.getX());
+            mapaGrid.add(celdaEntrada, entrada.getX(), entrada.getY());
         }
-
+        if (heroe != null) {
+            ImageView celdaHeroe = crearCelda(imageCache.get("heroe"));
+            mapaGrid.add(celdaHeroe, heroe.getX(), heroe.getY());
+        }
         if (salida != null) {
             ImageView celdaSalida = crearCelda(imageCache.get("puertaAbierta"));
-            mapaGrid.add(celdaSalida, salida.getY(), salida.getX());
+            mapaGrid.add(celdaSalida, salida.getX(), salida.getY());
         }
     }
+
+    // manejar Eventos de teclado para mover al héroe
+    @FXML
+    private void onKeyPressed(KeyEvent event) {
+        System.out.println("Tecla presionada: " + event.getCode());
+        Heroe heroe = mapa.getHeroe();
+        if (heroe != null) {
+            manejarInputTeclado(event, heroe);
+            generarMapaDesdeFXML(mapa); // Actualiza el mapa visualmente
+        } else {
+            System.out.println("El héroe no está inicializado.");
+        }
+        event.consume(); // Evitar que el evento se propague
+        rootPane.requestFocus(); // Asegurar que el foco regrese al AnchorPane
+        System.out.println("Evento consumido.");
+    }
+
 }
 
 /**

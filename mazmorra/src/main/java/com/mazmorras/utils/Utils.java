@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -40,55 +41,67 @@ public class Utils {
                     TipoEnemigo.valueOf(tipo), percepcionBase, nivelBase);
             auxiliar.add(enemigo);
         }
+        System.out.println("Enemigos cargados desde JSON:");
+        for (Enemigo enemigo : auxiliar) {
+            System.out.println(enemigo.getNombre() + " en (" + enemigo.getX() + ", " + enemigo.getY() + ")");
+        }
         return auxiliar;
     }
 
-    public static Mapa cargarMapaDesdeTxt(InputStream inputStream) throws IOException {
-        Mapa mapa = new Mapa(); // Inicializa el mapa con dimensiones por defecto // ese es el problema que te estoy diciendo, ¿ tu has mirado el wasap lo que te pase?
-        // el problema es que él ha hecho de nuevo un merge y el merge que ha hecho ya no aparece nada
+    public static Mapa cargarMapaDesdeTxt(InputStream inputStream, List<Enemigo> enemigos, int nivel)
+            throws IOException {
+        Mapa mapa = new Mapa();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String linea;
-        int alto = 0; // Inicializa la altura del mapa
-        int ancho = 0; // Inicializa el ancho del mapa
+        int alto = 0;
+        int ancho = 0;
+        List<Enemigo> enemigosColocados = new ArrayList<>();
+
         while ((linea = reader.readLine()) != null) {
-            alto++; // Cuenta las líneas para establecer la altura
+            alto++;
             char[] caracteres = linea.toCharArray();
-            ancho = caracteres.length; // Establece el ancho del mapa
+            ancho = caracteres.length;
             for (int i = 0; i < caracteres.length; i++) {
-                // Aquí puedes procesar cada carácter y construir el mapa
-                // Por ejemplo, si 'X' es un obstáculo, puedes marcarlo en el mapa
                 switch (caracteres[i]) {
                     case '#':
-                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.PARED); // Marcar como pared
+                        mapa.colocarObstaculos(i, alto - 1, TipoObstaculo.PARED);
                         break;
                     case '.':
-                        mapa.colocarCamino(alto - 1, i); // Marcar como camino
+                        mapa.colocarCamino(i, alto - 1);
                         break;
                     case 'B':
-                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.BARRIL); // Marcar como barril
+                        mapa.colocarObstaculos(i, alto - 1, TipoObstaculo.BARRIL);
                         break;
                     case 'E':
-                        mapa.colocarEntrada(alto - 1, i);
+                        mapa.colocarEntrada(i, alto - 1);
                         break;
                     case 'S':
-                        mapa.colocarSalida(alto - 1, i);
+                        mapa.colocarSalida(i, alto - 1);
                         break;
                     case 'C':
-                        mapa.colocarObstaculos(alto - 1, i, TipoObstaculo.CHARCO); // Marcar como charco
+                        mapa.colocarObstaculos(i, alto - 1, TipoObstaculo.CHARCO);
+                        break;
+                    case 'O':
+                        for (Enemigo enemigo : enemigos) {
+                            if (enemigo.getNivel() == nivel && !enemigosColocados.contains(enemigo)) {
+                                enemigo.setX(i);
+                                enemigo.setY(alto - 1);
+                                mapa.colocarEnemigo(enemigo);
+                                enemigosColocados.add(enemigo);
+                                break;
+                            }
+                        }
                         break;
                     default:
-                        System.out.println("Contenido desconocido");
+                        System.out.println("Contenido desconocido en (" + i + ", " + (alto - 1) + "): " + caracteres[i]);
                         break;
                 }
-
             }
         }
-        mapa.setAlto(alto); // Establece la altura del mapa
-        mapa.setAncho(ancho); // Establece el ancho del mapa
-        return mapa; // dimensiones del
-        // mapa
-        // Implementar la lógca para cargar el mapa desde un archivo de texto
-        // y devolver una instancia de Mapa.
-        // return null; // Placeholder, implementar correctamente
+
+        mapa.setAlto(alto);
+        mapa.setAncho(ancho);
+        mapa.setEnemigos(enemigosColocados);
+        return mapa;
     }
 }

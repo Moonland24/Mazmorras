@@ -1,5 +1,7 @@
 package com.mazmorras.models;
 
+import com.mazmorras.enums.Direccion;
+
 /**
  * Clase abstracta que representa un personaje genérico en el juego.
  * 
@@ -55,7 +57,7 @@ public abstract class Personaje {
      * @param mapa     Mapa en el que se encuentra el personaje.
      * @param objetivo Personaje objetivo hacia el que se mueve.
      */
-    public abstract void mover(Mapa mapa, Personaje objetivo);
+    public abstract void mover(Mapa mapa, Direccion direccion);
 
     // Método para realizar un ataque a otro personaje
     public boolean atacar(Personaje objetivo) {
