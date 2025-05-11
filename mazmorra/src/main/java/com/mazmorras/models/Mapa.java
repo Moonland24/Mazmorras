@@ -1,8 +1,6 @@
 package com.mazmorras.models;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class Mapa {
         this.obstaculos = new ArrayList<>(); // Inicializar la lista de obstáculos
         this.caminos = new ArrayList<>(); // Inicializar la lista de caminos
         this.enemigos = new ArrayList<>(); // Inicializar la lista de enemigos
+        this.heroe = null; // Inicializar el héroe
     }
 
     public void setAncho(int ancho) {
@@ -64,8 +63,11 @@ public class Mapa {
         return heroe;
     }
 
-    public Enemigo[] getEnemigos() {
-        return enemigos.toArray(new Enemigo[0]);
+    public void setHeroe(Heroe heroe) {
+        this.heroe = heroe;
+    }
+    public List<Enemigo> getEnemigos() {
+        return enemigos;
     }
 
     public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
@@ -143,7 +145,7 @@ public class Mapa {
     public void colocarEnemigo(Enemigo enemigo) {
         if (enemigo != null) {
             enemigos.add(enemigo);
-            System.out.println("El enemigo ha sido colocado en: " + enemigo.getX() + ", " + enemigo.getY());
+            System.out.println("El enemigo ha sido colocado en: " + enemigo.getY() + ", " + enemigo.getX());
         } else {
             System.out.println("El enemigo no se pudo colocar");
         }

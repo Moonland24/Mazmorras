@@ -1,5 +1,6 @@
 package com.mazmorras.models;
 
+import com.mazmorras.enums.Direccion;
 import com.mazmorras.enums.TipoEnemigo;
 
 public class Enemigo extends Personaje {
@@ -30,22 +31,34 @@ public class Enemigo extends Personaje {
         this.percepcion = percepcion;
     }
 
-    @Override
-    public void mover(Mapa mapa, Personaje objetivo) {
+    public void moverEnemigo(Mapa mapa, Personaje objetivo) {
         // IA simple: perseguir al jugador si está en rango
         if (estaEnRango(objetivo, this.percepcion)) {
             int[] nuevaPos = mapa.encontrarCamino(x, y, objetivo.getX(), objetivo.getY());
-            setX(nuevaPos[0]);
-            setY(nuevaPos[1]);
-        } else {
-            // Movimiento aleatorio
-            int[] movimientos = { -1, 0, 1 };
-            int dx = movimientos[(int) (Math.random() * 3)];
-            int dy = movimientos[(int) (Math.random() * 3)];
+            if (nuevaPos != null
 
-            if (mapa.isValidMove(x + dx, y + dy)) {
-                setX(x + dx);
-                setY(y + dy);
+                    && nuevaPos[0] >= 0 && nuevaPos[0] < mapa.getAncho()
+                    && nuevaPos[1] >= 0 && nuevaPos[1] < mapa.getAlto()
+                    && mapa.isValidMove(nuevaPos[0], nuevaPos[1])) {
+                setX(nuevaPos[0]);
+                setY(nuevaPos[1]);
+            }
+        } else {
+            // Movimiento aleatorio SOLO si es válido y dentro de los límites
+            int[][] movimientos = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+            java.util.List<int[]> posibles = new java.util.ArrayList<>();
+            for (int[] mov : movimientos) {
+                int nx = x + mov[0];
+                int ny = y + mov[1];
+                if (nx >= 0 && nx < mapa.getAncho() && ny >= 0 && ny < mapa.getAlto()
+                        && mapa.isValidMove(nx, ny)) {
+                    posibles.add(new int[] { nx, ny });
+                }
+            }
+            if (!posibles.isEmpty()) {
+                int[] elegido = posibles.get((int) (Math.random() * posibles.size()));
+                setX(elegido[0]);
+                setY(elegido[1]);
             }
         }
     }
@@ -63,5 +76,11 @@ public class Enemigo extends Personaje {
                 " ATK: " + getAtaque() +
                 " DEF: " + getDefensa() +
                 " SPD: " + getVelocidad();
+    }
+
+    @Override
+    public void mover(Mapa mapa, Direccion direccion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mover'");
     }
 }
