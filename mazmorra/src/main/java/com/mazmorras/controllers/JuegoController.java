@@ -155,14 +155,14 @@ public class JuegoController implements JuegoObserver {
     @Override
     public void onCombateCercano(Heroe heroe, Enemigo enemigo) {
         System.out.println("¡El héroe " + heroe.getNombre() + " está cerca del enemigo " + enemigo.getNombre() + "!");
-        turnoInfo.setText("¡Combate cercano!");
+        turnoInfo.setText("¡Pelea!");
         if (heroe.getX() == enemigo.getX() && heroe.getY() == enemigo.getY()) {
             System.out.println("¡El héroe y el enemigo están en la misma posición! Iniciando combate...");
-            turnoInfo.setText("¡Combate iniciado!");
+            turnoInfo.setText("¡Combatiendo!");
             onCombateIniciado(heroe, enemigo);
         } else {
             System.out.println("El héroe y el enemigo están cerca, pero no en la misma posición.");
-            turnoInfo.setText("¡Combate cercano!");
+            turnoInfo.setText("¡Pelea!");
         }
     }
 
@@ -203,7 +203,7 @@ public class JuegoController implements JuegoObserver {
     @Override
     public void onHeroeMovido(Heroe heroe) {
         System.out.println("El héroe se ha movido a la posición: (" + heroe.getX() + ", " + heroe.getY() + ")");
-        turnoInfo.setText("El héroe se ha movido a la posición: (" + heroe.getX() + ", " + heroe.getY() + ")");
+        turnoInfo.setText("Héroe movido a la posición: (" + heroe.getX() + ", " + heroe.getY() + ")");
         generarMapaDesdeFXML(mapa);
     }
 
@@ -212,10 +212,10 @@ public class JuegoController implements JuegoObserver {
     public void onEnemigoActualizado(Enemigo enemigo, boolean eliminado) {
         if (eliminado) {
             System.out.println("El enemigo " + enemigo.getNombre() + " ha sido eliminado.");
-            turnoInfo.setText("El enemigo " + enemigo.getNombre() + " ha sido eliminado.");
+            turnoInfo.setText("Enemigo " + enemigo.getNombre() + " eliminado.");
         } else {
             System.out.println("El enemigo " + enemigo.getNombre() + " ha sido actualizado.");
-            turnoInfo.setText("El enemigo " + enemigo.getNombre() + " ha sido actualizado.");
+            turnoInfo.setText("Enemigo " + enemigo.getNombre() + " actualizado.");
         }
         generarMapaDesdeFXML(mapa);
     }
@@ -225,7 +225,7 @@ public class JuegoController implements JuegoObserver {
     public void onCombateIniciado(Heroe heroe, Enemigo enemigo) {
         System.out.println(
                 "¡Combate iniciado entre el héroe " + heroe.getNombre() + " y el enemigo " + enemigo.getNombre() + "!");
-                turnoInfo.setText("¡Combate iniciado!");
+                turnoInfo.setText("¡Combate!");
 
         // Simulación básica de combate
         while (heroe.getVidaActual() > 0 && enemigo.getVidaActual() > 0) {
@@ -233,10 +233,10 @@ public class JuegoController implements JuegoObserver {
             if (enemigo.getVelocidad() > heroe.getVelocidad()) {
                 // Enemigo ataca primero
                 System.out.println("El enemigo " + enemigo.getNombre() + " ataca primero.");
-                turnoInfo.setText("El enemigo " + enemigo.getNombre() + " ataca primero.");
+                turnoInfo.setText("Enemigo " + enemigo.getNombre() + " ataca primero.");
                 enemigo.atacar(heroe);
                 System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
-                turnoInfo.setText("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
+                turnoInfo.setText("Enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
                 if (heroe.estaDerrotado()) {
                     System.out.println("¡El héroe ha sido derrotado!");
                     onGameOver(false);
@@ -246,15 +246,15 @@ public class JuegoController implements JuegoObserver {
                 // Si el héroe sigue vivo, ataca
                 heroe.atacar(enemigo);
                 System.out.println("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
-                turnoInfo.setText("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
+                turnoInfo.setText("Héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
                 if (enemigo.estaDerrotado()) {
                     System.out.println("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
-                    turnoInfo.setText("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
+                    turnoInfo.setText("¡Héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
                     mapa.eliminarEnemigo(enemigo);
                     onEnemigoActualizado(enemigo, true);
                     if (mapa.getEnemigos().isEmpty()) {
                         System.out.println("¡El héroe ha ganado el combate!");
-                        turnoInfo.setText("¡El héroe ha ganado el combate!");
+                        turnoInfo.setText("¡Héroe ha ganado el combate!");
                         onGameOver(true);
                     }
                     break;
@@ -265,19 +265,19 @@ public class JuegoController implements JuegoObserver {
             } else {
                 // Héroe ataca primero
                 System.out.println("El héroe " + heroe.getNombre() + " ataca primero.");
-                turnoInfo.setText("El héroe " + heroe.getNombre() + " ataca primero.");
+                turnoInfo.setText("Héroe " + heroe.getNombre() + " ataca primero.");
                 heroe.atacar(enemigo);
                 // Si el enemigo es derrotado se canta victoria
                 System.out.println("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
-                turnoInfo.setText("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
+                turnoInfo.setText("Héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
                 if (enemigo.estaDerrotado()) {
                     System.out.println("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
-                    turnoInfo.setText("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
+                    turnoInfo.setText("¡Héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
                     mapa.eliminarEnemigo(enemigo);
                     onEnemigoActualizado(enemigo, true);
                     if (mapa.getEnemigos().isEmpty()) {
                         System.out.println("¡El héroe ha ganado el combate!");
-                        turnoInfo.setText("¡El héroe ha ganado el combate!");
+                        turnoInfo.setText("¡Héroe ha ganado el combate!");
                         onGameOver(true);
                     }
                     break;
@@ -285,10 +285,10 @@ public class JuegoController implements JuegoObserver {
                 // Si el enemigo sigue vivo, ataca
                 enemigo.atacar(heroe);
                 System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
-                turnoInfo.setText("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
+                turnoInfo.setText("Enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
                 if (heroe.estaDerrotado()) {
                     System.out.println("¡El héroe ha sido derrotado!");
-                    turnoInfo.setText("¡El héroe ha sido derrotado!");
+                    turnoInfo.setText("¡Héroe derrotado!");
                     onGameOver(false);
                     break;
                 }
@@ -310,19 +310,33 @@ public class JuegoController implements JuegoObserver {
     // Se establece el resultado del combate ya sea victoria o gameover
     @Override
     public void onGameOver(boolean victoria) {
-
+        System.out.println("Ejecutando onGameOver: " + (victoria ? "Victoria" : "Derrota"));
+        
         if (victoria) {
-            // Muestra el pane de victoria
-            mapaGrid.setVisible(false);
-            statsPane.setVisible(false);
+            // Mostrar panel de victoria
             victoryPane.setVisible(true);
-            textoFinal.setText("¡Felicidades! Has ganado el juego.");
-
+            gameOverPane.setVisible(false);
         } else {
-            // Muestra el pane de Game Over
-            mapaGrid.setVisible(false);
-            statsPane.setVisible(false);
+            // Mostrar panel de game over
+            victoryPane.setVisible(false);
             gameOverPane.setVisible(true);
+        }
+
+        // Asegurar que los paneles están por encima
+        if (victoryPane != null) {
+            victoryPane.toFront();
+        }
+        if (gameOverPane != null) {
+            gameOverPane.toFront();
+        }
+
+        // Actualizar las estadísticas una última vez
+        if (mapa != null && mapa.getHeroe() != null) {
+            Heroe heroe = mapa.getHeroe();
+            vidaLabel.setText("Vida: " + heroe.getVidaActual());
+            ataqueLabel.setText("Ataque: " + heroe.getAtaque());
+            defensaLabel.setText("Defensa: " + heroe.getDefensa());
+            velocidadLabel.setText("Velocidad: " + heroe.getVelocidad());
         }
     }
 
@@ -331,8 +345,10 @@ public class JuegoController implements JuegoObserver {
     private void volverJugar() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/creacionpersonaje.fxml"));
         Parent root = loader.load();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/creacionpersonaje.css").toExternalForm());
         Stage stage = (Stage) volverJugar.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(scene);
         stage.show();
     }
 
