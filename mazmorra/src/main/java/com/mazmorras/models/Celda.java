@@ -1,5 +1,7 @@
 package com.mazmorras.models;
 
+//Representa una celda en una cuadrícula o matriz con coordenadas x e y.
+//Esta clase proporciona métodos para obtener y establecer las coordenadas de la celda.
 public class Celda {
     private int x;
     private int y;

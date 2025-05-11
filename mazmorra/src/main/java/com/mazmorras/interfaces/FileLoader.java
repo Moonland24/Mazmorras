@@ -1,5 +1,6 @@
 package com.mazmorras.interfaces;
 
+//Interface del mapa y su contenido
 import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
 import java.util.List;

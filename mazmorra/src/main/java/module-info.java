@@ -3,8 +3,6 @@ module com.mazmorras {
     requires javafx.fxml;
     requires json.simple;
 
-    
-
     opens com.mazmorras.controllers to javafx.fxml;
     exports com.mazmorras;
 }
