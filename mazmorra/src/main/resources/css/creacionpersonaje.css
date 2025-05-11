@@ -3,6 +3,8 @@
     -fx-background-image: url('../imagenes/fondo.png'); 
 }
 
+/*textos*/
+
 .label, .text {
     -fx-text-fill: #d4af37; 
     -fx-font-weight: bold;
@@ -15,6 +17,7 @@
     -fx-text-fill: #e0d6b5; 
 }
 
+/* botones*/
 .button {
     -fx-background-color: linear-gradient(to bottom, #5a4c42, #3e342b); 
     -fx-text-fill: #e0d6b5;
@@ -45,8 +48,6 @@
 #errorLabel {
     -fx-text-fill: #b22222; 
 }
-
-
 
 /* Estilos del mapa */
 .mapa-grid {
