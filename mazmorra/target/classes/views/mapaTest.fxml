@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" onKeyPressed="#onKeyPressed" xmlns:fx="http://javafx.com/fxml" fx:controller="com.mazmorras.controllers.JuegoController" 
-            >
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="rootPane" onKeyPressed="#onKeyPressed" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.mazmorras.controllers.JuegoController">
     <children>
-        <GridPane fx:id="mapaGrid" layoutX="10.0" layoutY="10.0" hgap="5.0" vgap="5.0">
-            <!-- Aquí se generará dinámicamente el mapa -->
-        </GridPane>
+        <!-- Contenedor principal: mapa a la izquierda, stats a la derecha -->
+        <HBox layoutX="10.0" layoutY="10.0" spacing="30.0">
+            <!-- Mapa generado dinámicamente -->
+            <GridPane fx:id="mapaGrid" hgap="5.0" vgap="5.0" />
+
+            <!-- Panel de estadísticas fijo a la derecha -->
+            <GridPane fx:id="statsPane" maxWidth="220" minWidth="180" vgap="10">
+                <children>
+                    <Label style="-fx-font-weight: bold;" text="Estadísticas del Héroe" GridPane.rowIndex="0" />
+                    <Label fx:id="vidaLabel" text="Vida: 100/100" GridPane.rowIndex="1" />
+                    <Label fx:id="ataqueLabel" text="Ataque: 10" GridPane.rowIndex="2" />
+                    <Label fx:id="defensaLabel" text="Defensa: 5" GridPane.rowIndex="3" />
+                    <Label fx:id="velocidadLabel" text="Velocidad: 7" GridPane.rowIndex="4" />
+                    <Label fx:id="turnoInfo" text="Info de la partida" GridPane.rowIndex="5" />
+                    <Label fx:id="turnoLabel" text="Turno: 1" GridPane.rowIndex="6" />
+                    <!-- Puedes añadir más estadísticas aquí -->
+                </children>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+        </HBox>
+
+        <!-- Pane de Victoria (oculto por defecto) -->
+        <AnchorPane fx:id="victoryPane" style="-fx-background-color: rgba(0,255,0,0.3);" visible="false">
+            <children>
+                <Label layoutX="120" layoutY="80" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="¡Victoria!" />
+                <Button fx:id="volverJugar" layoutX="120" layoutY="140" onAction="#volverJugar" text="Volver a jugar" />
+                <Button fx:id="salir" layoutX="250" layoutY="140" onAction="#salirJuego" text="Salir" />
+            </children>
+        </AnchorPane>
+
+        <!-- Pane de Game Over (oculto por defecto) -->
+        <AnchorPane fx:id="gameOverPane" style="-fx-background-color: rgba(255,0,0,0.3);" visible="false">
+            <children>
+                <Label layoutX="120" layoutY="80" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="Game Over" />
+                <Button fx:id="volverJugar" layoutX="120" layoutY="140" onAction="#volverJugar" text="Volver a jugar" />
+                <Button fx:id="salir" layoutX="250" layoutY="140" onAction="#salirJuego" text="Salir" />
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

@@ -35,23 +35,28 @@ public class Enemigo extends Personaje {
         // IA simple: perseguir al jugador si está en rango
         if (estaEnRango(objetivo, this.percepcion)) {
             int[] nuevaPos = mapa.encontrarCamino(x, y, objetivo.getX(), objetivo.getY());
-            if (nuevaPos != null && mapa.isValidMove(nuevaPos[0], nuevaPos[1])) {
+            if (nuevaPos != null
+
+                    && nuevaPos[0] >= 0 && nuevaPos[0] < mapa.getAncho()
+                    && nuevaPos[1] >= 0 && nuevaPos[1] < mapa.getAlto()
+                    && mapa.isValidMove(nuevaPos[0], nuevaPos[1])) {
                 setX(nuevaPos[0]);
                 setY(nuevaPos[1]);
             }
         } else {
-            // Movimiento aleatorio SOLO si es válido
-            int[][] movimientos = { {0,1}, {1,0}, {0,-1}, {-1,0} };
+            // Movimiento aleatorio SOLO si es válido y dentro de los límites
+            int[][] movimientos = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
             java.util.List<int[]> posibles = new java.util.ArrayList<>();
             for (int[] mov : movimientos) {
                 int nx = x + mov[0];
                 int ny = y + mov[1];
-                if (mapa.isValidMove(nx, ny)) {
-                    posibles.add(new int[]{nx, ny});
+                if (nx >= 0 && nx < mapa.getAncho() && ny >= 0 && ny < mapa.getAlto()
+                        && mapa.isValidMove(nx, ny)) {
+                    posibles.add(new int[] { nx, ny });
                 }
             }
             if (!posibles.isEmpty()) {
-                int[] elegido = posibles.get((int)(Math.random() * posibles.size()));
+                int[] elegido = posibles.get((int) (Math.random() * posibles.size()));
                 setX(elegido[0]);
                 setY(elegido[1]);
             }
