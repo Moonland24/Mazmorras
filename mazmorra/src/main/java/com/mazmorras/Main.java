@@ -19,8 +19,11 @@ public class Main extends Application {
         // Configurar la escena y el stage
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/creacionpersonaje.css").toExternalForm());
-        primaryStage.setTitle("Prueba de Creacion de Personaje"); // Título de la ventana
+        
+        // Configuración de la ventana
+        primaryStage.setTitle("Dragones y Mazmorras");
         primaryStage.setScene(scene);
+        
         primaryStage.show();
     }
 
