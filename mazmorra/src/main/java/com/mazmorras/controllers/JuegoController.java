@@ -190,38 +190,54 @@ public class JuegoController implements JuegoObserver {
         System.out.println(
                 "¡Combate iniciado entre el héroe " + heroe.getNombre() + " y el enemigo " + enemigo.getNombre() + "!");
 
-        // Simulación básica de combate
         while (heroe.getVidaActual() > 0 && enemigo.getVidaActual() > 0) {
-            // Héroe ataca primero
+            // Determinar quién ataca primero según la velocidad
             if (enemigo.getVelocidad() > heroe.getVelocidad()) {
+                // Enemigo ataca primero
                 System.out.println("El enemigo " + enemigo.getNombre() + " ataca primero.");
                 enemigo.atacar(heroe);
+                System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
                 if (heroe.estaDerrotado()) {
                     System.out.println("¡El héroe ha sido derrotado!");
                     onGameOver(false);
                     break;
                 }
-                System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
-            } else {
-                System.out.println("El héroe " + heroe.getNombre() + " ataca primero.");
+                // Si el héroe sigue vivo, ataca
                 heroe.atacar(enemigo);
+                System.out.println("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
                 if (enemigo.estaDerrotado()) {
                     System.out.println("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
                     mapa.eliminarEnemigo(enemigo);
+                    onEnemigoActualizado(enemigo, true);
                     if (mapa.getEnemigos().isEmpty()) {
                         System.out.println("¡El héroe ha ganado el combate!");
                         onGameOver(true);
                     }
+                    break;
                 }
+            } else {
+                // Héroe ataca primero
+                System.out.println("El héroe " + heroe.getNombre() + " ataca primero.");
+                heroe.atacar(enemigo);
                 System.out.println("El héroe ataca. Vida del enemigo: " + enemigo.getVidaActual());
-            }
-
-            // Verificar si el enemigo ha sido derrotado
-            if (enemigo.getVidaActual() <= 0) {
-                System.out.println("¡El enemigo " + enemigo.getNombre() + " ha sido derrotado!");
-                mapa.eliminarEnemigo(enemigo);
-                onEnemigoActualizado(enemigo, true);
-                break;
+                if (enemigo.estaDerrotado()) {
+                    System.out.println("¡El héroe ha derrotado al enemigo " + enemigo.getNombre() + "!");
+                    mapa.eliminarEnemigo(enemigo);
+                    onEnemigoActualizado(enemigo, true);
+                    if (mapa.getEnemigos().isEmpty()) {
+                        System.out.println("¡El héroe ha ganado el combate!");
+                        onGameOver(true);
+                    }
+                    break;
+                }
+                // Si el enemigo sigue vivo, ataca
+                enemigo.atacar(heroe);
+                System.out.println("El enemigo ataca. Vida del héroe: " + heroe.getVidaActual());
+                if (heroe.estaDerrotado()) {
+                    System.out.println("¡El héroe ha sido derrotado!");
+                    onGameOver(false);
+                    break;
+                }
             }
         }
     }
@@ -267,8 +283,8 @@ public class JuegoController implements JuegoObserver {
     private void moverEnemigos() {
         for (Enemigo enemigo : mapa.getEnemigos()) {
             enemigo.moverEnemigo(mapa, mapa.getHeroe());
-            if (enemigo.getX() == mapa.getHeroe().getX() && enemigo.getY() == mapa.getHeroe().getY()) {
-                onCombateIniciado(mapa.getHeroe(), enemigo);
+            if(enemigo.estaEnRango(mapa.getHeroe(), enemigo.getPercepcion())) {
+                onCombateCercano(mapa.getHeroe(), enemigo);
             }
         }
         generarMapaDesdeFXML(mapa); // Solo una vez al final
@@ -297,8 +313,6 @@ public class JuegoController implements JuegoObserver {
         // Generar Enemigos
         for (Enemigo enemigo : mapa.getEnemigos()) {
             ImageView celdaEnemigo = crearCelda(imageCache.get(enemigo.getNombre().toLowerCase()));
-            ImageView celdaCamino = crearCelda(imageCache.get("suelo"));
-            mapaGrid.add(celdaCamino, enemigo.getX(), enemigo.getY());
             mapaGrid.add(celdaEnemigo, enemigo.getX(), enemigo.getY());
         }
 

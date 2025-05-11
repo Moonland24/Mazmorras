@@ -82,6 +82,9 @@ public class Utils {
                         mapa.colocarObstaculos(i, alto - 1, TipoObstaculo.CHARCO);
                         break;
                     case 'O':
+                        // Primero, coloca el suelo
+                        mapa.colocarCamino(i, alto - 1);
+                        // Luego, coloca el enemigo encima
                         for (Enemigo enemigo : enemigos) {
                             if (enemigo.getNivel() == nivel && !enemigosColocados.contains(enemigo)) {
                                 enemigo.setX(i);
