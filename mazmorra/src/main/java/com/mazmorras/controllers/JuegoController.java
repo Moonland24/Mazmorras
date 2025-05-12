@@ -38,41 +38,65 @@ import org.json.simple.parser.ParseException;
  * @author Juanfran
  */
 public class JuegoController implements JuegoObserver {
-    // Referencias a los distintos paneles y controles de la interfaz
+    /**
+     * Referencias a los distintos paneles y controles de la interfaz
+     */
     @FXML
-    AnchorPane rootPane;         //Referencia al pane principal de la vista
+    private AnchorPane rootPane;         // Referencia al pane principal de la vista
+
+    @FXML 
+    private AnchorPane gamePane;         // Referencia al pane del juego
+
     @FXML
-    AnchorPane gamePane;         //Referencia al pane del juego
+    private GridPane statsPane;          // Referencia al pane de estadísticas
+
     @FXML
-    GridPane statsPane;          //Referencia al pane de estadísticas
+    private AnchorPane enemiesPane;      // Referencia al pane de enemigos
+
     @FXML
-    AnchorPane enemiesPane;      //Referencia al pane de enemigos
+    private AnchorPane gameOverPane;     // Referencia al pane de Game Over
+
     @FXML
-    AnchorPane gameOverPane;     //Referencia al pane de Game Over
+    private AnchorPane victoryPane;      // Referencia al pane de Victoria
+
     @FXML
-    AnchorPane victoryPane;      //Referencia al pane de Victoria
+    private AnchorPane pausePane;        // Referencia al pane de Pausa
+
     @FXML
-    AnchorPane pausePane;        //Referencia al pane de Pausa
+    private AnchorPane menuPane;         // Referencia al pane del menú
+
     @FXML
-    AnchorPane menuPane;         //Referencia al pane del menú
+    private Label vidaLabel;             // Etiqueta para mostrar la vida del héroe
+
     @FXML
-    Label vidaLabel;             //Etiqueta para mostrar la vida del héroe
+    private Label ataqueLabel;           // Etiqueta para mostrar el ataque del héroe
+
     @FXML
-    Label ataqueLabel;           //Etiqueta para mostrar el ataque del héroe
+    private Label defensaLabel;          // Etiqueta para mostrar la defensa del héroe
+
     @FXML
-    Label defensaLabel;          //Etiqueta para mostrar la defensa del héroe
+    private Label velocidadLabel;        // Etiqueta para mostrar la velocidad del héroe
+
     @FXML
-    Label velocidadLabel;        //Etiqueta para mostrar la velocidad del héroe
+    private Label textoFinal;            // Texto que se muestra al finalizar el juego
+
     @FXML
-    Label textoFinal;            //Texto final que se muestra al finalizar el juego
+    private Button volverJugarVictoria;  // Botón para volver a jugar en pantalla de victoria
+
     @FXML
-    Button volverJugar;
+    private Button salirVictoria;        // Botón para salir en pantalla de victoria
+
     @FXML
-    Label turnoInfo;            //Etiqueta para mostrar información del turno
+    private Button volverJugarGameOver;  // Botón para volver a jugar en pantalla de game over
+
     @FXML
-    Button salir;
+    private Button salirGameOver;        // Botón para salir en pantalla de game over
+
     @FXML
-    Label turnoLabel;
+    private Label turnoInfo;             // Etiqueta para mostrar información del turno
+
+    @FXML
+    private Label turnoLabel;            // Etiqueta para mostrar el número de turno actual
 
     @FXML
     private GridPane mapaGrid;
@@ -90,7 +114,8 @@ public class JuegoController implements JuegoObserver {
     @FXML
     private void initialize() throws IOException, URISyntaxException, ParseException {
         System.out.println("Inicializando JuegoController...");
-        //Obtiene la URL del recurso
+        
+        // Obtiene la URL del recurso
         URL mapaUrl = getClass().getResource("/mapas/nivel1.txt");
         URL enemigosUrl = getClass().getResource("/enemigos/enemigos.json");
 
@@ -99,7 +124,7 @@ public class JuegoController implements JuegoObserver {
             return;
         }
 
-        //Crea el Path y carga el mapa
+        // Crea el Path y carga el mapa
         Path mapaPath = Paths.get(mapaUrl.toURI());
         Path enemigosPath = Paths.get(enemigosUrl.toURI());
         List<Enemigo> enemigos = Utils.cargarDesdeJSON(enemigosPath.toString());
@@ -119,7 +144,27 @@ public class JuegoController implements JuegoObserver {
             System.out.println("Mapa inicializado correctamente.");
         }
 
-        //Espera a que la escena esté disponible
+        // Configurar los eventos para los botones de victoria/derrota
+        volverJugarVictoria.setOnAction(event -> {
+            try {
+                volverJugar();
+            } catch (IOException e) {
+                System.err.println("Error al volver a jugar desde victoria: " + e.getMessage());
+            }
+        });
+        
+        volverJugarGameOver.setOnAction(event -> {
+            try {
+                volverJugar();
+            } catch (IOException e) {
+                System.err.println("Error al volver a jugar desde game over: " + e.getMessage());
+            }
+        });
+        
+        salirVictoria.setOnAction(event -> salirJuego());
+        salirGameOver.setOnAction(event -> salirJuego());
+
+        // Espera a que la escena esté disponible
         rootPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.setOnKeyPressed(this::onKeyPressed);
@@ -386,11 +431,12 @@ public class JuegoController implements JuegoObserver {
      */
     @FXML
     private void volverJugar() throws IOException {
+        // Corregir la referencia al botón
+        Stage stage = (Stage) volverJugarVictoria.getScene().getWindow(); // o volverJugarGameOver dependiendo del contexto
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/creacionpersonaje.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/creacionpersonaje.css").toExternalForm());
-        Stage stage = (Stage) volverJugar.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
@@ -401,8 +447,9 @@ public class JuegoController implements JuegoObserver {
     @FXML
     private void salirJuego() {
         System.out.println("Saliendo del juego...");
-        Stage stage = (Stage) salir.getScene().getWindow();
-        stage.close(); // Cierra la ventana
+        // Corregir la referencia al botón
+        Stage stage = (Stage) salirVictoria.getScene().getWindow(); // o salirGameOver dependiendo del contexto
+        stage.close();
     }
 
     //Mapa que inicializa todas las imagenes que componen al juego
