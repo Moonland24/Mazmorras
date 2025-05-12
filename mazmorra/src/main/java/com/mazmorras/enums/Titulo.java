@@ -1,6 +1,11 @@
 package com.mazmorras.enums;
 
-//Representa los tipos de cosas naturales que tiene el mapa
+/**
+ * Enum que representa los tipos de elementos naturales que puede tener el mapa.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public enum Titulo {
     SUELO, PARED, ENTRADA, SALIDA, OBSTACULO,
 }
