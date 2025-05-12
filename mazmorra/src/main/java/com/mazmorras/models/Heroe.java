@@ -3,8 +3,12 @@ package com.mazmorras.models;
 import com.mazmorras.enums.Direccion;
 
 /**
- * Clase que representa al héroe protagonista controlado por el jugador.
- * Extiende la clase abstracta Personaje.
+ * Representa al héroe principal controlado por el jugador.
+ * Hereda de la clase abstracta {@link Personaje} y sobrescribe
+ * su comportamiento de movimiento para adaptarse a la entrada del usuario.
+ * 
+ * Este personaje puede desplazarse por el mapa en las cuatro direcciones cardinales,
+ * siempre que el movimiento sea válido.
  * 
  * @author Inma
  * @author JuanFran
@@ -12,15 +16,16 @@ import com.mazmorras.enums.Direccion;
 public class Heroe extends Personaje {
 
     /**
-     * Constructor para inicializar los atributos del héroe.
-     * 
+     * Crea una nueva instancia del héroe con los atributos especificados.
+     *
      * @param nombre     Nombre del héroe.
-     * @param x          Posición X inicial en el mapa.
-     * @param y          Posición Y inicial en el mapa.
+     * @param x          Coordenada X inicial en el mapa.
+     * @param y          Coordenada Y inicial en el mapa.
      * @param vidaMaxima Vida máxima del héroe.
-     * @param ataque     Valor de ataque del héroe.
-     * @param defensa    Valor de defensa del héroe.
-     * @param velocidad  Velocidad del héroe.
+     * @param ataque     Valor de ataque.
+     * @param defensa    Valor de defensa.
+     * @param velocidad  Velocidad de movimiento.
+     * @param nivel      Nivel inicial del héroe.
      */
     public Heroe(String nombre, int x, int y, int vidaMaxima, int ataque, int defensa, int velocidad, int nivel) {
         // Llamada al constructor de la clase base (Personaje) para inicializar los
@@ -29,12 +34,16 @@ public class Heroe extends Personaje {
     }
 
     /**
-     * Método para mover al héroe en el mapa. El movimiento se controla mediante
-     * las teclas de flecha o WASD.
+     * Mueve al héroe en el mapa según la dirección especificada.
      * 
-     * @param mapa     Mapa en el que se encuentra el héroe.
-     * @param direccion No se utiliza en el caso del héroe, pero se incluye para
-     *                 cumplir con la firma del método abstracto.
+     * Valida que el movimiento no lleve al héroe fuera de los límites del mapa
+     * ni a una celda ocupada por un obstáculo. Este método es invocado por la lógica
+     * de control del usuario (teclas de dirección o WASD).
+     *
+     * @param mapa      Instancia del mapa donde se encuentra el héroe.
+     * @param direccion Dirección del movimiento solicitado.
+     * @throws IllegalArgumentException Si el mapa o la dirección son nulos.
+     * @throws IllegalStateException Si el movimiento es inválido.
      */
     @Override
     public void mover(Mapa mapa, Direccion direccion) {
@@ -79,8 +88,10 @@ public class Heroe extends Personaje {
     }
 
     /**
-     * Método para representar al héroe como una cadena de texto.
-     * Incluye información adicional específica del héroe.
+     * Devuelve una representación en texto del héroe.
+     * Incluye nombre, nivel, vida actual y máxima, ataque, defensa y velocidad.
+     *
+     * @return Cadena con los datos principales del héroe.
      */
     @Override
     public String toString() {
