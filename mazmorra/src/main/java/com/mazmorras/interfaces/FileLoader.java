@@ -1,10 +1,15 @@
 package com.mazmorras.interfaces;
 
-//Interface del mapa y su contenido
 import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
 import java.util.List;
 
+/**
+ * Interfaz para la carga de archivos relacionados con el mapa, enemigos y estadísticas del héroe.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public interface FileLoader {
     /**
      * Carga un mapa desde un archivo.

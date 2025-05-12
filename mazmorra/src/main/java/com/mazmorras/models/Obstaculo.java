@@ -2,10 +2,14 @@ package com.mazmorras.models;
 
 import com.mazmorras.enums.TipoObstaculo;
 
-
-///La clase Obstaculo representa un obstáculo en la mazmorra, que es un tipo de celda (Celda).
-//Contiene información sobre el tipo de obstáculo y su posición.
-//Esta clase extiende la clase Celda y añade funcionalidad específica para los obstáculos.
+/**
+ * La clase Obstaculo representa un obstáculo en la mazmorra, que es un tipo de celda (Celda).
+ * Contiene información sobre el tipo de obstáculo y su posición.
+ * Esta clase extiende la clase Celda y añade funcionalidad específica para los obstáculos.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public class Obstaculo extends Celda {
 
     private TipoObstaculo tipoObstaculo;

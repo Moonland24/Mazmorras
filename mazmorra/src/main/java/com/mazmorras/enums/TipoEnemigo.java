@@ -1,6 +1,11 @@
 package com.mazmorras.enums;
 
-//Representa los tipos básicos de enemigos
+/**
+ * Enum que representa los tipos básicos de enemigos del juego.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public enum TipoEnemigo {
     GOBLIN,
     ORCO,

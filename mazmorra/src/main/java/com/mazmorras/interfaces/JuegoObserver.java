@@ -1,14 +1,19 @@
 package com.mazmorras.interfaces;
 
-//Interface de todo lo que ocurre dentro del juego
 import com.mazmorras.models.Mapa;
 import com.mazmorras.models.Heroe;
 import com.mazmorras.models.Enemigo;
 
+/**
+ * Interfaz para observar y reaccionar a los eventos principales del juego.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public interface JuegoObserver {
     /**
      * Notifica cambios en el estado del juego.
-     * @param juego Instancia actual del juego.
+     * @param mapa Instancia actual del mapa.
      */
     void onJuegoActualizado(Mapa mapa);
 
@@ -33,11 +38,12 @@ public interface JuegoObserver {
     void onCombateIniciado(Heroe heroe, Enemigo enemigo);
 
     /**
-     * comprobar si el heroe esta cerca del enemigo
+     * Notifica cuando el héroe está cerca de un enemigo.
      * @param heroe Héroe en combate.
      * @param enemigo Enemigo en combate.
      */
     void onCombateCercano(Heroe heroe, Enemigo enemigo);
+
     /**
      * Notifica el fin del juego.
      * @param victoria True si el héroe ganó.
