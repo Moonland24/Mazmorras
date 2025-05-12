@@ -188,12 +188,10 @@ public class CreacionPersonajeController {
         try {
             String nombre = nombreField.getText();
 
-            //Valida los campos que hemos metido
             if (nombre.isEmpty() || vidaMaxima <= 0 || ataque <= 0 || defensa <= 0 || velocidad <= 0 || nivel <= 0) {
                 throw new IllegalArgumentException("Todos los campos deben ser válidos y mayores a 0.");
             }
 
-            //Crea el héroe
             Heroe heroe = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
             if (heroe != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/mapaTest.fxml"));
@@ -202,29 +200,19 @@ public class CreacionPersonajeController {
                     JuegoController juegoController = loader.getController();
                     juegoController.recibirHeroe(heroe);
                     
-                    //Configura la ventana y cambio de escena
                     Stage stage = (Stage) nombreField.getScene().getWindow();
-                    double width = stage.getWidth();
-                    double height = stage.getHeight();
-                    boolean isMaximized = stage.isMaximized();
-                    
                     Scene scene = new Scene(root);
+                    scene.getStylesheets().add(getClass().getResource("/css/creacionpersonaje.css").toExternalForm());
+                                        
                     stage.setScene(scene);
-                    
-                    if (isMaximized) {
-                        stage.setMaximized(true);
-                    } else {
-                        stage.setWidth(width);
-                        stage.setHeight(height);
-                    }
-                    
+                    stage.centerOnScreen();
                     stage.show();
+                    
                 } catch (IOException e) {
                     errorLabel.setText("Error al cargar la siguiente escena: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
-            errorLabel.setText("Héroe creado: " + heroe.toString());
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
         }
