@@ -3,18 +3,39 @@ package com.mazmorras.models;
 import com.mazmorras.enums.Direccion;
 import com.mazmorras.enums.TipoEnemigo;
 
-//La clase Enemigo extiende de Personaje, lo que significa que hereda sus atributos y métodos.
-//el tipo eepresenta el tipo de enemigo, definido por la enumeración TipoEnemigo.
-// y la percepcion define el rango en el que el enemigo puede detectar a un objetivo.
+/**
+ * Representa a un enemigo dentro del juego, heredando atributos y comportamientos
+ * de la clase {@link Personaje}. Cada enemigo tiene un tipo específico y un nivel
+ * de percepción que define su rango de detección.
+ * 
+ * La inteligencia artificial básica permite al enemigo perseguir al jugador si está
+ * dentro del rango de percepción o moverse aleatoriamente en caso contrario.
+ * 
+ * @author Inma
+ * @author Juanfran
+ * @version 1.0
+ */
 
 public class Enemigo extends Personaje {
+    /** Tipo específico del enemigo (por ejemplo: jefe, minion, etc.) */
     private TipoEnemigo tipo;
-
+    /** Rango de percepción del enemigo: determina si puede detectar al jugador */
     private int percepcion;
 
-//El constructor inicializa los atributos del enemigo.
-//Llama al constructor de la clase padre (Personaje) para inicializar los atributos heredados.
-//Asigna valores específicos para percepcion y tipo.
+    /**
+     * Constructor para inicializar un enemigo con atributos definidos.
+     *
+     * @param nombre      Nombre del enemigo.
+     * @param x           Posición X en el mapa.
+     * @param y           Posición Y en el mapa.
+     * @param vidaMaxima  Vida máxima del enemigo.
+     * @param ataque      Nivel de ataque.
+     * @param defensa     Nivel de defensa.
+     * @param velocidad   Nivel de velocidad.
+     * @param tipo        Tipo del enemigo según {@link TipoEnemigo}.
+     * @param percepcion  Rango de percepción (distancia de detección).
+     * @param nivel       Nivel del enemigo.
+     */
     public Enemigo(String nombre, int x, int y, int vidaMaxima, int ataque,
             int defensa, int velocidad, TipoEnemigo tipo, int percepcion, int nivel) {
         super(nombre, x, y, vidaMaxima, ataque, defensa, velocidad, nivel);
@@ -38,12 +59,14 @@ public class Enemigo extends Personaje {
         this.percepcion = percepcion;
     }
 
-//Controla el movimiento del enemigo en el mapa.
-//Si el objetivo está en rango, usa el método encontrarCamino del mapa para calcular la posición hacia el objetivo.
-//Verifica que la nueva posición sea válida y dentro de los límites del mapa.
-//Actualiza las coordenadas del enemigo (setX y setY).
-//Si el objetivo no está en rango, genera movimientos aleatorios válidos dentro del mapa.
-//selecciona uno al azar y actualiza las coordenadas del enemigo.
+    /**
+     * Mueve al enemigo según su IA básica:
+     * - Si el objetivo está dentro del rango de percepción, lo persigue.
+     * - Si no, realiza un movimiento aleatorio válido.
+     *
+     * @param mapa     Referencia al mapa del juego.
+     * @param objetivo Personaje objetivo (generalmente el jugador).
+     */
     public void moverEnemigo(Mapa mapa, Personaje objetivo) {
         // IA simple: perseguir al jugador si está en rango
         if (estaEnRango(objetivo, this.percepcion)) {
@@ -76,11 +99,19 @@ public class Enemigo extends Personaje {
         }
     }
 
-//Método específico del enemigo que imprime un mensaje indicando que el enemigo está gruñendo.
+    /**
+     * Método representativo que imprime un mensaje indicando que el enemigo
+     * realiza un gruñido, útil para efectos de sonido o ambientación.
+     */
     public void gritar() {
         System.out.println(nombre + " gruñe amenazadoramente!");
     }
 
+    /**
+     * Representación textual del enemigo para propósitos de depuración o interfaz.
+     *
+     * @return Cadena de texto con los atributos básicos del enemigo.
+     */
     @Override
     public String toString() {
         return "Enemigo: " + getNombre() +
@@ -91,6 +122,14 @@ public class Enemigo extends Personaje {
                 " SPD: " + getVelocidad();
     }
 
+    /**
+     * Implementación obligatoria del método abstracto 'mover' de {@link Personaje}.
+     * Este método no se implementa ya que el movimiento se gestiona mediante IA.
+     *
+     * @param mapa      El mapa donde se mueve el personaje.
+     * @param direccion Dirección del movimiento (no utilizada aquí).
+     * @throws UnsupportedOperationException Siempre que se invoque.
+     */
     @Override
     public void mover(Mapa mapa, Direccion direccion) {
         throw new UnsupportedOperationException("Unimplemented method 'mover'");

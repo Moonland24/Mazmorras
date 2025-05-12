@@ -5,6 +5,16 @@ import java.util.List;
 
 import com.mazmorras.enums.TipoObstaculo;
 
+/**
+ * Representa el mapa del juego, incluyendo dimensiones, caminos, obstáculos, enemigos,
+ * la entrada, la salida y el héroe.
+ * 
+ * Este mapa sirve como entorno donde se desarrollan las interacciones y desplazamientos
+ * de personajes y objetos del juego.
+ * 
+ * @author Inma
+ * @author Juanfran
+ */
 public class Mapa {
     //Atributos del mapa
     private int ancho;                      // Ancho del mapa
@@ -16,7 +26,9 @@ public class Mapa {
     private Salida salida;                  // Salida del mapa
     private Heroe heroe;                    // Héroe en el mapa
 
-    // Constructor de la clase Mapa
+    /**
+     * Crea un mapa vacío sin dimensiones inicializadas, pero con listas preparadas.
+     */
     public Mapa() {
         this.obstaculos = new ArrayList<>();        // Inicializa la lista de obstáculos
         this.caminos = new ArrayList<>();           // Inicializa la lista de caminos
@@ -24,96 +36,129 @@ public class Mapa {
         this.heroe = null;                          // Inicializa el héroe
     }
 
-    //Métodos para establecer el ancho del mapa
+    /** @param ancho Ancho del mapa en celdas. */
     public void setAncho(int ancho) {
         this.ancho = ancho;
     }
 
-    //Métodos para establecer el alto del mapa
+    /** @param alto Alto del mapa en celdas. */
     public void setAlto(int alto) {
         this.alto = alto;
     }
 
-    //Obtiene la lista de obstáculos
+    /** @return Lista de obstáculos en el mapa. */
     public List<Obstaculo> getObstaculos() {
         return obstaculos;
     }
 
-    //Obtiene la lista de caminos
+    /** @return Lista de caminos en el mapa. */
     public List<Camino> getCaminos() {
         return caminos;
     }
 
-    //Obtiene la entrada del mapa
+    /** @return Celda de entrada al mapa. */
     public Entrada getEntrada() {
         return entrada;
     }
 
-    //Establece la lista de enemigos
+    /** @param enemigos Lista de enemigos a establecer en el mapa. */
     public void setEnemigos(List<Enemigo> enemigos) {
         this.enemigos = enemigos;
     }
 
-    //Obtiene la salida del mapa
+    /** @return Celda de salida del mapa. */
     public Salida getSalida() {
         return salida;
     }
 
-    //Obteiene el ancho del mapa
+    /** @return Ancho del mapa. */
     public int getAncho() {
         return ancho;
     }
 
-    //Obtiene el alto del mapa
+    /** @return Alto del mapa. */
     public int getAlto() {
         return alto;
     }
 
-    //Obtiene el héroe del mapa
+    /** @return Héroe presente en el mapa. */
     public Heroe getHeroe() {
         return heroe;
     }
 
-    //Establece el héroe en el mapa
+    /** @param heroe Héroe a colocar en el mapa. */
     public void setHeroe(Heroe heroe) {
         this.heroe = heroe;
     }
 
-    //Obtiene la lista de enemigos
+    /** @return Lista de enemigos en el mapa. */
     public List<Enemigo> getEnemigos() {
         return enemigos;
     }
 
-    //Coloca un obstáculo en el mapa
+    /**
+     * Añade un nuevo obstáculo en la posición indicada.
+     * 
+     * @param x             Coordenada X.
+     * @param y             Coordenada Y.
+     * @param tipoObstaculo Tipo de obstáculo a colocar.
+     */
     public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
         System.out.println("pared colocada en: " + x + ", " + y);
         obstaculos.add(new Obstaculo(x, y, tipoObstaculo));
     }
 
-    //Coloca un camino en el mapa
+    /**
+     * Añade un camino en la posición indicada.
+     * 
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     */
     public void colocarCamino(int x, int y) {
         System.out.println("camino colocado en: " + x + ", " + y);
         caminos.add(new Camino(x, y));
     }
 
-    //Coloca la entrada en el mapa
+    /**
+     * Establece la entrada del mapa.
+     * 
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     */
     public void colocarEntrada(int x, int y) {
         System.out.println("entrada colocada en: " + x + ", " + y);
         entrada = new Entrada(x, y);
     }
 
-    //Coloca la salida en el mapa
+    /**
+     * Establece la salida del mapa.
+     * 
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     */
     public void colocarSalida(int x, int y) {
         System.out.println("salida colocada en: " + x + ", " + y);
         salida = new Salida(x, y);
     }
 
-    //Coloca el héroe en el mapa
+    /**
+     * Coloca al héroe en el mapa.
+     * 
+     * @param heroe Instancia del héroe.
+     */
     public void colocarHeroe(Heroe heroe) {
         this.heroe = heroe;
     }
 
-    //Encuentra un camino entre dos puntos
+    /**
+     * Intenta encontrar un camino entre dos coordenadas usando búsqueda en anchura.
+     * 
+     * @param x  Coordenada X inicial.
+     * @param y  Coordenada Y inicial.
+     * @param x2 Coordenada X destino.
+     * @param y2 Coordenada Y destino.
+     * @return Arreglo con las coordenadas del destino si hay camino, o {@code null}.
+     */
     public int[] encontrarCamino(int x, int y, int x2, int y2) {
         boolean[][] visited = new boolean[alto][ancho];                     // Matriz de celdas visitadas
         int[][] directions = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };  // Direcciones posibles
@@ -141,7 +186,13 @@ public class Mapa {
         return null; //Camino no encontrado
     }
 
-    //Verifica si un movimiento es válido
+    /**
+     * Verifica si una celda es una posición válida para moverse.
+     * 
+     * @param i Coordenada X.
+     * @param j Coordenada Y.
+     * @return {@code true} si es camino y no es obstáculo; de lo contrario {@code false}.
+     */
     public boolean isValidMove(int i, int j) {
         if (getObstaculos().stream().anyMatch(obstaculo -> obstaculo.getX() == i && obstaculo.getY() == j)) {
             return false;                                                                                       //Movimiento inválido si hay un obstáculo
@@ -152,7 +203,13 @@ public class Mapa {
         }
     }
 
-    //Verifica si una celda es un obstáculo
+    /**
+     * Verifica si una celda específica contiene un obstáculo.
+     * 
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     * @return {@code true} si hay obstáculo, de lo contrario {@code false}.
+     */
     public boolean esObstaculo(int x, int y) {
         for (Obstaculo obstaculo : obstaculos) {
             if (obstaculo.getX() == x && obstaculo.getY() == y) {
@@ -162,7 +219,11 @@ public class Mapa {
         return false;                                              // No es un obstáculo
     }
 
-    //Coloca un enemigo en el mapa
+    /**
+     * Añade un enemigo al mapa si no es nulo.
+     * 
+     * @param enemigo Enemigo a colocar.
+     */
     public void colocarEnemigo(Enemigo enemigo) {
         if (enemigo != null) {
             enemigos.add(enemigo);
@@ -172,7 +233,12 @@ public class Mapa {
         }
     }
 
-    //Elimina un enemigo del mapa
+    /**
+     * Elimina un enemigo del mapa si está presente.
+     * 
+     * @param enemigo Enemigo a eliminar.
+     */
+
     public void eliminarEnemigo(Enemigo enemigo) {
         if (enemigo != null && enemigos.contains(enemigo)) {
             enemigos.remove(enemigo);
@@ -183,7 +249,13 @@ public class Mapa {
         }
     }
 
-    //Obtiene el contenido de una celda
+    /**
+     * Obtiene el carácter que representa el contenido de una celda en el mapa.
+     * 
+     * @param i Coordenada X.
+     * @param j Coordenada Y.
+     * @return Caracter representativo: '#' para obstáculo, 'P' para entrada, 'S' para salida, '.' para camino o espacio en blanco.
+     */
     public char getContenido(int i, int j) {
         //Verifica si la celda es un obstáculo
         for (Obstaculo obstaculo : obstaculos) {

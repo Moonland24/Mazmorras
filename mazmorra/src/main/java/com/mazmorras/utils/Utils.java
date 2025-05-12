@@ -19,11 +19,10 @@ import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
 
 /**
- * Clase utilitaria para cargar enemigos y mapas desde archivos externos.
- * Proporciona métodos para cargar enemigos desde un archivo JSON y mapas desde un archivo de texto.
- * 
- * @author JuanFran
+ * Clase de utilidades para operaciones de carga de datos desde archivos.
+ * Contiene métodos para leer enemigos desde un archivo JSON y mapas desde archivos de texto.
  * @author Inma
+ * @author Juanfran
  */
 public class Utils {
 
@@ -64,14 +63,15 @@ public class Utils {
         return auxiliar;
     }
 
-    /**
-     * Carga un mapa desde un archivo de texto, colocando caminos, obstáculos, entrada, salida y enemigos.
-     * 
-     * @param inputStream InputStream del archivo de texto del mapa.
-     * @param enemigos Lista de enemigos disponibles para colocar en el mapa.
-     * @param nivel Nivel actual para filtrar los enemigos que se colocan.
-     * @return Mapa generado a partir del archivo de texto.
-     * @throws IOException Si ocurre un error de lectura del archivo.
+        /**
+     * Carga un mapa desde un archivo de texto, interpretando los caracteres para generar caminos,
+     * obstáculos, entradas, salidas y ubicar enemigos en el mapa según su nivel.
+     *
+     * @param inputStream     Flujo de entrada del archivo de texto.
+     * @param enemigos        Lista de enemigos disponibles para colocar en el mapa.
+     * @param nivel           Nivel actual del juego (para ubicar enemigos de ese nivel).
+     * @return Instancia del mapa construida a partir del archivo de texto.
+     * @throws IOException Si ocurre un error al leer el archivo.
      */
     public static Mapa cargarMapaDesdeTxt(InputStream inputStream, List<Enemigo> enemigos, int nivel)
             throws IOException {

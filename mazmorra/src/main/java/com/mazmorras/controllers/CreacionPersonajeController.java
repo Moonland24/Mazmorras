@@ -11,37 +11,62 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField; 
 import javafx.stage.Stage; 
 
+/**
+ * Controlador para la pantalla de creación de personaje.
+ * Maneja la lógica de creación y configuración de atributos del héroe.
+ * Permite distribuir puntos entre estadísticas y avanzar al mapa con el héroe creado.
+ * 
+ * @author Inma
+ * @author Juanfran
+ * @version 1.0
+ */
 public class CreacionPersonajeController {
+    
 
-    //Campos de la interfaz gráfica vinculados con la vista FXML
+    /**Campos de la interfaz gráfica vinculados con la vista FXML */
+    /**Campo para ingresar el nombre del héroe*/
     @FXML
-    private TextField nombreField;      //Campo para ingresar el nombre del héroe
+    private TextField nombreField;
+    /**Etiqueta para mostrar la vida máxima*/      
     @FXML
-    private Label vidaMaximaLabel;      //Etiqueta para mostrar la vida máxima
+    private Label vidaMaximaLabel; 
+    /**Etiqueta para mostrar el ataque*/     
     @FXML
-    private Label ataqueLabel;          //Etiqueta para mostrar el ataque
+    private Label ataqueLabel;
+    /**Etiqueta para mostrar la defensa*/          
     @FXML
-    private Label defensaLabel;         //Etiqueta para mostrar la defensa
+    private Label defensaLabel; 
+    /**Etiqueta para mostrar la velocidad*/        
     @FXML
-    private Label velocidadLabel;       //Etiqueta para mostrar la velocidad
+    private Label velocidadLabel; 
+    /**Etiqueta para mostrar mensajes de error*/      
     @FXML
-    private Label errorLabel;           //Etiqueta para mostrar mensajes de error
+    private Label errorLabel; 
+    /**Etiqueta para mostrar los puntos restantes*/          
     @FXML
-    private Label puntosRestantesLabel; //Etiqueta para mostrar los puntos restantes
+    private Label puntosRestantesLabel; 
 
-    //Atributos del héroe y configuración inicial
-    private int vidaMaxima = 100;       //Vida máxima inicial del héroe
-    private int ataque = 10;            //Ataque inicial del héroe
-    private int defensa = 10;           //Defensa inicial del héroe
-    private int velocidad = 10;         //Velocidad inicial del héroe
-    private int nivel = 1;              //Nivel inicial del héroe
-    private int maxPuntos = 20;         //Puntos máximos para distribuir entre atributos
+    /**Atributos del héroe y configuración inicial*/
+    /**Vida máxima inicial del héroe*/
+    private int vidaMaxima = 100; 
+    /**Ataque inicial del héroe*/      
+    private int ataque = 10;
+    /**Defensa inicial del héroe*/            
+    private int defensa = 10; 
+    /**Velocidad inicial del héroe*/          
+    private int velocidad = 10; 
+    /**Nivel inicial del héroe*/        
+    private int nivel = 1;
+    /**Puntos máximos para distribuir entre atributos*/              
+    private int maxPuntos = 20;         
+    /**Puntos restantes a distribuir*/
+    private int puntosRestantes = maxPuntos; 
 
-    private int puntosRestantes = maxPuntos; // Puntos restantes a distribuir
+    /**Métodos para incrementar y decrementar atributos del héroe*/
 
-    //Métodos para incrementar y decrementar atributos del héroe
-
-    //Aumenta la vida máxima si hay puntos restantes
+    /**
+     * Aumenta la vida máxima si hay puntos restantes.
+     */
     @FXML
     private void incrementarVidaMaxima() {
         if (puntosRestantes > 0) {
@@ -50,10 +75,12 @@ public class CreacionPersonajeController {
         } else {
             errorLabel.setText("No puedes incrementar más atributos.");
         }
-        actualizarLabels(); //Actualiza las etiquetas de la interfaz
+        actualizarLabels(); /**Actualiza las etiquetas de la interfaz*/
     }
 
-    //Reduce la vida máxima si es mayor a 1 y hay puntos disponibles a redistribuir
+    /**
+     * Reduce la vida máxima si es mayor a 1 y hay puntos para redistribuir.
+     */
     @FXML
     private void decrementarVidaMaxima() {
         if (vidaMaxima > 1 && puntosRestantes < maxPuntos) {
@@ -67,7 +94,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Aumenta el ataque si hay puntos restantes
+    /**
+     * Aumenta el ataque si hay puntos restantes.
+     */
     @FXML
     private void incrementarAtaque() {
         if (puntosRestantes > 0) {
@@ -79,7 +108,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Reduce el ataque si es mayor a 1 y hay puntos disponibles para redistribuir
+    /**
+     * Reduce el ataque si es mayor a 1 y hay puntos para redistribuir.
+     */
     @FXML
     private void decrementarAtaque() {
         if (ataque > 1 && puntosRestantes < maxPuntos) {
@@ -93,7 +124,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Aumenta la defensa si hay puntos restantes
+    /**
+     * Aumenta la defensa si hay puntos restantes.
+     */
     @FXML
     private void incrementarDefensa() {
         if (puntosRestantes > 0) {
@@ -105,7 +138,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Reduce la defensa si es mayor a 1 y hay puntos disponibles para redistribuir
+    /**
+     * Reduce la defensa si es mayor a 1 y hay puntos para redistribuir.
+     */
     @FXML
     private void decrementarDefensa() {
         if (defensa > 1 && puntosRestantes < maxPuntos) {
@@ -119,7 +154,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Aumenta la velocidad si hay puntos restantes
+    /**
+     * Aumenta la velocidad si hay puntos restantes.
+     */
     @FXML
     private void incrementarVelocidad() {
         if (puntosRestantes > 0) {
@@ -131,7 +168,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Reduce la velocidad si es mayor a 1 y hay puntos disponibles para redistribuir
+    /**
+     * Reduce la velocidad si es mayor a 1 y hay puntos para redistribuir.
+     */
     @FXML
     private void decrementarVelocidad() {
         if (velocidad > 1 && puntosRestantes < maxPuntos) {
@@ -145,7 +184,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Aumenta el nivel si no supera el máximo permitido (100)
+    /**
+     * Aumenta el nivel del héroe si no supera el límite.
+     */
     @FXML
     private void incrementarNivel() {
         if (nivel < 100) {
@@ -157,7 +198,9 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Reduce el nivel si es mayor a 1
+    /**
+     * Reduce el nivel del héroe si es mayor a 1.
+     */
     @FXML
     private void decrementarNivel() {
         if (nivel > 1) {
@@ -169,7 +212,10 @@ public class CreacionPersonajeController {
         actualizarLabels();
     }
 
-    //Actualiza las etiquetas de la interfaz con los valores actuales de los atributos
+
+    /**
+     * Actualiza todas las etiquetas con los valores actuales de los atributos.
+     */
     private void actualizarLabels() {
         vidaMaximaLabel.setText("Vida Máxima: " + vidaMaxima);
         ataqueLabel.setText("Ataque: " + ataque);
@@ -179,10 +225,10 @@ public class CreacionPersonajeController {
         errorLabel.setText(""); // Limpia el mensaje de error
     }
 
-    //Crea un héroe con los atributos configurados y cambia a la siguiente escena
-    //Obtiene el nombre del héroe desde el campo de texto y valida que todos los campos sean válidos.
-    //Si los datos son correctos, instancia un héroe, carga la siguiente escena y configura la ventana.
-    //Muestra un mensaje de error si ocurre algún problema durante la validación o la carga de la escena.
+    /**
+     * Crea un héroe y carga la siguiente escena del juego.
+     * Valida los campos y muestra errores si hay inconsistencias.
+     */
     @FXML
     private void crearHeroe() {
         try {
@@ -218,7 +264,9 @@ public class CreacionPersonajeController {
         }
     }
 
-    // Restablece los valores iniciales y limpia los campos
+    /**
+     * Restablece los valores iniciales de los atributos y limpia el campo de nombre.
+     */
     @FXML
     private void cancelarCreacion() {
         nombreField.clear();
@@ -231,13 +279,17 @@ public class CreacionPersonajeController {
         errorLabel.setText("");
     }
 
-    // Cierra la aplicación
+    /**
+     * Cierra la aplicación completamente.
+     */
     @FXML
     private void salirAplicacion() {
         System.exit(0);
     }
 
-    // Inicializa los valores de las etiquetas al cargar la vista
+    /**
+     * Inicializa las etiquetas al cargar la vista.
+     */
     @FXML
     private void initialize() {
         actualizarLabels();
