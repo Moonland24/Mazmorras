@@ -18,7 +18,23 @@ import com.mazmorras.enums.TipoObstaculo;
 import com.mazmorras.models.Enemigo;
 import com.mazmorras.models.Mapa;
 
+/**
+ * Clase utilitaria para cargar enemigos y mapas desde archivos externos.
+ * Proporciona métodos para cargar enemigos desde un archivo JSON y mapas desde un archivo de texto.
+ * 
+ * @author JuanFran
+ * @author Inma
+ */
 public class Utils {
+
+    /**
+     * Carga una lista de enemigos desde un archivo JSON.
+     * 
+     * @param path Ruta del archivo JSON que contiene los enemigos.
+     * @return Lista de enemigos cargados.
+     * @throws IOException Si ocurre un error de lectura del archivo.
+     * @throws ParseException Si ocurre un error al parsear el JSON.
+     */
     public static List<Enemigo> cargarDesdeJSON(String path) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         FileReader reader = new FileReader(path);
@@ -48,6 +64,15 @@ public class Utils {
         return auxiliar;
     }
 
+    /**
+     * Carga un mapa desde un archivo de texto, colocando caminos, obstáculos, entrada, salida y enemigos.
+     * 
+     * @param inputStream InputStream del archivo de texto del mapa.
+     * @param enemigos Lista de enemigos disponibles para colocar en el mapa.
+     * @param nivel Nivel actual para filtrar los enemigos que se colocan.
+     * @return Mapa generado a partir del archivo de texto.
+     * @throws IOException Si ocurre un error de lectura del archivo.
+     */
     public static Mapa cargarMapaDesdeTxt(InputStream inputStream, List<Enemigo> enemigos, int nivel)
             throws IOException {
         Mapa mapa = new Mapa();
