@@ -6,7 +6,8 @@ import com.mazmorras.models.Heroe;
 import javafx.fxml.FXML;                 
 import javafx.fxml.FXMLLoader;          
 import javafx.scene.Parent; 
-import javafx.scene.Scene; 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label; 
 import javafx.scene.control.TextField; 
 import javafx.stage.Stage; 
@@ -44,7 +45,50 @@ public class CreacionPersonajeController {
     private Label errorLabel; 
     /**Etiqueta para mostrar los puntos restantes*/          
     @FXML
-    private Label puntosRestantesLabel; 
+    private Label puntosRestantesLabel;
+        /**Botón para crear el personaje*/
+    @FXML
+    private Button crearButton;
+    
+    /**Botón para cancelar la creación*/
+    @FXML
+    private Button cancelarButton;
+    
+    /**Botón para salir de la aplicación*/
+    @FXML
+    private Button salirButton;
+    
+    /**Botón para incrementar vida máxima*/
+    @FXML
+    private Button incrementarVidaButton;
+    
+    /**Botón para decrementar vida máxima*/
+    @FXML
+    private Button decrementarVidaButton;
+    
+    /**Botón para incrementar ataque*/
+    @FXML
+    private Button incrementarAtaqueButton;
+    
+    /**Botón para decrementar ataque*/
+    @FXML
+    private Button decrementarAtaqueButton;
+    
+    /**Botón para incrementar defensa*/
+    @FXML
+    private Button incrementarDefensaButton;
+    
+    /**Botón para decrementar defensa*/
+    @FXML
+    private Button decrementarDefensaButton;
+    
+    /**Botón para incrementar velocidad*/
+    @FXML
+    private Button incrementarVelocidadButton;
+    
+    /**Botón para decrementar velocidad*/
+    @FXML
+    private Button decrementarVelocidadButton; 
 
     /**Atributos del héroe y configuración inicial*/
     /**Vida máxima inicial del héroe*/
@@ -288,11 +332,34 @@ public class CreacionPersonajeController {
     }
 
     /**
-     * Inicializa las etiquetas al cargar la vista.
+     * Inicializa las etiquetas y los eventos de los botones al cargar la vista.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
+        // Configurar los manejadores de eventos para los botones de atributos
+        incrementarVidaButton.setOnAction(event -> incrementarVidaMaxima());
+        decrementarVidaButton.setOnAction(event -> decrementarVidaMaxima());
+        incrementarAtaqueButton.setOnAction(event -> incrementarAtaque());
+        decrementarAtaqueButton.setOnAction(event -> decrementarAtaque());
+        incrementarDefensaButton.setOnAction(event -> incrementarDefensa());
+        decrementarDefensaButton.setOnAction(event -> decrementarDefensa());
+        incrementarVelocidadButton.setOnAction(event -> incrementarVelocidad());
+        decrementarVelocidadButton.setOnAction(event -> decrementarVelocidad());
+
+        // Configurar los manejadores de eventos para los botones principales
+        crearButton.setOnAction(event -> {
+            try {
+                crearHeroe();
+            } catch (Exception e) {
+                errorLabel.setText("Error al crear el héroe: " + e.getMessage());
+            }
+        });
+        
+        cancelarButton.setOnAction(event -> cancelarCreacion());
+        salirButton.setOnAction(event -> salirAplicacion());
+
+        // Inicializar valores por defecto
         actualizarLabels();
-        errorLabel.setText(""); // Limpia el mensaje de error al iniciar
+        errorLabel.setText("");
     }
 }
