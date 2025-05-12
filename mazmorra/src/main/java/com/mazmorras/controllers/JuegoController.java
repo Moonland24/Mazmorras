@@ -31,7 +31,14 @@ import java.util.Map;
 
 import org.json.simple.parser.ParseException;
 
+/**
+ * Controlador principal para la lógica del juego. Maneja la interacción del usuario,
+ * la lógica de turnos, combates, y actualizaciones visuales.
+ * @author Inma
+ * @author Juanfran
+ */
 public class JuegoController implements JuegoObserver {
+    // Referencias a los distintos paneles y controles de la interfaz
     @FXML
     AnchorPane rootPane;         //Referencia al pane principal de la vista
     @FXML
@@ -74,7 +81,12 @@ public class JuegoController implements JuegoObserver {
 
     private int turno = 1;
 
-    // nicializa los componentes principales del juego
+    /**
+     * Inicializa el controlador cargando el mapa y enemigos desde archivos.
+     * @throws IOException si hay error al leer los archivos.
+     * @throws URISyntaxException si la URL de los archivos es inválida.
+     * @throws ParseException si hay error al parsear los datos JSON.
+     */
     @FXML
     private void initialize() throws IOException, URISyntaxException, ParseException {
         System.out.println("Inicializando JuegoController...");
@@ -115,7 +127,11 @@ public class JuegoController implements JuegoObserver {
         });
     }
 
-    //Maneja el input del teclado para mover al héroe
+    /**
+     * Maneja el input del teclado y mueve al héroe en la dirección correspondiente.
+     * @param event Evento de teclado.
+     * @param heroe Referencia al héroe del juego.
+     */
     public void manejarInputTeclado(KeyEvent event, Heroe heroe) {
         KeyCode tecla = event.getCode();
         Direccion direccion = null;
@@ -151,7 +167,11 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
-    //Verifica si el héroe está en combate
+    /**
+     * Notifica que un combate está próximo entre el héroe y un enemigo.
+     * @param heroe El héroe en el mapa.
+     * @param enemigo El enemigo cercano.
+     */
     @Override
     public void onCombateCercano(Heroe heroe, Enemigo enemigo) {
         System.out.println("¡El héroe " + heroe.getNombre() + " está cerca del enemigo " + enemigo.getNombre() + "!");
@@ -166,7 +186,10 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
-    //Recibe al heroe en el mapa
+    /**
+     * Recibe e inserta al héroe en el mapa.
+     * @param heroe El héroe que se va a insertar.
+     */
     public void recibirHeroe(Heroe heroe) {
         System.out.println("Recibiendo héroe...");
         if (heroe == null) {
@@ -192,14 +215,20 @@ public class JuegoController implements JuegoObserver {
         System.out.println("Héroe recibido: " + heroe.getNombre());
     }
 
-    //Actualiza el juego
+    /**
+     * Notifica que el juego ha sido actualizado.
+     * @param mapa El estado actualizado del mapa.
+     */
     @Override
     public void onJuegoActualizado(Mapa mapa) {
         System.out.println("El juego ha sido actualizado.");
         generarMapaDesdeFXML(mapa);
     }
 
-    //Retorna el sitio al que se ha movido el heroe
+    /**
+     * Notifica que el héroe ha sido movido a una nueva posición.
+     * @param heroe El héroe actualizado.
+     */
     @Override
     public void onHeroeMovido(Heroe heroe) {
         System.out.println("El héroe se ha movido a la posición: (" + heroe.getX() + ", " + heroe.getY() + ")");
@@ -207,7 +236,11 @@ public class JuegoController implements JuegoObserver {
         generarMapaDesdeFXML(mapa);
     }
 
-    //Indica si el enemigo ha sido eliminado, y si no lo actualiza generando otro
+    /**
+     * Notifica si un enemigo ha sido actualizado o eliminado del mapa.
+     * @param enemigo El enemigo actualizado o eliminado.
+     * @param eliminado Indica si fue eliminado (true) o solo actualizado (false).
+     */
     @Override
     public void onEnemigoActualizado(Enemigo enemigo, boolean eliminado) {
         if (eliminado) {
@@ -220,7 +253,11 @@ public class JuegoController implements JuegoObserver {
         generarMapaDesdeFXML(mapa);
     }
 
-    //Inicia el combate entre héroe y enemigo
+    /**
+     * Inicia el combate entre el héroe y el enemigo indicado.
+     * @param heroe El héroe participante.
+     * @param enemigo El enemigo participante.
+     */
     @Override
     public void onCombateIniciado(Heroe heroe, Enemigo enemigo) {
         System.out.println(
@@ -307,7 +344,10 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
-    //Se establece el resultado del combate ya sea victoria o gameover
+    /**
+     * Muestra el resultado del juego, ya sea victoria o derrota.
+     * @param victoria true si el jugador ganó, false si perdió.
+     */
     @Override
     public void onGameOver(boolean victoria) {
         System.out.println("Ejecutando onGameOver: " + (victoria ? "Victoria" : "Derrota"));
@@ -340,7 +380,10 @@ public class JuegoController implements JuegoObserver {
         }
     }
 
-    //Maneja el evento de volver a jugar
+    /**
+     * Vuelve a la escena de creación de personaje.
+     * @throws IOException si ocurre un error al cargar el archivo FXML.
+     */
     @FXML
     private void volverJugar() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/creacionpersonaje.fxml"));
@@ -352,7 +395,9 @@ public class JuegoController implements JuegoObserver {
         stage.show();
     }
 
-    //Maneja el evento de salir del juego
+    /**
+     * Cierra el juego y la ventana principal.
+     */
     @FXML
     private void salirJuego() {
         System.out.println("Saliendo del juego...");
@@ -363,6 +408,9 @@ public class JuegoController implements JuegoObserver {
     //Mapa que inicializa todas las imagenes que componen al juego
     private Map<String, Image> imageCache;
 
+    /**
+     * Inicializa las imágenes utilizadas en el mapa del juego.
+     */
     private void inicializarImagenes() {
         imageCache = new HashMap<>();
         imageCache.put("pared", new Image(getClass().getResourceAsStream("/imagenes/pared.png")));
@@ -377,7 +425,11 @@ public class JuegoController implements JuegoObserver {
         imageCache.put("heroe", new Image(getClass().getResourceAsStream("/imagenes/heroe.png")));
     }
 
-    //Se crean las celdas donde va a ir cada elemento del mapa (héroe, obstaculos,etc)
+    /**
+     * Crea una celda visual con la imagen especificada.
+     * @param imagen Imagen que se usará en la celda.
+     * @return ImageView de la celda.
+     */
     private ImageView crearCelda(Image imagen) {
         ImageView celda = new ImageView(imagen);
         celda.setFitWidth(30);
@@ -385,7 +437,9 @@ public class JuegoController implements JuegoObserver {
         return celda;
     }
 
-    //Sistema de turnos
+    /**
+     * Mueve a los enemigos en su turno y verifica combates cercanos.
+     */
     private void moverEnemigos() {
         for (Enemigo enemigo : mapa.getEnemigos()) {
             enemigo.moverEnemigo(mapa, mapa.getHeroe());
@@ -396,8 +450,10 @@ public class JuegoController implements JuegoObserver {
         generarMapaDesdeFXML(mapa); // Solo una vez al final
     }
 
-    //Se genera el mapa desde el FXML y le carga las imagenes dandole la posicion
-    //establecida en el archivo de dayos donde se encuentra el mapa
+    /**
+     * Genera visualmente el mapa en el GridPane usando imágenes.
+     * @param mapa Mapa del juego a renderizar.
+     */
     @FXML
     private void generarMapaDesdeFXML(Mapa mapa) {
         if (mapa == null) {
@@ -469,7 +525,10 @@ public class JuegoController implements JuegoObserver {
         velocidadLabel.setText("Velocidad: " + heroe.getVelocidad());
     }
 
-    //Maneja Eventos de teclado para mover al héroe
+    /**
+     * Captura eventos del teclado para manejar movimientos.
+     * @param event Evento de teclado.
+     */
     @FXML
     private void onKeyPressed(KeyEvent event) {
         System.out.println("Tecla presionada: " + event.getCode());
