@@ -49,6 +49,7 @@ public class Enemigo extends Personaje {
 
     public void setTipo(TipoEnemigo tipo) {
         this.tipo = tipo;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de tipo
     }
 
     public int getPercepcion() {
@@ -57,6 +58,7 @@ public class Enemigo extends Personaje {
 
     public void setPercepcion(int percepcion) {
         this.percepcion = percepcion;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de percepción
     }
 
     /**
@@ -78,6 +80,8 @@ public class Enemigo extends Personaje {
                     && mapa.isValidMove(nuevaPos[0], nuevaPos[1])) {
                 setX(nuevaPos[0]);
                 setY(nuevaPos[1]);
+                // Notifica a los observadores del movimiento
+                notifyPersonajeActualizado();
             }
         } else {
             // Movimiento aleatorio SOLO si es válido y dentro de los límites
@@ -89,12 +93,16 @@ public class Enemigo extends Personaje {
                 if (nx >= 0 && nx < mapa.getAncho() && ny >= 0 && ny < mapa.getAlto()
                         && mapa.isValidMove(nx, ny)) {
                     posibles.add(new int[] { nx, ny });
+                    notifyPersonajeActualizado();
                 }
             }
+            // Elegir un movimiento aleatorio de los posibles
             if (!posibles.isEmpty()) {
                 int[] elegido = posibles.get((int) (Math.random() * posibles.size()));
                 setX(elegido[0]);
                 setY(elegido[1]);
+                // Notifica a los observadores del movimiento
+                notifyPersonajeActualizado();
             }
         }
     }

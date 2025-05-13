@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mazmorras.enums.TipoObstaculo;
+import com.mazmorras.interfaces.JuegoObserver;
 
 /**
  * Representa el mapa del juego, incluyendo dimensiones, caminos, obstáculos, enemigos,
@@ -25,6 +26,7 @@ public class Mapa {
     private Entrada entrada;                // Entrada del mapa
     private Salida salida;                  // Salida del mapa
     private Heroe heroe;                    // Héroe en el mapa
+    private List<JuegoObserver> observers; // Lista de observadores del juego
 
     /**
      * Crea un mapa vacío sin dimensiones inicializadas, pero con listas preparadas.
@@ -34,16 +36,33 @@ public class Mapa {
         this.caminos = new ArrayList<>();           // Inicializa la lista de caminos
         this.enemigos = new ArrayList<>();          // Inicializa la lista de enemigos
         this.heroe = null;                          // Inicializa el héroe
+        this.observers = new ArrayList<>();        // Inicializa la lista de observadores
+    }
+
+    public void addObserver(JuegoObserver observer) {
+        observers.add(observer); // Añade un nuevo observador a la lista
+    }
+
+    public void removeObserver(JuegoObserver observer) {
+        observers.remove(observer); // Elimina un observador de la lista
+    }
+
+    private void notifyJuegoActualizado() {
+        for (JuegoObserver observer : observers) {
+            observer.onJuegoActualizado(this);
+        }
     }
 
     /** @param ancho Ancho del mapa en celdas. */
     public void setAncho(int ancho) {
         this.ancho = ancho;
+        notifyJuegoActualizado();
     }
 
     /** @param alto Alto del mapa en celdas. */
     public void setAlto(int alto) {
         this.alto = alto;
+        notifyJuegoActualizado();
     }
 
     /** @return Lista de obstáculos en el mapa. */
@@ -64,6 +83,7 @@ public class Mapa {
     /** @param enemigos Lista de enemigos a establecer en el mapa. */
     public void setEnemigos(List<Enemigo> enemigos) {
         this.enemigos = enemigos;
+        notifyJuegoActualizado();
     }
 
     /** @return Celda de salida del mapa. */
@@ -89,6 +109,7 @@ public class Mapa {
     /** @param heroe Héroe a colocar en el mapa. */
     public void setHeroe(Heroe heroe) {
         this.heroe = heroe;
+        notifyJuegoActualizado();
     }
 
     /** @return Lista de enemigos en el mapa. */
@@ -106,6 +127,7 @@ public class Mapa {
     public void colocarObstaculos(int x, int y, TipoObstaculo tipoObstaculo) {
         System.out.println("pared colocada en: " + x + ", " + y);
         obstaculos.add(new Obstaculo(x, y, tipoObstaculo));
+        notifyJuegoActualizado();
     }
 
     /**
@@ -117,6 +139,7 @@ public class Mapa {
     public void colocarCamino(int x, int y) {
         System.out.println("camino colocado en: " + x + ", " + y);
         caminos.add(new Camino(x, y));
+        notifyJuegoActualizado();
     }
 
     /**
@@ -128,6 +151,7 @@ public class Mapa {
     public void colocarEntrada(int x, int y) {
         System.out.println("entrada colocada en: " + x + ", " + y);
         entrada = new Entrada(x, y);
+        notifyJuegoActualizado();
     }
 
     /**
@@ -139,6 +163,7 @@ public class Mapa {
     public void colocarSalida(int x, int y) {
         System.out.println("salida colocada en: " + x + ", " + y);
         salida = new Salida(x, y);
+        notifyJuegoActualizado();
     }
 
     /**
@@ -148,6 +173,7 @@ public class Mapa {
      */
     public void colocarHeroe(Heroe heroe) {
         this.heroe = heroe;
+        notifyJuegoActualizado();
     }
 
     /**
@@ -228,6 +254,7 @@ public class Mapa {
         if (enemigo != null) {
             enemigos.add(enemigo);
             System.out.println("El enemigo ha sido colocado en: " + enemigo.getY() + ", " + enemigo.getX());
+            notifyJuegoActualizado();
         } else {
             System.out.println("El enemigo no se pudo colocar");
         }
@@ -244,6 +271,7 @@ public class Mapa {
             enemigos.remove(enemigo);
             System.out
                     .println("El enemigo ha sido eliminado de su posición: " + enemigo.getX() + ", " + enemigo.getY());
+            notifyJuegoActualizado();
         } else {
             System.out.println("El enemigo no se encontró asi que pues no se pudo eliminar.");
         }

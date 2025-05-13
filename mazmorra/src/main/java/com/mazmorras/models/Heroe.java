@@ -85,6 +85,8 @@ public class Heroe extends Personaje {
         // Actualizar la posición del héroe
         setX(nuevaX);
         setY(nuevaY);
+        // Notificar a los observadores del movimiento
+        notifyPersonajeActualizado();
     }
 
     /**

@@ -25,14 +25,14 @@ import com.mazmorras.models.Mapa;
  * @author Juanfran
  */
 public class Utils {
-
-    /**
+        /**
      * Carga una lista de enemigos desde un archivo JSON.
-     * 
-     * @param path Ruta del archivo JSON que contiene los enemigos.
-     * @return Lista de enemigos cargados.
-     * @throws IOException Si ocurre un error de lectura del archivo.
-     * @throws ParseException Si ocurre un error al parsear el JSON.
+     * El JSON debe contener un arreglo bajo la clave "enemigos", cada uno con los atributos esperados.
+     *
+     * @param path Ruta del archivo JSON.
+     * @return Lista de enemigos construida a partir del archivo.
+     * @throws IOException     Si ocurre un error al leer el archivo.
+     * @throws ParseException  Si ocurre un error al parsear el contenido JSON.
      */
     public static List<Enemigo> cargarDesdeJSON(String path) throws IOException, ParseException {
         JSONParser parser = new JSONParser();

@@ -1,8 +1,5 @@
 package com.mazmorras;
 
-import com.mazmorras.controllers.JuegoController;
-import com.mazmorras.models.Juego;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

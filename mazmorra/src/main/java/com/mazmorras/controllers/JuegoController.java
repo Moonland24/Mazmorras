@@ -144,6 +144,8 @@ public class JuegoController implements JuegoObserver {
             System.out.println("Mapa inicializado correctamente.");
         }
 
+        mapa.addObserver(this); // Agrega el controlador como observador del mapa
+
         // Configurar los eventos para los botones de victoria/derrota
         volverJugarVictoria.setOnAction(event -> {
             try {
@@ -578,6 +580,13 @@ public class JuegoController implements JuegoObserver {
      */
     @FXML
     private void onKeyPressed(KeyEvent event) {
+        // Verificar si el juego ha terminado (victoria o derrota)
+        if (victoryPane.isVisible() || gameOverPane.isVisible()) {
+            // Si alguno de los paneles de fin de juego está visible, ignorar los eventos de teclado
+            event.consume();
+            return;
+        }
+        
         System.out.println("Tecla presionada: " + event.getCode());
         Heroe heroe = mapa.getHeroe();
         if (heroe != null) {

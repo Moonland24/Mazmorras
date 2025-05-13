@@ -1,6 +1,10 @@
 package com.mazmorras.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mazmorras.enums.Direccion;
+import com.mazmorras.interfaces.PersonajeObserver;
 
 /**
  * Clase abstracta que representa un personaje genérico en el juego.
@@ -21,6 +25,8 @@ public abstract class Personaje {
     private int velocidad; // Velocidad del personaje
     private int experiencia; // Experiencia acumulada
     private int nivel; // Nivel actual del personaje
+    private List<PersonajeObserver> observers = new ArrayList<>();
+
 
     /**
      * Constructor base para inicializar los atributos del personaje.
@@ -48,6 +54,20 @@ public abstract class Personaje {
         this.nivel = nivel; // Nivel inicial
     }
 
+    public void addObserver(PersonajeObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(PersonajeObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyPersonajeActualizado() {
+        for (PersonajeObserver observer : observers) {
+            observer.onPersonajeActualizado(this);
+        }
+    }
+
 
     /**
      * Método abstracto que deben implementar las subclases para definir cómo se
@@ -67,7 +87,9 @@ public abstract class Personaje {
     public boolean atacar(Personaje objetivo) {
         int daño = calcularDaño(objetivo); // Calcula el daño infligido
         objetivo.recibirDaño(daño); // Aplica el daño al objetivo
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de estado
         return objetivo.estaDerrotado(); // Devuelve si el objetivo ha sido derrotado
+
     }
 
     /**
@@ -83,6 +105,7 @@ public abstract class Personaje {
 
         // Variación aleatoria del daño entre 80% y 120%
         double variacion = 0.8 + Math.random() * 0.4;
+
         return (int) Math.round(dañoBase * variacion);
     }
 
@@ -93,6 +116,7 @@ public abstract class Personaje {
      */
     public void recibirDaño(int cantidad) {
         this.vidaActual = Math.max(0, this.vidaActual - cantidad); // La vida no puede ser negativa
+        notifyPersonajeActualizado();
     }
 
     /**
@@ -102,6 +126,7 @@ public abstract class Personaje {
      */
     public void curar(int cantidad) {
         this.vidaActual = Math.min(vidaMaxima, this.vidaActual + cantidad); // La vida no puede exceder el máximo
+        notifyPersonajeActualizado();
     }
 
     /**
@@ -114,6 +139,9 @@ public abstract class Personaje {
         this.ataque += 2; // Incrementa el ataque
         this.defensa += 1; // Incrementa la defensa
         this.velocidad += 1; // Incrementa la velocidad
+        // Notifica a los observadores del cambio de nivel
+        notifyPersonajeActualizado();
+        System.out.println("¡" + this.nombre + " ha subido al nivel " + this.nivel + "!");
     }
 
     /**
@@ -128,6 +156,7 @@ public abstract class Personaje {
             subirNivel(); // Sube de nivel
             this.experiencia = 0; // Reinicia la experiencia
         }
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de experiencia
     }
 
     /**
@@ -178,6 +207,7 @@ public abstract class Personaje {
      */
     public void setX(int x) {
         this.x = x;
+    notifyPersonajeActualizado(); // Notifica a los observadores del cambio de posición
     }
     
     /**
@@ -185,6 +215,7 @@ public abstract class Personaje {
      */
     public void setY(int y) {
         this.y = y;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de posición
     }
 
     /**
@@ -220,6 +251,54 @@ public abstract class Personaje {
      */
     public int getVelocidad() {
         return velocidad;
+    }
+
+    /**
+     * @param vidaMaxima Nueva vida máxima del personaje.
+     */
+    public void setVidaMaxima(int vidaMaxima) {
+        this.vidaMaxima = vidaMaxima;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de vida máxima
+    }
+
+    /**
+     * @param ataque Nuevo valor de ataque del personaje.
+     */
+    public void setAtaque(int ataque) {
+        this.ataque = ataque;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de ataque
+    }
+
+    /**
+     * @param defensa Nuevo valor de defensa del personaje.
+     */
+    public void setDefensa(int defensa) {
+        this.defensa = defensa;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de defensa
+    }
+
+    /**
+     * @param velocidad Nueva velocidad del personaje.
+     */
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de velocidad
+    }
+
+    /**
+     * @param experiencia Nueva experiencia acumulada del personaje.
+     */
+    public void setExperiencia(int experiencia) {
+        this.experiencia = experiencia;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de experiencia
+    }
+
+    /**
+     * @param nivel Nuevo nivel del personaje.
+     */
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+        notifyPersonajeActualizado(); // Notifica a los observadores del cambio de nivel
     }
 
     /**
