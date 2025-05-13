@@ -74,11 +74,10 @@
                 styleClass="dialog-content">
                 <Text styleClass="victory-title" text="¡Victoria!" />
                 <HBox alignment="CENTER" spacing="20.0">
-                    <Button fx:id="volverJugar" onAction="#volverJugar" text="Volver a jugar" />
-                    <Button fx:id="salir" onAction="#salirJuego" text="Salir" />
+                    <Button fx:id="volverJugarVictoria" text="Volver a jugar" />
+                    <Button fx:id="salirVictoria" text="Salir" />
                 </HBox>
-                <ImageView fitHeight="150.0" fitWidth="133.0" pickOnBounds="true"
-                    preserveRatio="true">
+                <ImageView fitHeight="150.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../imagenes/victory.gif" />
                     </image>
@@ -93,11 +92,10 @@
             <VBox alignment="CENTER" spacing="20.0" styleClass="dialog-content">
                 <Text styleClass="gameover-title" text="Game Over" />
                 <HBox alignment="CENTER" spacing="20.0">
-                    <Button fx:id="volverJugar" onAction="#volverJugar" text="Volver a jugar" />
-                    <Button fx:id="salir" onAction="#salirJuego" text="Salir" />
+                    <Button fx:id="volverJugarGameOver" text="Volver a jugar" />
+                    <Button fx:id="salirGameOver" text="Salir" />
                 </HBox>
-                <ImageView fitHeight="150.0" fitWidth="133.0" pickOnBounds="true"
-                    preserveRatio="true">
+                <ImageView fitHeight="150.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../imagenes/defeat.gif" />
                     </image>
