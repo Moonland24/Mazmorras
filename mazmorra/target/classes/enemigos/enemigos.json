@@ -28,7 +28,7 @@
             "ataqueBase": 10,
             "defensaBase": 4,
             "velocidadBase": 5,
-            "percepcionBase": 1,
+            "percepcionBase": 2,
             "nivelBase": 1,
             "x": 0,
             "y": 0
@@ -39,7 +39,7 @@
             "ataqueBase": 6,
             "defensaBase": 2,
             "velocidadBase": 7,
-            "percepcionBase": 1,
+            "percepcionBase": 2,
             "nivelBase": 1,
             "x": 0,
             "y": 0
@@ -50,7 +50,7 @@
             "ataqueBase": 15,
             "defensaBase": 2,
             "velocidadBase": 5,
-            "percepcionBase": 7,
+            "percepcionBase": 5,
             "nivelBase": 3,
             "x": 0,
             "y": 0

@@ -2,111 +2,76 @@ package com.mazmorras.controllers;
 
 // Importación de clases necesarias para la funcionalidad del controlador
 import java.io.IOException;
-import com.mazmorras.models.Heroe;       
-import javafx.fxml.FXML;                 
-import javafx.fxml.FXMLLoader;          
-import javafx.scene.Parent; 
+
+import com.mazmorras.interfaces.PersonajeObserver;
+import com.mazmorras.models.Heroe;
+import com.mazmorras.models.Personaje;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label; 
-import javafx.scene.control.TextField; 
-import javafx.stage.Stage; 
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * Controlador para la pantalla de creación de personaje.
  * Maneja la lógica de creación y configuración de atributos del héroe.
- * Permite distribuir puntos entre estadísticas y avanzar al mapa con el héroe creado.
+ * Permite distribuir puntos entre estadísticas y avanzar al mapa con el héroe
+ * creado.
  * 
  * @author Inma
  * @author Juanfran
  * @version 1.0
  */
-public class CreacionPersonajeController {
-    
+public class CreacionPersonajeController implements PersonajeObserver {
 
-    /**Campos de la interfaz gráfica vinculados con la vista FXML */
-    /**Campo para ingresar el nombre del héroe*/
-    @FXML
-    private TextField nombreField;
-    /**Etiqueta para mostrar la vida máxima*/      
-    @FXML
-    private Label vidaMaximaLabel; 
-    /**Etiqueta para mostrar el ataque*/     
-    @FXML
-    private Label ataqueLabel;
-    /**Etiqueta para mostrar la defensa*/          
-    @FXML
-    private Label defensaLabel; 
-    /**Etiqueta para mostrar la velocidad*/        
-    @FXML
-    private Label velocidadLabel; 
-    /**Etiqueta para mostrar mensajes de error*/      
-    @FXML
-    private Label errorLabel; 
-    /**Etiqueta para mostrar los puntos restantes*/          
-    @FXML
-    private Label puntosRestantesLabel;
-        /**Botón para crear el personaje*/
-    @FXML
-    private Button crearButton;
-    
-    /**Botón para cancelar la creación*/
-    @FXML
-    private Button cancelarButton;
-    
-    /**Botón para salir de la aplicación*/
-    @FXML
-    private Button salirButton;
-    
-    /**Botón para incrementar vida máxima*/
-    @FXML
-    private Button incrementarVidaButton;
-    
-    /**Botón para decrementar vida máxima*/
-    @FXML
-    private Button decrementarVidaButton;
-    
-    /**Botón para incrementar ataque*/
-    @FXML
-    private Button incrementarAtaqueButton;
-    
-    /**Botón para decrementar ataque*/
-    @FXML
-    private Button decrementarAtaqueButton;
-    
-    /**Botón para incrementar defensa*/
-    @FXML
-    private Button incrementarDefensaButton;
-    
-    /**Botón para decrementar defensa*/
-    @FXML
-    private Button decrementarDefensaButton;
-    
-    /**Botón para incrementar velocidad*/
-    @FXML
-    private Button incrementarVelocidadButton;
-    
-    /**Botón para decrementar velocidad*/
-    @FXML
-    private Button decrementarVelocidadButton; 
+    /** Campos de la interfaz gráfica vinculados con la vista FXML */
+    @FXML private TextField nombreField;
+    @FXML private Label vidaMaximaLabel;
+    @FXML private Label ataqueLabel;
+    @FXML private Label defensaLabel;
+    @FXML private Label velocidadLabel;
+    @FXML private Label errorLabel;
+    @FXML private Label puntosRestantesLabel;
+    @FXML private Button crearButton;
+    @FXML private Button cancelarButton;
+    @FXML private Button salirButton;
+    @FXML private Button incrementarVidaButton;
+    @FXML private Button decrementarVidaButton;
+    @FXML private Button incrementarAtaqueButton;
+    @FXML private Button decrementarAtaqueButton;
+    @FXML private Button incrementarDefensaButton;
+    @FXML private Button decrementarDefensaButton;
+    @FXML private Button incrementarVelocidadButton;
+    @FXML private Button decrementarVelocidadButton;
 
-    /**Atributos del héroe y configuración inicial*/
-    /**Vida máxima inicial del héroe*/
-    private int vidaMaxima = 100; 
-    /**Ataque inicial del héroe*/      
+    /** Atributos del héroe y configuración inicial */
+    private int vidaMaxima = 100;
     private int ataque = 10;
-    /**Defensa inicial del héroe*/            
-    private int defensa = 10; 
-    /**Velocidad inicial del héroe*/          
-    private int velocidad = 10; 
-    /**Nivel inicial del héroe*/        
+    private int defensa = 10;
+    private int velocidad = 10;
     private int nivel = 1;
-    /**Puntos máximos para distribuir entre atributos*/              
-    private int maxPuntos = 20;         
-    /**Puntos restantes a distribuir*/
-    private int puntosRestantes = maxPuntos; 
+    private int maxPuntos = 20;
+    private int puntosRestantes = maxPuntos;
+    private Heroe heroeActual;
 
-    /**Métodos para incrementar y decrementar atributos del héroe*/
+    /**
+     * Implementación del método de la interfaz PersonajeObserver.
+     * Este método se llamará cuando el héroe notifique cambios.
+     * 
+     * @param personaje El personaje que ha sido actualizado
+     */
+    @Override
+    public void onPersonajeActualizado(Personaje personaje) {
+        if (personaje instanceof Heroe) {
+            heroeActual = (Heroe) personaje;
+            // Actualiza solo las etiquetas, no el modelo (para evitar ciclos)
+            actualizarUI();
+        }
+    }
 
     /**
      * Aumenta la vida máxima si hay puntos restantes.
@@ -116,10 +81,11 @@ public class CreacionPersonajeController {
         if (puntosRestantes > 0) {
             vidaMaxima++;
             puntosRestantes--;
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("No puedes incrementar más atributos.");
         }
-        actualizarLabels(); /**Actualiza las etiquetas de la interfaz*/
     }
 
     /**
@@ -130,12 +96,13 @@ public class CreacionPersonajeController {
         if (vidaMaxima > 1 && puntosRestantes < maxPuntos) {
             vidaMaxima--;
             puntosRestantes++;
+            actualizarModelo();
+            errorLabel.setText("");
         } else if (vidaMaxima <= 1) {
             errorLabel.setText("La vida máxima no puede ser menor a 1.");
         } else {
             errorLabel.setText("No puedes decrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -146,10 +113,11 @@ public class CreacionPersonajeController {
         if (puntosRestantes > 0) {
             ataque++;
             puntosRestantes--;
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("No puedes incrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -160,12 +128,13 @@ public class CreacionPersonajeController {
         if (ataque > 1 && puntosRestantes < maxPuntos) {
             ataque--;
             puntosRestantes++;
+            actualizarModelo();
+            errorLabel.setText("");
         } else if (ataque <= 1) {
             errorLabel.setText("El ataque no puede ser menor a 1.");
         } else {
             errorLabel.setText("No puedes decrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -176,10 +145,11 @@ public class CreacionPersonajeController {
         if (puntosRestantes > 0) {
             defensa++;
             puntosRestantes--;
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("No puedes incrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -190,12 +160,13 @@ public class CreacionPersonajeController {
         if (defensa > 1 && puntosRestantes < maxPuntos) {
             defensa--;
             puntosRestantes++;
+            actualizarModelo();
+            errorLabel.setText("");
         } else if (defensa <= 1) {
             errorLabel.setText("La defensa no puede ser menor a 1.");
         } else {
             errorLabel.setText("No puedes decrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -206,10 +177,11 @@ public class CreacionPersonajeController {
         if (puntosRestantes > 0) {
             velocidad++;
             puntosRestantes--;
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("No puedes incrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -220,12 +192,13 @@ public class CreacionPersonajeController {
         if (velocidad > 1 && puntosRestantes < maxPuntos) {
             velocidad--;
             puntosRestantes++;
+            actualizarModelo();
+            errorLabel.setText("");
         } else if (velocidad <= 1) {
             errorLabel.setText("La velocidad no puede ser menor a 1.");
         } else {
             errorLabel.setText("No puedes decrementar más atributos.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -235,11 +208,11 @@ public class CreacionPersonajeController {
     private void incrementarNivel() {
         if (nivel < 100) {
             nivel++;
-            actualizarLabels();
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("El nivel no puede ser mayor a 100.");
         }
-        actualizarLabels();
     }
 
     /**
@@ -249,24 +222,43 @@ public class CreacionPersonajeController {
     private void decrementarNivel() {
         if (nivel > 1) {
             nivel--;
-            actualizarLabels();
+            actualizarModelo();
+            errorLabel.setText("");
         } else {
             errorLabel.setText("El nivel no puede ser menor a 1.");
         }
-        actualizarLabels();
     }
 
-
     /**
-     * Actualiza todas las etiquetas con los valores actuales de los atributos.
+     * Actualiza solo los elementos de la interfaz de usuario.
+     * Este método NO actualiza el modelo.
      */
-    private void actualizarLabels() {
+    private void actualizarUI() {
         vidaMaximaLabel.setText("Vida Máxima: " + vidaMaxima);
         ataqueLabel.setText("Ataque: " + ataque);
         defensaLabel.setText("Defensa: " + defensa);
         velocidadLabel.setText("Velocidad: " + velocidad);
         puntosRestantesLabel.setText("Puntos Restantes: " + puntosRestantes);
-        errorLabel.setText(""); // Limpia el mensaje de error
+    }
+    
+    /**
+     * Actualiza el modelo con los valores actuales.
+     * Esta actualización desencadenará una notificación a los observadores
+     * que a su vez actualizará la interfaz gráfica.
+     */
+    private void actualizarModelo() {
+        if (heroeActual != null) {
+            heroeActual.setVidaMaxima(vidaMaxima);
+            heroeActual.setAtaque(ataque);
+            heroeActual.setDefensa(defensa);
+            heroeActual.setVelocidad(velocidad);
+            heroeActual.setNivel(nivel);
+            // No es necesario llamar a notifyPersonajeActualizado() aquí
+            // ya que los setters del modelo deberían hacerlo internamente
+        } else {
+            // Solo si aún no existe el modelo, actualizamos directamente la UI
+            actualizarUI();
+        }
     }
 
     /**
@@ -282,22 +274,27 @@ public class CreacionPersonajeController {
                 throw new IllegalArgumentException("Todos los campos deben ser válidos y mayores a 0.");
             }
 
-            Heroe heroe = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
-            if (heroe != null) {
+            // Crear el héroe
+            heroeActual = new Heroe(nombre, 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
+
+            // Suscribir este controlador como observador del héroe
+            heroeActual.addObserver(this);
+
+            if (heroeActual != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/mapaTest.fxml"));
                 try {
                     Parent root = loader.load();
                     JuegoController juegoController = loader.getController();
-                    juegoController.recibirHeroe(heroe);
-                    
+                    juegoController.recibirHeroe(heroeActual);
+
                     Stage stage = (Stage) nombreField.getScene().getWindow();
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add(getClass().getResource("/css/creacionpersonaje.css").toExternalForm());
-                                        
+
                     stage.setScene(scene);
                     stage.centerOnScreen();
                     stage.show();
-                    
+
                 } catch (IOException e) {
                     errorLabel.setText("Error al cargar la siguiente escena: " + e.getMessage());
                     e.printStackTrace();
@@ -309,7 +306,8 @@ public class CreacionPersonajeController {
     }
 
     /**
-     * Restablece los valores iniciales de los atributos y limpia el campo de nombre.
+     * Restablece los valores iniciales de los atributos y limpia el campo de
+     * nombre.
      */
     @FXML
     private void cancelarCreacion() {
@@ -319,7 +317,8 @@ public class CreacionPersonajeController {
         defensa = 10;
         velocidad = 10;
         nivel = 1;
-        actualizarLabels();
+        puntosRestantes = maxPuntos;
+        actualizarModelo();
         errorLabel.setText("");
     }
 
@@ -354,12 +353,16 @@ public class CreacionPersonajeController {
                 errorLabel.setText("Error al crear el héroe: " + e.getMessage());
             }
         });
-        
+
         cancelarButton.setOnAction(event -> cancelarCreacion());
         salirButton.setOnAction(event -> salirAplicacion());
 
+        // Crear un héroe temporal para ir reflejando los cambios
+        heroeActual = new Heroe("Temporal", 0, 0, vidaMaxima, ataque, defensa, velocidad, nivel);
+        heroeActual.addObserver(this);
+
         // Inicializar valores por defecto
-        actualizarLabels();
+        actualizarUI();
         errorLabel.setText("");
     }
 }
