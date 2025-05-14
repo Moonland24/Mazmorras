@@ -1,6 +1,5 @@
 {
-    "enemigos": [
-        {
+    "enemigos": [{
             "nombre": "Goblin",
             "vidaBase": 220,
             "ataqueBase": 8,
@@ -34,5 +33,4 @@
             "y": 0
         }
     ]
-
 }
