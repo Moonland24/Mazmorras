@@ -120,6 +120,19 @@ public class Utils {
                             }
                         }
                         break;
+                    case 'I':
+                        mapa.colocarCamino(i, alto - 1);
+                        // Buscar un Troll en la lista de enemigos
+                        for (Enemigo enemigo : enemigos) {
+                            if (enemigo.getTipo() == TipoEnemigo.TROLL && !enemigosColocados.contains(enemigo)) {
+                                enemigo.setX(i);
+                                enemigo.setY(alto - 1);
+                                mapa.colocarEnemigo(enemigo);
+                                enemigosColocados.add(enemigo);
+                                break;
+                            }
+                        }
+                        break;
                     default:
                         System.out.println("Contenido desconocido en (" + i + ", " + (alto - 1) + "): " + caracteres[i]);
                         break;

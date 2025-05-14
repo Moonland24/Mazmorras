@@ -12,5 +12,6 @@ public enum TipoEnemigo {
     ESQUELETO,
     ARANHA,
     MAGO_OSCURO,
-    TROLL
+    TROLL,
+    COBARDE,
 }

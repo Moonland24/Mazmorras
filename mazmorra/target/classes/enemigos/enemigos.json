@@ -35,11 +35,11 @@
         },
         {
             "nombre": "Aranha",
-            "vidaBase": 120,
-            "ataqueBase": 6,
+            "vidaBase": 300,
+            "ataqueBase": 0,
             "defensaBase": 2,
-            "velocidadBase": 7,
-            "percepcionBase": 2,
+            "velocidadBase": 9,
+            "percepcionBase": 8,
             "nivelBase": 1,
             "x": 0,
             "y": 0
@@ -62,7 +62,7 @@
             "defensaBase": 6,
             "velocidadBase": 3,
             "percepcionBase": 1,
-            "nivelBase": 3,
+            "nivelBase": 1,
             "x": 0,
             "y": 0
         }

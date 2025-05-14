@@ -70,6 +70,40 @@ public class Enemigo extends Personaje {
      * @param objetivo Personaje objetivo (generalmente el jugador).
      */
     public void moverEnemigo(Mapa mapa, Personaje objetivo) {
+        // Comportamiento especial para el Troll
+        if (this.tipo == TipoEnemigo.TROLL) {
+            if (estaEnRango(objetivo, this.percepcion)) {
+                // Calcula dirección opuesta al héroe
+                int dx = this.x - objetivo.getX();
+                int dy = this.y - objetivo.getY();
+                
+                // Normaliza la dirección
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    dx = (dx > 0) ? 1 : -1;
+                    dy = 0;
+                } else {
+                    dx = 0;
+                    dy = (dy > 0) ? 1 : -1;
+                }
+                
+                // Intenta moverse en la dirección opuesta
+                int nuevaX = this.x + dx;
+                int nuevaY = this.y + dy;
+                
+                // Verifica si el movimiento es válido
+                if (nuevaX >= 0 && nuevaX < mapa.getAncho() && 
+                    nuevaY >= 0 && nuevaY < mapa.getAlto() && 
+                    mapa.isValidMove(nuevaX, nuevaY)) {
+                    setX(nuevaX);
+                    setY(nuevaY);
+                    notifyPersonajeActualizado();
+                }
+                return;
+            }
+            return; // Si no está en rango, no se mueve
+        }
+        
+        // Comportamiento normal para otros enemigos
         // IA simple: perseguir al jugador si está en rango
         if (estaEnRango(objetivo, this.percepcion)) {
             int[] nuevaPos = mapa.encontrarCamino(x, y, objetivo.getX(), objetivo.getY());

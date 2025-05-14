@@ -5,6 +5,7 @@ import com.mazmorras.enums.Direccion;
 import com.mazmorras.interfaces.JuegoObserver;
 import com.mazmorras.models.*;
 import com.mazmorras.utils.Utils;
+import com.mazmorras.enums.TipoEnemigo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyCode;
@@ -472,6 +473,7 @@ public class JuegoController implements JuegoObserver {
         imageCache.put("goblin", new Image(getClass().getResourceAsStream("/imagenes/goblin.png")));
         imageCache.put("esqueleto", new Image(getClass().getResourceAsStream("/imagenes/esqueleto.png")));
         imageCache.put("heroe", new Image(getClass().getResourceAsStream("/imagenes/heroe.png")));
+        imageCache.put("troll", new Image(getClass().getResourceAsStream("/imagenes/cobaya.jpeg")));
     }
 
     /**
@@ -523,10 +525,22 @@ public class JuegoController implements JuegoObserver {
             mapaGrid.add(celda, camino.getX(), camino.getY());
         }
 
-        //Genera Enemigos
+        // Genera Enemigos
         for (Enemigo enemigo : mapa.getEnemigos()) {
-            ImageView celdaEnemigo = crearCelda(imageCache.get(enemigo.getNombre().toLowerCase()));
-            mapaGrid.add(celdaEnemigo, enemigo.getX(), enemigo.getY());
+            Image imagen;
+            if (enemigo.getTipo() == TipoEnemigo.TROLL) {
+                imagen = imageCache.get("troll");
+            } else {
+                // Manejo de otros tipos de enemigos
+                imagen = imageCache.get(enemigo.getTipo().toString().toLowerCase());
+            }
+            
+            if (imagen != null) {
+                ImageView imageView = new ImageView(imagen);
+                imageView.setFitWidth(32);
+                imageView.setFitHeight(32);
+                mapaGrid.add(imageView, enemigo.getX(), enemigo.getY());
+            }
         }
 
         //Genera obstáculos
